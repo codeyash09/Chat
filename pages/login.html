@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Summit</title>
+
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/login.css">
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+    <style>
+        /* White and orange theme override */
+        html, body, form, .main-container, .content {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+        }
+        
+        * {
+            color: #000000;
+        }
+        
+        input {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            color: #000000;
+        }
+        
+        h1, h2, h3, p, a, span, div {
+            color: #000000;
+        }
+        
+        #button {
+            background-color: #FFFFFF;
+            color: #FD5A23;
+            border: 2px solid #FD5A23;
+        }
+        
+        /* Add these styles to fix button hover animations */
+        button:hover, .btn:hover, .add-page-btn:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        .sidebar a:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        .sidebar a:hover i {
+            color: #FD5A23 !important;
+        }
+        
+        /* Fix button hover animation */
+        @keyframes buttonHover {
+            0% {
+                background-color: #FFFFFF;
+                color: #FD5A23;
+            }
+            100% {
+                background-color: #FD5A23;
+                color: #FFFFFF;
+            }
+        }
+        
+        #button:hover {
+            background-color: #FD5A23 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 6px 12px rgba(253, 90, 35, 0.3) !important;
+            transform: translateY(-2px);
+            animation: none; /* Remove any existing animations */
+            transition: all 0.3s ease;
+        }
+        
+        /* Fix folder header hover */
+        .folder-header:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        /* Fix collapse button hover */
+        .collapse-btn:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        /* Add this to fix sidebar background */
+        .sidebar {
+            background-color: #FFFFFF !important;
+            border-right: 1px solid #eee !important;
+        }
+        
+        .signup-text {
+            color: #000000;
+        }
+        
+        .signup-link {
+            color: #FD5A23;
+        }
+        
+        .signup-link:hover {
+            color: #FF7A4D;
+        }
+        
+        .already {
+            color: #000000;
+        }
+        
+        .already a {
+            color: #FD5A23;
+        }
+        
+        .already a:hover {
+            color: #FF7A4D;
+        }
+        
+        /* Add this to fix sidebar background */
+        .sidebar {
+            background-color: #FFFFFF !important;
+            border-right: 1px solid #eee !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="sidebar" id="sidebar">
+         Collapse Button 
+        <button class="collapse-btn" id="collapseBtn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    
+        Profile Section
+        <div class="profile-section">
+            <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
+        </div>
+        
+         Main Navigation
+        <div class="nav-items">
+            
+            <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
+            <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i> <span class="nav-text">Notes</span></a>
+        </div>
+    
+        Pages Section
+        <div class="pages-section">
+            <div class="section-header">
+                <span class="nav-text">Pages</span>
+                <button class="add-page-btn">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+            Removed pages-list div and its contents
+        </div>
+        
+         Bottom Navigation
+        <div class="bottom-nav">
+            Settings and Trash links removed
+        </div>
+    </div> -->
+
+    <div id="meny">
+
+        <div class="sidebarmenu">
+            <a class="collapser" id="collapser">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+    
+            <div class="linker">
+                <div class="links">
+                    <a href="/pages/chats.html"><i class="fa-solid fa-search"></i></a>
+                    <a href="/pages/notes.html"><i class="fa-solid fa-robot"></i></a>
+                    <a href="/pages/notes.html"><i class="fa-solid fa-home"></i></a>
+
+                    <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i></a>
+                    <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i></a>
+                </div>
+            </div>
+            <div class="cover" id="coverscreen121"></div>
+            <div class="sirvo" id="sirvo">
+
+
+
+
+                <div class="mener">
+                    <a id="closer"><i class="fa-solid fa-xmark"></i></a>
+                    <div class="linksmener" id="linksmener">
+                        
+
+                        <a><i class="fa-solid fa-search"> <h1>Search</h1></i> </a>
+                        <a><i class="fa-solid fa-robot"> <h1>Summit AI</h1></i></a>
+                        <a href="/pages/"><i class="fa-solid fa-home"> <h1>Home</h1></i></a>
+
+                        <a href="/pages/chats.html"><i class="fa-solid fa-inbox"> <h1>Inbox</h1></i></a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"> <h1>Notes</h1></i></a>
+                    </div>
+                    
+
+                </div>
+                <img src="/images/shadow.png" id="splash2">
+
+                <img src="/images/splasher.png" id="splash">
+
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="/style/menu.css">
+        
+    <script src="/scripts/menu.js"></script>
+
+    <div class="main-container" id="mainContainer">
+        <!-- Pages Divider -->
+        <div class="pages-divider">
+            <div class="pages-header">
+                <h2>Login</h2>
+            </div>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="content" id="content">
+            <form novalidate id="myForm">
+                <h1>Login</h1>
+                
+                <div class="form-group">
+                    <h3 class="emailer">Email/Username</h3>
+                    <input type="text" id="emailAddress" required>
+                </div>
+
+                <div id="emailErrorMessage" class="error"></div>
+
+                <div class="form-group">
+                    <h3 class="passworder">Password</h3>
+                    <input type="password" id="password" required>
+                </div>
+
+                <input id="button" type="submit" value='Login'>
+            </form>
+        </div>
+
+        <h3 class="already">Not already a member: <a href="/pages/signup.html">Sign Up</a></h3>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="/scripts/server.js"></script>
+    <script type="module" src="/scripts/login.js"></script>
+    <script src="/scripts/animations.js"></script>
+    <script src="/scripts/sidebar.js"></script>
+    <!-- Remove the duplicate sidebar collapse code -->
+</body>
+</html>

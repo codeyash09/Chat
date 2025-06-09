@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Summit</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/reader.css">
+    <link rel="stylesheet" href="/style/signup.css">
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+    <style>
+        /* White and orange theme override */
+        html, body, form, .main-container, .content {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        
+        * {
+            color: #000000;
+        }
+        
+        input {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            color: #000000;
+        }
+        
+        h1, h2, h3, p, a, span, div {
+            color: #000000;
+        }
+        
+        #button {
+            background-color: #FFFFFF;
+            color: #FD5A23;
+            border: 2px solid #FD5A23;
+        }
+        
+        /* Add these styles to fix button hover animations */
+        
+        
+        .sidebar a:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        .sidebar a:hover i {
+            color: #FD5A23 !important;
+        }
+        
+        /* Fix button hover animation */
+        @keyframes buttonHover {
+            0% {
+                background-color: #FFFFFF;
+                color: #FD5A23;
+            }
+            100% {
+                background-color: #FD5A23;
+                color: #FFFFFF;
+            }
+        }
+        
+        #button:hover {
+            background-color: #FD5A23 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 6px 12px rgba(253, 90, 35, 0.3) !important;
+            transform: translateY(-2px);
+            animation: none; /* Remove any existing animations */
+            transition: all 0.3s ease;
+        }
+        
+        /* Fix folder header hover */
+        .folder-header:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        /* Fix collapse button hover */
+        .collapse-btn:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        .already {
+            color: #000000;
+        }
+        
+        .already a {
+            color: #FD5A23;
+        }
+        
+        .already a:hover {
+            color: #FF7A4D;
+        }
+        
+        /* Add this to fix sidebar background */
+        .sidebar {
+            background-color: #FFFFFF !important;
+            border-right: 1px solid #eee !important;
+            /* Remove the animation */
+            animation: none !important;
+        }
+        
+        /* Welcome section styles */
+        .welcome-section {
+            text-align: center;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Enhanced animations for welcome elements */
+        @keyframes dropIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+            70% {
+                transform: translateY(20px);
+            }
+            85% {
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes buttonPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            70% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .welcome-text h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #FD5A23;
+            animation: dropIn 1.2s ease forwards;
+            opacity: 0;
+        }
+        
+        .welcome-text h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+        }
+        
+        .welcome-text p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 1.2s;
+            opacity: 0;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            /* Add padding to create larger boundary */
+            padding: 20px;
+            position: relative;
+            /* Prevent scrolling */
+            overflow: hidden;
+        }
+        
+        .cta-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 500;
+            /* Make buttons visible immediately */
+            opacity: 1;
+            /* Add margin for better spacing */
+            margin: 0 15px;
+            /* Create larger hit area */
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Create larger hover boundary */
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            bottom: -20px;
+            left: -20px;
+            z-index: -1;
+            border-radius: 30px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .cta-button:hover::before {
+            opacity: 0.1;
+            background-color: #FD5A23;
+        }
+        
+        .primary-button {
+            background-color: #FD5A23;
+            color: white !important;
+            border: none;
+            /* Remove animation */
+            animation: none;
+            position: relative;
+            overflow: visible;
+            /* Add cool pulse effect */
+            box-shadow: 0 0 0 0 rgba(253, 90, 35, 0.5);
+            transition: all 0.3s ease, box-shadow 1s ease;
+        }
+        
+        /* Cool pulse glow effect */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(253, 90, 35, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 20px 10px rgba(253, 90, 35, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(253, 90, 35, 0);
+            }
+        }
+        
+        .primary-button:hover {
+            background-color: #FD5A23;
+            transform: translateY(-3px);
+            animation: pulse-glow 1.5s infinite;
+        }
+        
+        .secondary-button {
+            background-color: white;
+            color: #FD5A23 !important;
+            border: 2px solid #FD5A23;
+            /* Remove animation */
+            animation: none;
+            position: relative;
+            overflow: visible;
+            transition: all 0.3s ease, box-shadow 1s ease;
+        }
+        
+        /* Subtle border glow effect */
+        @keyframes border-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(253, 90, 35, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 15px 5px rgba(253, 90, 35, 0.1);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(253, 90, 35, 0);
+            }
+        }
+        
+        .secondary-button:hover {
+            background-color: #FFF5F2;
+            transform: translateY(-3px);
+            animation: border-pulse 1.5s infinite;
+        }
+        
+        /* Remove sidebar animation */
+        @keyframes slideInLeft {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Remove profile picture floating animation */
+        .profile-section img {
+            animation: none;
+        }
+        
+        /* Remove pulse animation for nav items */
+        .nav-items a:hover i {
+            animation: none;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Loading screen will be created by the loading.js script -->
+    <div class="loader" style="position:fixed; z-index: 100000000;" id="loader">
+        <h1 style="position: absolute;" class="loading-text">
+
+
+            <h1 class="not-loading-text">Summit
+                <img id="lil-load">
+
+            </h1>
+            <div class="wall"></div>
+            <div class="wall2"></div>
+            
+        </h1>
+
+
+        <style>
+            #lil-load{
+                position: relative;
+                width: 5vw;
+                height: 5vw;
+                top: 5.5vw;
+                right: 12.75vw;
+            }
+
+
+            #loader{
+                animation: hider 5s linear;
+                opacity: 0;
+                display: flex;
+                overflow: hidden;
+            }
+
+            @keyframes hider {
+                0% {
+                    opacity: 1;
+                    display: flex;
+                    position: absolute;width: 100vw;height: 100vh;z-index: 500;background-color: #FD5A23;justify-content: center;align-items: center;
+
+                }
+
+                
+
+                95% {
+                    opacity: 1;
+                    display: flex;
+                    position: absolute;width: 100vw;height: 100vh;z-index: 500;background-color: #FD5A23;justify-content: center;align-items: center;
+
+                }
+                100%{
+                    opacity: 0;
+                    display: none;
+                    
+                    position: absolute;width: 100vw;height: 100vh;z-index: 500;background-color: #FD5A23;justify-content: center;align-items: center;
+
+                }
+            }
+
+
+
+
+            .loading-text{
+                animation: skip 2s linear;
+                font-size:20vw;
+                width: 100vw;
+                height: 100vh;
+                color: white;
+                background-color: #FD5A23;
+                top: 0;
+
+            }
+
+            .not-loading-text{
+                color:white;
+                font-size: 20vw;
+                text-align: center;
+                display: flex;
+                
+            }
+
+
+
+
+
+
+            .wall{
+                color:#FD5A23;
+                animation: color 1s linear;
+                width: 100%;
+                height: 0;
+                position: absolute;
+                top: -5vh;
+                display: flex;
+                justify-self: center;
+                align-self: center;
+         
+            }
+
+            .wall2{
+                color:#FD5A23;
+                animation: color 1s linear;
+                width: 100%;
+                height: 0;
+                position: absolute;
+                bottom: -5vh;
+                display: flex;
+
+                justify-self: center;
+                align-self: center;
+
+            }
+
+            @keyframes color {
+                0% {
+                    color: transparent;
+                    background-color: white;
+                    height: 55vh;
+                    width: 100vw;
+                    box-shadow: 2px 2px 2px #c241169d;
+
+                }
+
+                
+                30%{
+                    color: transparent;
+                    background-color: white;
+                    height: 55vh;
+                    width: 100vw;
+                    box-shadow: 2px 2px 2px #c241169d;
+
+                }
+
+
+                100%{
+                    background-color: #FD5A23;
+                    box-shadow: none;
+
+                    color: #FD5A23;
+                    height: 0;
+                    
+
+                }
+            }
+
+            
+
+            @keyframes skip {
+                0% {
+                    left: 0vw;
+                    font-size:50vw;
+                 
+                }
+                
+
+                100%{
+                    left: 0;
+                
+                }
+            }
+        </style>
+    </div>
+    
+     <!-- <div class="sidebar" id="sidebar">
+          Collapse Button 
+        <button class="collapse-btn" id="collapseBtn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+     
+         Profile Section 
+        <div class="profile-section">
+            <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
+        </div>
+         
+         Main Navigation  
+        <div class="nav-items">
+            
+            <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
+            <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i> <span class="nav-text">Notes</span></a>
+        </div>
+    
+          Pages Section  
+        <div class="pages-section">
+            <div class="section-header">
+                <span class="nav-text">Pages</span>
+                <button class="add-page-btn">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+              Removed pages-list div and its contents 
+        </div>
+        
+         Bottom Navigation  
+        <div class="bottom-nav">
+             Settings and Trash links removed  
+        </div>
+    </div>  -->
+
+    <div id="meny">
+
+        <div class="sidebarmenu">
+            <a class="collapser" id="collapser">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+    
+            <div class="linker">
+                <div class="links">
+                    <a><i class="fa-solid fa-search"></i></a>
+                    <a><i class="fa-solid fa-robot"></i></a>
+                    <a href="/pages/"><i class="fa-solid fa-home"></i></a>
+
+                    <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i></a>
+                    <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i></a>
+                </div>
+            </div>
+            <div class="cover" id="coverscreen121"></div>
+            <div class="sirvo" id="sirvo">
+
+
+
+
+                <div class="mener">
+                    <a id="closer"><i class="fa-solid fa-xmark"></i></a>
+                    <div class="linksmener" id="linksmener">
+                        
+
+                        <a href="/pages/chats.html"><i class="fa-solid fa-search"> <h1>Search</h1></i> </a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-robot"> <h1>Summit AI</h1></i></a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-home"> <h1>Home</h1></i></a>
+
+                        <a href="/pages/chats.html"><i class="fa-solid fa-inbox"> <h1>Inbox</h1></i></a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"> <h1>Notes</h1></i></a>
+                    </div>
+                    
+
+                </div>
+                <img src="/images/shadow.png" id="splash2">
+
+                <img src="/images/splasher.png" id="splash">
+
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/style/menu.css">
+        
+    <script src="/scripts/menu.js"></script>
+    </div>
+
+
+    <div class="main-container" id="mainContainer">
+        <div class="content">
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h1>Welcome to Summit</h1>
+                    <h2>Your all-in-one student sidekick</h2>
+                    <p>Take smart notes, stay on top of your schoolwork, and get the help you need to reach your academic peak. Summit is where focus meets simplicity.</p>
+                    
+                    <div class="cta-buttons">
+                        <a href="/pages/signup.html" class="cta-button primary-button">Sign Up Now</a>
+                        <a href="/pages/login.html" class="cta-button secondary-button">Log In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <script src="/scripts/textanimation.js"></script>
+    <script src="/scripts/sidebar.js"></script>
+    <script type="module" src="/scripts/reader.js"></script>
+    <script src="/scripts/loading.js"></script>
+</body>
+</html>

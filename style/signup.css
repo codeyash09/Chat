@@ -1,0 +1,440 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    text-decoration: none;
+    font-family: 'Poppins';
+}
+
+/* Make the main container take full height and center content */
+.main-container {
+    display: flex;
+    background-color: rgb(24, 24, 24);
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Style the pages divider to take minimal space */
+.pages-divider {
+    padding: 10px 20px;
+}
+
+/* Center the content in the main area */
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0;
+}
+
+/* Remove form background and make it centered */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    
+    border-radius: 0;
+}
+
+/* Make form groups more prominent */
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 25px;
+    height: 10vh;
+}
+
+
+/* Style the input fields to be more prominent */
+input {
+    width: 60%;
+    height: 5vh;
+    font-size: 14px; /* Fixed font size in pixels */
+    border-radius: 8px;
+    padding: 1.2vh;
+    padding-left: 2vh;
+
+    padding-right: 2vh;
+    background-color: #eee;
+    border: #eee 2px solid;
+    transition: all .25s linear;
+    color: rgb(82, 82, 82);
+    margin-left: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+input:focus {
+    outline: none;
+    background-color: white;
+    border: #FD5A23 2.5px solid;
+    color: #FD5A23;
+    box-shadow: 0 4px 12px rgba(28, 198, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Style the labels to be more visible */
+h3 {
+    text-decoration: none;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    position: static;
+    color: #616161;
+
+    font-size: 14px; /* Fixed font size in pixels */
+    text-align: right;
+    width: 20%;
+    transition: all .25s linear;
+
+}
+
+h3:has(+ input:focus) {
+    color: #FD5A23;
+    font-weight: 500;
+}
+
+.error {
+    border: rgb(255, 86, 86) 2.5px solid;
+    padding: 1vh;
+    border-radius: 8px;
+    color: rgb(255, 86, 86);
+    position: absolute;
+    display: none;
+    top: 8vh;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+/* Make the heading smaller and less prominent */
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 24px; /* Fixed font size in pixels */
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+/* Make the button more prominent */
+#button {
+    width: 12vw;
+    height: 5.5vh;
+    margin-top: 4vh;
+    font-size: 16px; /* Fixed font size in pixels */
+    background-color: white;
+    transition: all .25s linear;
+    color: #FD5A23;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+#button:hover {
+    background-color: #333333;
+    color: rgb(28, 198, 255);
+    box-shadow: 0 6px 12px rgba(28, 198, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #202020;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 100;
+    transition: width 0.3s ease, padding 0.3s ease;
+}
+
+/* Collapsed sidebar styles */
+.sidebar.collapsed {
+    width: 70px;
+    padding: 20px 10px;
+}
+
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .section-header span {
+    display: none;
+}
+
+.sidebar.collapsed .add-page-btn {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Collapse button styles */
+.collapse-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    z-index: 101;
+    padding: 0;
+}
+
+.collapse-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.collapse-btn.rotated {
+    transform: rotate(180deg);
+}
+
+.collapse-btn i {
+    font-size: 14px;
+    width: auto;
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    height: 40px;
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+    flex: 0 0 auto;
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important; /* Force rounded corners */
+    background-color: rgb(194, 194, 194);
+    object-fit: cover; /* Ensures the image covers the area properly */
+    overflow: hidden;
+}
+
+/* Nav items positioning */
+.nav-items {
+    flex: 0 0 auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar.collapsed .nav-items {
+    margin-top: 20px; /* Keep the same margin as expanded state */
+}
+
+/* Pages section styles */
+.pages-section {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    margin-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Pages section header styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.section-header::-webkit-scrollbar {
+    display: none;
+}
+
+.section-header span {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+/* Add page button styles */
+.add-page-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-width: 24px;
+    flex-shrink: 0;
+}
+
+.add-page-btn:hover {
+    background-color: #2a2a2a;
+    transform: rotate(90deg);
+    color: #7393B3;
+}
+
+/* Pages list styles */
+.pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Bottom navigation styles */
+.bottom-nav {
+    flex: 0 0 auto;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+/* Navigation items styles */
+.sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin: 0 10px;
+}
+
+.sidebar a:hover {
+    background-color: #2a2a2a;
+    transform: translateX(5px);
+}
+
+.sidebar a:hover i {
+    color: #7393B3;
+    transform: scale(1.1);
+}
+
+/* Icon transitions */
+.sidebar i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Main container styles */
+.main-container {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.main-container.expanded {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+    }
+    
+    .nav-text,
+    .section-header span {
+        display: none;
+    }
+    
+    .main-container {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    
+    .collapse-btn {
+        display: none;
+    }
+}
+h2{
+    color: #1a1a1aff;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1500px) {
+    form {
+        width: 80%;
+    }
+
+    h3 {
+        width: 25%;
+    }
+
+    #button {
+        width: 30vw;
+    }
+}
+
+.already{
+    text-align: center;
+    width: 100%;
+    color: white;
+    font-size: 15px;
+
+}
+
+.already a{
+    color: rgb(187, 187, 187);
+    text-decoration: underline;
+    transition: all .25s linear;
+   
+}
+
+.already a:hover{
+    color: rgb(209, 209, 209);
+    text-decoration: underline;
+
+
+}

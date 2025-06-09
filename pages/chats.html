@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chats | Summit</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="/style/chats.css">
+    <script src="/scripts/longorshort.js"></script>
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+    <style>
+        /* White and orange theme override */
+        body {
+            background-color: #FFFFFF;
+            color: white;
+        }
+        
+        .sidebar {
+            background-color: #FFFFFF;
+            border-right: 1px solid #eee;
+        }
+        
+        .nav-items a, .bottom-nav a {
+            color: #000000;
+        }
+        
+        .nav-items a:hover, .bottom-nav a:hover {
+            background-color: rgba(253, 90, 35, 0.1);
+            color: #FD5A23;
+        }
+        
+        .folder-header:hover {
+            background-color: rgba(253, 90, 35, 0.1);
+        }
+        
+        button, .btn {
+            background-color: #FFFFFF;
+            color: #FD5A23;
+            border: 2px solid #FD5A23;
+        }
+        
+        /* Add these styles to fix button hover animations */
+        button:hover, .btn:hover, .add-page-btn:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        .sidebar a:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        .sidebar a:hover i {
+            color: #FD5A23 !important;
+        }
+        
+        /* Fix button hover animation */
+        @keyframes buttonHover {
+            0% {
+                background-color: #FFFFFF;
+                color: #FD5A23;
+            }
+            100% {
+                background-color: #FD5A23;
+                color: #FFFFFF;
+            }
+        }
+        
+        #button:hover {
+            background-color: #FD5A23 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 6px 12px rgba(253, 90, 35, 0.3) !important;
+            transform: translateY(-2px);
+            animation: none; /* Remove any existing animations */
+            transition: all 0.3s ease;
+        }
+        
+        /* Fix folder header hover */
+        .folder-header:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        /* Fix collapse button hover */
+        .collapse-btn:hover {
+            background-color: #FFF5F2 !important;
+            color: #FD5A23 !important;
+        }
+        
+        /* Add this to fix sidebar background */
+        .sidebar {
+            background-color: #FFFFFF !important;
+            border-right: 1px solid #eee !important;
+        }
+        
+        a {
+            color: #FD5A23;
+        }
+        
+        a:hover {
+            color: #FF7A4D;
+        }
+        
+        .collapse-btn {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        
+        .collapse-btn:hover {
+            background-color: #FFF5F2;
+            color: #FD5A23;
+        }
+        
+        .chat-header {
+            background-color: #FFFFFF;
+            color: #000000;
+            border: 2px solid #eee;
+
+            border-bottom: 5px solid #eee;
+            border-top-right-radius: 8px;
+            border-top-left-radius: 8px;
+        }
+        
+        .chat-input {
+            background-color: #FFFFFF;
+            border-top: 5px solid #eee;
+            
+        }
+        
+        .message {
+            overflow:visible;
+            display: flex;
+            height: fit-content;
+            align-items: flex-end;
+            max-width: 75%;
+            height: fit-content;
+            align-self: flex-start;
+            font-family: 'Lexend';
+        }
+
+        .message .content {
+            background-color: #FD5A23;
+            color: #000000;
+            position: relative;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 18px;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+        }
+
+        .message:hover .content {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .message.squish {
+            animation: messageSquish 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes messageSquish {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .own-message .content {
+            background-color: #262626;
+            color: #FFFFFF;
+            border: none;
+            position: relative;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 18px;
+        }
+        
+        /* Popup menu styles */
+        .message-popup {
+            position: absolute;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+            min-width: 220px;
+            z-index: 100;
+            display: none;
+            backdrop-filter: blur(8px);
+            transform-origin: top right;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+        }
+
+        .message-popup.show {
+            display: block;
+            animation: popupFadeIn 0.2s ease-out;
+        }
+
+        .message-popup.closing {
+            transform: scale(0.1) translate(-100%, 100%);
+            opacity: 0;
+        }
+
+        .own-message .message-popup {
+            transform-origin: top left;
+        }
+
+        .own-message .message-popup.closing {
+            transform: scale(0.1) translate(100%, 100%);
+            opacity: 0;
+        }
+
+        .message-popup-date {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 14px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .message-popup-emoji {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 14px;
+            padding: 10px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .emoji-reaction {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            transform: scale(1);
+            opacity: 0;
+            animation: emojiAppear 0.3s ease-out forwards;
+        }
+
+        .emoji-reaction.falling {
+            animation: emojiFall 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .emoji-reaction:nth-child(1) { animation-delay: 0.1s; }
+        .emoji-reaction:nth-child(2) { animation-delay: 0.2s; }
+        .emoji-reaction:nth-child(3) { animation-delay: 0.3s; }
+        .emoji-reaction:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes emojiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes emojiAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.5) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .emoji-reaction:hover {
+            background-color: #FFF5F2;
+            transform: scale(1.1);
+        }
+
+        .emoji-reaction:active {
+            transform: scale(0.95);
+        }
+
+        .message-popup-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message-popup-action {
+            background: none;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .message-popup-action:hover {
+            background-color: #FFF5F2;
+            color: #FD5A23;
+            transform: translateX(2px);
+        }
+
+        .message-popup-action:active {
+            transform: translateX(0);
+        }
+
+        .message-popup-action.delete-action {
+            color: #ff4444;
+        }
+
+        .message-popup-action.delete-action:hover {
+            background-color: #fff0f0;
+            color: #ff0000;
+        }
+
+        .message-edit-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #FD5A23;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .message-edit-input:focus {
+            box-shadow: 0 0 0 3px rgba(253, 90, 35, 0.2);
+        }
+
+        .message-popup-action i {
+            width: 16px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .copy-tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .copy-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Add styles for own messages */
+        .own-message {
+            flex-direction: row-reverse;
+            padding: 0 5px 0 45px;
+        }
+        
+        .input-actions i {
+            color: #FD5A23;
+        }
+        
+        .input-actions i:hover {
+            color: #FF7A4D;
+        }
+        
+        .main-chat {
+            background-color: #FFFFFF;
+        }
+        
+        form {
+            background-color: #FFFFFF;
+        }
+        
+        .channels-list li:hover, .channels-list li.active {
+            background-color: #FFF5F2;
+        }
+        
+        .add-chat-button {
+            background-color: #FD5A23;
+            color: #FFFFFF;
+        }
+        
+        .add-chat-button:hover {
+            background-color: #FF7A4D;
+        }
+
+        .message-reactions {
+            display: flex;
+            gap: 2px;
+            padding: 1px 4px;
+            font-size: 16px;
+            position: absolute;
+            bottom: -12px;
+            right: -10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: visible;
+            width: fit-content;
+            z-index: 1;
+        }
+
+        .own-message .message-reactions {
+            right: auto;
+            left: -10px;
+            bottom: -12px;
+        }
+
+        .message {
+            position: relative;
+        }
+
+        .message-reaction {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.8;
+            padding: 1px 2px;
+        }
+
+        .message-reaction:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .message-reaction.active {
+            opacity: 1;
+        }
+
+        /* Selection mode styles */
+        .selection-mode {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 20px;
+            padding: 10px 20px;
+            align-items: center;
+            gap: 15px;
+            z-index: 9999;
+        }
+
+        .selection-mode.active {
+            display: flex;
+        }
+
+        .selection-count {
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .selection-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .selection-actions button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .selection-actions .delete-all {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+        }
+
+        .selection-actions .delete-all:hover {
+            background-color: #ff0000;
+        }
+
+        .selection-actions .cancel {
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+        }
+
+        .selection-actions .cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        .message.selected .content {
+            border: 2px solid #FD5A23 !important;
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2) !important;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .message.selected .content::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900; 
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #FD5A23;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: checkmarkAppear 0.2s ease-out;
+            z-index: 1000;
+        }
+
+
+        @keyframes checkmarkAppear {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message.selected .content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(253, 90, 35, 0.05);
+            border-radius: 18px;
+            pointer-events: none;
+        }
+
+        .message.selection-hover .content {
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        /* Ensure the message content has proper positioning */
+        .message .content {
+            position: relative;
+            overflow: visible;
+        }
+
+        .selection-tooltip {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            animation: tooltipFade 2s ease;
+        }
+
+        @keyframes tooltipFade {
+            0% { opacity: 0; transform: translate(-50%, -10px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -10px); }
+        }
+
+        /* Selection mode active indicator */
+        .chat-messages.selection-mode-active .message {
+            cursor: pointer;
+        }
+
+        .chat-messages.selection-mode-active .message:hover .content {
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2);
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        /* Add a subtle animation for the selection mode bar */
+        .selection-mode {
+            transform: translateY(-100%);
+            transition: transform 0.2s ease;
+        }
+
+        .selection-mode.active {
+            transform: translateY(0);
+        }
+
+        /* Quick selection feedback */
+        .message.selected .content {
+            border: 2px solid #FD5A23;
+            box-shadow: 0 0 0 2px rgba(253, 90, 35, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        /* Selection mode button */
+        .select-mode-btn {
+            background: none;
+            border: none;
+            color: #FD5A23;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .select-mode-btn:hover {
+            background-color: rgba(253, 90, 35, 0.1);
+            transform: scale(1.1);
+        }
+
+        .select-mode-btn.active {
+            background-color: #FD5A23;
+            color: white;
+        }
+
+        .pages-list {
+            position: relative;
+        }
+
+        /* Custom scrollbar styles */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #FD5A23;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #FF7A4D;
+        }
+
+        /* Add context menu specific styles */
+        .chat-context-menu {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            min-width: 200px;
+            overflow: auto;
+        }
+
+        .chat-context-menu::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .chat-context-menu::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        .chat-context-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #333;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            user-select: none;
+            position: relative;
+            touch-action: none;  /* Prevent touch scrolling */
+            -webkit-touch-callout: none;  /* Prevent callout */
+            -webkit-user-select: none;  /* Prevent selection */
+            -webkit-tap-highlight-color: transparent;  /* Remove tap highlight */
+        }
+
+        .context-menu-item:hover {
+            background-color: #FFF5F2;
+            color: #FD5A23;
+        }
+
+        .context-menu-item i {
+            width: 28px;
+            min-width: 28px;
+            color: #FD5A23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            left: 6px;
+            pointer-events: none;  /* Prevent icon interaction */
+        }
+
+        .context-menu-item span {
+            flex: 1;
+            margin-left: 12px;
+            pointer-events: none;  /* Prevent text interaction */
+        }
+
+        .replyMessage {
+            background-color: #eee;
+            color: #666;
+            border-radius: 8px;
+            padding: 5px;
+            font-size: 14px;
+            margin-bottom: 4px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .replyMessage::before {
+            content: '';
+            width: 2px;
+            height: 16px;
+            background-color: #FD5A23;
+            border-radius: 2px;
+            margin-right: 4px;
+        }
+
+        .replyContent {
+            color: #666;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .replyContent::before {
+            content: '';
+            color: #666;
+            font-size: 13px;
+        }
+
+        .own-message .replyMessage {
+            margin-left: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        /* Make received message reply styling match own messages exactly */
+        .message .replyMessage {
+            background-color: #eee;
+            color: #666;
+            border-radius: 8px;
+            padding: 5px;
+            border-bottom-right-radius: 0;
+        }
+
+        .message .replyContent {
+            color: #666;
+        }
+
+        .message .replyUser {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .message .timestamp {
+            display: none;
+            position: absolute;
+            color: #666 !important;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            bottom: -18px;
+            left: 0;
+        }
+
+        .message:hover .timestamp {
+            display: block;
+            opacity: 1;
+        }
+
+        .own-message .timestamp {
+            left: auto;
+            right: 0;
+        }
+
+        /* Ensure message container has proper positioning for absolute positioning of timestamp */
+        .message {
+            position: relative;
+            margin-bottom: 10px; /* Reduced from 20px to 10px */
+        }
+
+        /* Remove the previous padding we added */
+        .chat-messages {
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container" id="mainContainer">
+        <div class="pages-list" id="pageList">
+            <!-- Pages will be added here dynamically -->
+        </div>
+        <div class="selection-mode" id="selectionMode">
+            <div class="selection-count">
+                <span id="selectedCount">0</span> messages selected
+            </div>
+            <div class="selection-actions">
+                <button class="delete-all" id="deleteSelected">Delete Selected</button>
+                <button class="cancel" id="cancelSelection">Cancel</button>
+            </div>
+        </div>
+        <button id="newChatBtn">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+        
+        <div class="main-chat">
+            <div class="chat-header" id="chat-header">
+                <!-- This should dynamically update based on selection -->
+                FriendUser#5678 <!-- Updated placeholder to match selected chat -->
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be loaded here -->
+                <!-- <div class="message">  Other user's message
+                    <div class="avatar"></div>
+                    <div class="content">
+                        <div class="username">FriendUser#5678</div>
+                        <div class="text">Hey, how's it going?</div>
+                        <div class="timestamp">10:30 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="message own-message"> Your message
+                    <div class="avatar"></div>
+                    <div class="content">
+                        <div class="username">YourUsername#1234</div>
+                        <div class="text">Pretty good! Just working on this chat interface.</div>
+                        <div class="timestamp">10:31 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="message"> Other user's message 
+                    <div class="avatar"></div>
+                    <div class="content">
+                        <div class="username">AnotherUser#9012</div>
+                        <div class="text">Looks cool!</div>
+                        <div class="timestamp">10:32 AM</div>
+                        <div class="message-dots">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+                </div> --> 
+                <!-- Example message structure -->
+            </div>
+            <div class="chat-input">
+                <!-- Input area now uses flexbox -->
+                <div class="input-actions left">
+                    <i class="fa-solid fa-plus" title="Add Attachment"></i> <!-- Plus icon -->
+                    <!-- Removed the fa-image button -->
+                </div>
+                <input type="text" id="chatInput" placeholder="Message FriendUser#5678"> <!-- Updated placeholder -->
+                <div class="input-actions right">
+                    <i id="send" class="fa-solid fa-paper-plane" title="Send"></i>
+                    <i id="gifButton" class="gif-text-button" title="Open GIFs"><i class="fa-solid fa-note-sticky"></i></i>
+                    <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="meny">
+        <div class="sidebarmenu">
+            <a class="collapser" id="collapser">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+    
+            <div class="linker">
+                <div class="links">
+                    <a><i class="fa-solid fa-search"></i></a>
+                    <a><i class="fa-solid fa-robot"></i></a>
+                    <a href="/pages/"><i class="fa-solid fa-home"></i></a>
+
+                    <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i></a>
+                    <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i></a>
+                </div>
+            </div>
+            <div class="cover" id="coverscreen121"></div>
+            <div class="sirvo" id="sirvo">
+
+
+
+
+                <div class="mener">
+                    <a id="closer"><i class="fa-solid fa-xmark"></i></a>
+                    <div class="linksmener" id="linksmener">
+                        
+
+                        <a href="/pages/chats.html"><i class="fa-solid fa-search"> <h1>Search</h1></i> </a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-robot"> <h1>Summit AI</h1></i></a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-home"> <h1>Home</h1></i></a>
+
+                        <a href="/pages/chats.html"><i class="fa-solid fa-inbox"> <h1>Inbox</h1></i></a>
+                        <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"> <h1>Notes</h1></i></a>
+
+                    
+                        
+                        
+                        
+                    </div>
+                    
+
+                </div>
+                <img src="/images/shadow.png" id="splash2">
+
+                <img src="/images/splasher.png" id="splash">
+
+            </div>
+        </div> 
+    </div>
+ 
+     <link rel="stylesheet" href="/style/menu.css">
+        
+    <script src="/scripts/menu.js"></script> 
+    
+
+    <div class="createGroupChat hider" id="blurWall">
+
+        <form id="form">
+            
+            <div id="close"><i class="fa-solid fa-xmark"></i></div>
+            <div id="emailErrorMessage" class="error"></div>
+
+            <h1>New Chat</h1>
+            
+            <div class="choices" id="q1">
+                
+                <!-- <div id="groupBtn" class="btn"><i class="fa-solid fa-user-group"></i><br>New Group</div>
+                <div class="line"></div>
+                <div id="friendBtn" class="btn"><i class="fa-solid fa-user"></i><br>New Friend</div> -->
+
+                <div id="users" class="hidden">
+                    <div id="inputs">
+                        <div class="input-group">
+                        
+                            <input type="text" name="username" style="width: 92%; margin-left: 8.5%;" placeholder="Enter username">
+                            
+                        </div>
+                    </div>
+                    <div class="btns">
+                        <button type="button" id="addInput">Add Additional Name</button>
+                        <button type="button" id="submit">Submit</button>
+                    </div>
+                </div>  
+
+
+                <div id="q2" class="hidden">
+                    <div id="inputs">
+                        <div class="input-group">
+                        
+                            <input type="text" id="gcname" name="groupName" style="width: 92%; margin-left: 8.5%;" placeholder="Enter group name">
+                            
+                        </div>
+                    </div>
+                    <div class="btns">
+                        
+                        <button type="button" id="submit2">Submit</button>
+                    </div>
+                </div>  
+                
+            </div>
+            
+            
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <!-- Add this before your closing body tag -->
+    <script src="/scripts/gifs.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emoji-mart/data"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+    <script src="/scripts/emojis.js"></script>
+    <script src="/scripts/imageupload.js"></script>
+    <script type="module" src="/scripts/messageMenu.js"></script>
+    <script type="module" src="/scripts/createchat.js"></script>
+    <script type="module" src="/scripts/chats.js"></script>
+    <script src="/scripts/sidebar.js"></script>
+    <script type="module" src="/scripts/typing.js"></script>
+    <script type="module" src="/scripts/messageSelection.js"></script>
+    <script type="module" src="/scripts/chatContextMenu.js"></script>
+
+</body>
+</html>

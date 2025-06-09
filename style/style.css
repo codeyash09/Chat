@@ -1,0 +1,887 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    text-decoration: none;
+    font-family: 'Bebas Neue';
+}
+
+.content{
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 8vh;
+    z-index: 10;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.25s linear;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
+    align-items: center;
+    background-color: white;
+}
+
+footer:hover {
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.144);
+}
+
+footer a {
+    color: rgb(29, 29, 29);
+    transition: color 0.25s linear;
+    font-family: "Bebas Neue", sans-serif;
+    text-decoration: none;
+    font-size: 2.5vh;
+}
+
+footer a:hover {
+    color: black;
+}
+
+.profileCard {
+    width: 100vw;
+}
+
+.image {
+    position: fixed;
+    top: 1vh;
+    right: 1vh;
+    height: fit-content;
+}
+
+.image img {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+}
+
+.bubble {
+    background: #2caadb;
+    background: linear-gradient(199deg, rgba(44, 170, 219, 1) 0%, rgb(2, 126, 226) 0%, rgba(212, 255, 253, 1) 100%);
+    border-radius: 50%;
+    width: 5vh;
+    height: 5vh;
+    display: flex;
+    color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 12vh;
+    z-index: 30;
+    right: 3vh;
+    box-shadow: -2px 0px 10px rgba(0, 110, 101, 0.144);
+    transition: box-shadow .25s linear, color .25s linear;
+}
+
+.bubble:hover {
+    box-shadow: -2px 0px 50px rgba(0, 238, 255, 0.932);
+    color: rgb(185, 250, 255);
+}
+
+
+
+/* Dropdown Styles */
+.dropdown {
+    position: fixed;
+    top: 8vh;
+    right: 2vh;
+    overflow: hidden;
+
+    
+    min-width: 150px;
+    z-index: 50;
+    
+}
+
+.menu{
+    position: relative;
+
+    background-color: #202020;
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    top: -40vh;
+    transition: top .15s linear;
+}
+.show{
+    top: 0vh;
+}
+
+.dropdown a {
+    padding: 10px;
+    text-align: left;
+    text-decoration: none;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid #333;
+    background-color: #202020;
+    transition: background-color .25s linear;
+}
+
+.dropdown a:hover {
+    background-color: #2a2a2a;
+}
+
+.dropdown a:last-child {
+    border-bottom: none;
+}
+
+.grades{
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    margin-top: 5vh;
+    padding: 5vw;
+
+    width: fit-content;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    align-self: center;
+    justify-self: center;
+}
+
+#gradeChart{
+    
+    width: 25vw;
+    max-width: 25vw;
+   
+}
+
+
+
+.rest{
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    justify-content: space-around;
+    width: 35vw;
+
+    
+   
+  
+}
+
+.chats{
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.3);
+    padding: 2%;
+    margin-top: 2vh;
+    margin-right: 1vh;
+    width: 45%;
+    height: 50vh;
+    
+}
+.upcoming{
+    width: 45%;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 2%;
+    margin-top: 2vh;
+
+    margin-left: 1vh;
+
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.3);
+    height: 50vh;
+}
+
+
+
+
+@media only screen and (max-width: 1500px) {
+    #gradeChart{
+        max-width: 90vw;
+        width: 90vw;
+        
+
+    }
+    .grades{
+        margin-top: 0;
+        border-radius: 0;
+       
+        
+    }
+}
+
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    background-color: #191919;
+    color: #ffffff;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #202020;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 100;
+    transition: width 0.3s ease, padding 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+    padding: 20px 10px;
+}
+
+.main-container {
+    margin-left: 500px;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.main-container.expanded {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+}
+
+.collapse-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.collapse-btn.rotated {
+    transform: rotate(180deg);
+}
+
+.collapse-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.collapse-btn.rotated {
+    transform: rotate(180deg);
+}
+
+.collapse-btn i {
+    font-size: 14px;
+    width: auto;
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Ensure profile images are round on all pages */
+.profile-section img,
+#realProfile,
+.image img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important; /* Force rounded corners */
+    background-color: rgb(194, 194, 194);
+    object-fit: cover !important; /* Ensures the image covers the area properly */
+    overflow: hidden !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide profile when sidebar is collapsed while maintaining space */
+.sidebar.collapsed .profile-section {
+    opacity: 0;
+    visibility: hidden;
+    height: 40px; /* Maintain the same height */
+    margin-bottom: 30px; /* Maintain the same margin */
+}
+
+/* Nav items positioning */
+.nav-items {
+    display: flex;
+    overflow:hidden;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.sidebar.collapsed .nav-items {
+    margin-top: 20px; /* Keep the same margin as expanded state */
+}
+
+/* Pages section styles */
+.pages-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    margin-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Pages section header styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.section-header::-webkit-scrollbar {
+    display: none;
+}
+
+.section-header span {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+/* Adjust pages section in collapsed state */
+.sidebar.collapsed .section-header {
+    justify-content: center;
+    padding: 0;
+}
+
+/* Add page button styles */
+.add-page-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-width: 24px;
+    flex-shrink: 0;
+}
+
+.add-page-btn:hover {
+    background-color: #2a2a2a;
+    transform: rotate(90deg);
+    color: #7393B3;
+}
+
+/* Pages list styles */
+.pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Bottom navigation styles */
+.bottom-nav {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+/* Navigation items styles */
+.sidebar a {
+    color: #000000;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin: 0 10px;
+}
+
+.sidebar a:hover {
+    background-color: #2a2a2a;
+    transform: translateX(5px);
+}
+
+.sidebar a:hover i {
+    color: #7393B3;
+    transform: scale(1.1);
+}
+
+/* Icon transitions */
+.sidebar i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Pages section styles */
+.pages-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Pages section header styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin-bottom: 15px;
+}
+
+.section-header span {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.section-header:hover span {
+    color: #2caadb;
+}
+
+/* Add page button hover effect */
+.add-page-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.add-page-btn:hover {
+    background-color: #2a2a2a;
+    transform: rotate(90deg);
+    color: #7393B3;
+}
+
+/* Collapse button hover effect */
+.collapse-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 101;
+    padding: 0;
+}
+
+.collapse-btn:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
+}
+
+/* Specific styles for collapsed state */
+.sidebar.collapsed a {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed a:hover {
+    transform: scale(1.1);
+    background-color: #f5f5f5;
+}
+
+/* Bottom navigation specific hover effect */
+.bottom-nav a:hover {
+    background-color: #2a2a2a;
+    transform: translateX(5px);
+    color: #7393B3;
+}
+
+.bottom-nav a:hover i {
+    color: #7393B3;
+    transform: scale(1.1);
+}
+
+/* Additional hover effect for active state */
+.sidebar a.active {
+    background-color: #e6f7ff;
+    color: #2caadb;
+}
+
+.sidebar a.active i {
+    color: #2caadb;
+}
+
+/* Hover effect adjustments for collapsed state */
+.sidebar.collapsed .nav-items a:hover,
+.sidebar.collapsed .bottom-nav a:hover {
+    transform: scale(1.1);
+    background-color: #f5f5f5;
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    height: 40px;
+    opacity: 1;
+    visibility: visible;
+    overflow: visible; /* Changed from hidden to visible */
+    flex: 0 0 auto;
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+    overflow: visible; /* Changed from hidden to visible */
+}
+
+.nav-items {
+    flex: 0 0 auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.pages-section {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allow this section to scroll if needed */
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    margin-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bottom-nav {
+    flex: 0 0 auto;
+    margin-top: auto; /* Push to bottom */
+}
+
+/* Additional responsive adjustments */
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        width: 220px; /* Slightly smaller on laptops */
+    }
+    
+    .pages-section {
+        max-height: 40vh; /* Limit height on smaller screens */
+    }
+}
+
+@media only screen and (max-height: 700px) {
+    .nav-items {
+        gap: 10px; /* Reduce spacing on shorter screens */
+    }
+    
+    .profile-section {
+        margin-bottom: 20px; /* Less margin on smaller screens */
+    }
+}
+
+/* Profile section styles */
+.profile-section {
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    height: 40px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(194, 194, 194);
+}
+
+/* Hide profile when sidebar is collapsed while maintaining space */
+.sidebar.collapsed .profile-section {
+    opacity: 0;
+    visibility: hidden;
+    height: 40px;
+    margin-bottom: 30px;
+}
+
+/* Nav items positioning */
+.nav-items {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Bottom nav positioning */
+.bottom-nav {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+/* Adjust pages section in collapsed state */
+.sidebar.collapsed .section-header {
+    justify-content: center;
+    padding: 0;
+}
+
+/* Pages list styles */
+.pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: black;
+}
+
+/* Main container styles */
+.main-container {
+    margin-left: 8vh;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: margin-left 0.3s ease;
+}
+
+.main-container.expanded {
+    margin-left: 60px;
+    width: calc(100% - 70px);
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.grades {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.rest {
+    display: flex;
+    gap: 20px;
+}
+
+.chats, .upcoming {
+    flex: 1;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#gradeChart {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 400px;
+}
+
+@media screen and (max-width: 1500px) {
+    .content {
+        padding: 10px;
+    }
+    
+    .grades {
+        padding: 15px;
+    }
+    
+    #gradeChart {
+        max-height: 350px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .content {
+        padding: 5px;
+    }
+    
+    .grades {
+        padding: 10px;
+    }
+    
+    #gradeChart {
+        max-height: 300px;
+    }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+    }
+    
+    .nav-text,
+    .section-header span {
+        display: none;
+    }
+    
+    .main-container {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    
+    .collapse-btn {
+        display: none;
+    }
+}
+
+.bottom-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin: 0 10px;
+}
+
+.welcome-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 0 20px;
+    color: #e0e0e0;
+}
+
+.welcome-text h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.welcome-text h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+    max-width: 800px;
+    line-height: 1.5;
+}
+
+.welcome-text .bold-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+}
+
+/* Sidebar text styling */
+/* Add simpler font and increase size for sidebar text */
+.sidebar .nav-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;  /* Increased from 16px to 18px */
+}
+
+/* Keep the Pages section header smaller */
+.sidebar .pages-section .section-header .nav-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;  /* Smaller size specifically for Pages header */
+    font-weight: 600;
+}
+
+/* Other section headers remain larger */
+.sidebar .section-header .nav-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+.chat-input{
+    border: 2px solid #eee;
+    border-top: 5px solid #eee;
+}
+
+/* Hide text elements when sidebar is collapsed */
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .section-header span,
+.sidebar.collapsed .folder-name {
+    display: none !important; /* Use !important to override any other styles */
+}
+
+/* Center icons in collapsed state */
+.sidebar.collapsed .nav-items a,
+.sidebar.collapsed .folder-header {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+/* Adjust icon spacing in collapsed state */
+.sidebar.collapsed .nav-items a i,
+.sidebar.collapsed .folder-header i {
+    margin-right: 0;
+}
+

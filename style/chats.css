@@ -1,0 +1,1371 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: #ffffff;
+}
+
+/* Fix for icons - update this section */
+i.fa-solid, i.fa-regular, i.fa-brands {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure icons are visible in user actions */
+.user-info .user-actions i {
+    color: #b9bbbe;
+    visibility: visible;
+    font-size: 18px;
+}
+
+/* Ensure icons are visible in input actions */
+.chat-input .input-actions i {
+    visibility: visible;
+    font-size: 22px;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    margin-top: 0;
+    font-size: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #40444b;
+}
+
+.channels-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    flex-grow: 1; /* Takes remaining space */
+    overflow-y: auto; /* Scroll if too many channels */
+}
+
+.channels-list li {
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    display: flex; /* Align avatar and text */
+    align-items: center; /* Vertically center avatar and text */
+}
+
+.channels-list li .avatar { /* Style for sidebar avatars */
+    width: 32px; /* Slightly smaller avatar for the list */
+    height: 32px;
+    background-color: #7289da; /* Placeholder color */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 10px; /* Space between avatar and text */
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+}
+
+.channels-list li:hover, .channels-list li.active {
+    background-color: #40444b; /* Hover/active background */
+}
+
+.add-chat-button { /* Styles for the new button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* Match avatar size or adjust as needed */
+    height: 32px;
+    background-color: #40444b; /* Button background */
+    color: #b9bbbe; /* Plus sign color */
+    border-radius: 8px; /* Rounded square */
+    font-size: 24px; /* Size of the plus sign */
+    font-weight: bold;
+    line-height: 1; /* Adjust line height for centering */
+    cursor: pointer;
+    margin: 15px auto 10px auto; /* Center horizontally, add vertical space */
+    transition: background-color 0.2s ease, color 0.2s ease; /* Smooth hover effect */
+}
+
+.add-chat-button:hover {
+    background-color: #5865f2; /* Discord blue on hover */
+    color: #ffffff; /* White plus on hover */
+}
+
+
+/* Remove the '#' prefix for channels */
+/*
+.channels-list li::before {
+    content: '# ';
+    color: #72767d;
+}
+*/
+
+.user-info {
+    margin-top: auto; /* Pushes to the bottom */
+    padding: 10px; /* Adjusted padding */
+    border-top: 1px solid #40444b;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically center items */
+    background-color: #292b2f; /* Slightly darker background for this area */
+}
+
+.user-info .avatar { /* Style for user's own avatar */
+    width: 32px;
+    height: 32px;
+    background-color: #7289da; /* Placeholder color */
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-shrink: 0;
+    position: relative; /* Needed for status indicator positioning */
+}
+
+.user-info .avatar .status-indicator { /* Style for the status dot */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #43b581; /* Green for 'Online' */
+    border: 2px solid #292b2f; /* Border matches user-info background */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    box-sizing: border-box;
+}
+/* Example status colors (would need JS to change) */
+.user-info .avatar .status-indicator.idle { background-color: #faa61a; } /* Yellow */
+.user-info .avatar .status-indicator.dnd { background-color: #f04747; } /* Red */
+.user-info .avatar .status-indicator.offline { background-color: #747f8d; } /* Grey */
+
+
+.user-info .username {
+    font-size: 14px; /* Slightly larger font */
+    font-weight: 500;
+    color: #ffffff;
+    margin-right: auto; /* Pushes icons to the right */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis if too long */
+}
+
+.user-info .user-actions { /* Container for icons */
+    display: flex;
+    align-items: center;
+}
+
+.user-info .user-actions i { /* Style for icons */
+    color: #b9bbbe;
+    cursor: pointer;
+    padding: 4px; /* Add some clickable area */
+    margin-left: 4px; /* Space between icons */
+    font-size: 18px; /* Icon size */
+    border-radius: 3px;
+}
+
+.user-info .user-actions i:hover {
+    background-color: #40444b;
+    color: #dcddde;
+}
+
+/* Remove styles for DND Active State on body */
+/*
+body.dnd-active .user-info .avatar .status-indicator {
+    background-color: #f04747;
+}
+
+body.dnd-active .main-chat {
+    border-top: 3px solid rgba(240, 71, 71, 0.5);
+}
+
+body.dnd-active .user-info .user-actions .fa-moon {
+    color: #5865f2;
+}
+*/
+
+/* Style for the moon icon when DND is toggled on */
+.user-info .user-actions .fa-moon.dnd-icon-active {
+    color: #faa61a; /* Orange color */
+}
+
+.currentTab{
+    background-color: #FD5A23 !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+#newChatBtn{
+    display: inline-block;
+    height: fit-content;
+  
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+#newChatBtn i{
+    font-size: 1.5vh;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+
+}
+
+.pages-list{
+
+    display: inline-block;
+    white-space: nowrap;
+    
+    height: 2.5vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    max-width: 80vw;
+    margin:0;
+    margin-left: 1vw;
+    position: relative;
+    bottom: -0.7vh;
+}
+
+.long-page-list:hover{
+    overflow-x: scroll;
+}
+.pages-list a {
+    color: #FD5A23;
+    background-color: white;
+    margin: 0;
+    font-size: 2vh;
+    cursor: pointer;
+    padding: 0;
+    width: max-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+.read-notification {
+    border-radius: 50%;
+    display: inline-flex;
+    background-color: #FD5A23;
+    color: white;
+    width: 2vh;
+    justify-content: center;
+    align-self: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 1.5vh;
+    height: 2vh;
+}
+
+
+.main-chat {
+    flex-grow: 1; /* Takes remaining horizontal space */
+    display: flex;
+    width: 100%;
+    height: 95%;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255); /* Main chat area background */
+    position: relative; /* Add this to create a positioning context */
+    overflow: hidden; /* Prevent any overflow issues */
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    scroll-behavior: unset;
+   
+    border: 2px solid #eee;
+    
+    margin-bottom: 0;
+    background-color: white;
+  
+}
+
+.chat-input {
+    padding: 15px 25px;
+    
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: white;
+   
+    border: 2px solid #eee;
+    border-top: 5px solid #eee;
+    
+    border-radius: 0 0 10px 10px;
+    position: absolute; /* Change from sticky to absolute */
+    bottom: 0; /* Stick to bottom */
+    left: 0; /* Align to left */
+    right: 0; /* Stretch to right */
+    z-index: 10;
+    min-height: 60px;
+    
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 5px solid #acacac;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    position: sticky;
+    top: 0;
+    z-index: 20; /* Increased z-index to ensure it stays on top */
+    background-color: rgb(255, 255, 255);
+    
+    width: 100%; /* Ensure it takes full width */
+    box-sizing: border-box; /* Include padding in width calculation */
+    flex-shrink: 0; /* Prevent shrinking */
+    min-height: 60px; /* Set minimum height */
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center content vertically */
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+
+    padding-bottom: 30px; /* Add more padding at bottom */
+    margin-bottom: 0; /* Remove any bottom margin */
+}
+
+/* Placeholder for messages */
+.message {
+    overflow:visible;
+    /* margin-bottom: 15px; Remove default margin, use gap instead */
+    display: flex;
+    height: fit-content;
+    align-items: flex-end; /* Align avatar to bottom of bubble */
+    max-width: 75%; /* Limit message width */
+    height: fit-content;
+   
+    align-self: flex-start; /* Default to left alignment */
+    font-family: 'Lexend';
+    /* flex-direction: column; /* Removed */
+    /* position: relative; /* Removed */
+}
+
+/* Remove the message-body wrapper style */
+/*
+.message .message-body {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+}
+*/
+
+.message.own-message {
+    height: fit-content;
+
+    align-self: flex-end; /* Align own messages to the right */
+    flex-direction: row-reverse; /* Reverse order for avatar on right */
+    font-family: 'Lexend';
+
+
+}
+
+/* Remove row-reverse from message-body as it's gone */
+/*
+.message.own-message .message-body {
+    flex-direction: row-reverse;
+}
+*/
+
+
+.message .avatar {
+    width: 40px;
+    height: fit-content;
+
+    font-family: 'Lexend';
+    
+
+    height: 40px;
+    background-color: #FD5A23; /* Discord blue placeholder */
+    border-radius: 50%;
+    /* margin-right: 15px; Remove default margin */
+    flex-shrink: 0;
+    margin: 0 10px; /* Add horizontal margin */
+    /* margin-bottom: 5px; /* Removed bottom margin */
+}
+
+/* Adjust avatar margin for own messages
+.message.own-message .avatar {
+    /* margin is already set to 0 10px, reversing row handles position */
+/* } */
+
+.message .content {
+    height:fit-content;
+
+    background-color: #40444b; /* Default bubble color */
+    padding: 10px 15px;
+    font-family: 'Lexend';
+
+
+    border-radius: 18px; /* Rounded corners for bubble */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow content bubble to grow */
+    min-width: 0; /* Prevent flex overflow issues */
+}
+
+.message.own-message .content {
+    background-color: white;
+    
+    color: #FD5A23;
+    border: 2px solid #FD5A23;
+
+}
+
+/* Username styling - applies to both */
+.message .content .username {
+    font-weight: bold;
+    font-family: 'Lexend';
+
+
+    color: #ffffff; /* Ensure username is visible */
+    margin-bottom: 4px;
+    font-size: 13px; /* Slightly smaller username */
+    display: block; /* Hide usernames by default */
+}
+
+/* Rule to specifically show usernames in group chats (requires adding 'group-chat' class via JS) */
+/*
+.chat-messages.group-chat .message:not(.own-message) .content .username {
+     display: block; /* Or inline */
+     /* color: #ffffff; /* Set color when visible */
+/* }
+*/
+
+
+/* Keep the rule to hide username in own messages (redundant now but good practice) */
+.message.own-message .content .username {
+     display: none;
+     
+}
+
+
+ .message .content .message.own-message .text {
+    line-height: 1.4;
+    color: #FD5A23; /* Ensure text color contrasts with bubble */
+    word-wrap: break-word; /* Wrap long words */
+    font-family: 'Lexend';
+
+
+ }
+
+
+ .message .content .text {
+    line-height: 1.4;
+    color: white; /* Ensure text color contrasts with bubble */
+    word-wrap: break-word; /* Wrap long words */
+    font-family: 'Lexend';
+
+
+ }
+
+
+ .own-message .content .text {
+    line-height: 1.4;
+    color: #FD5A23; /* Ensure text color contrasts with bubble */
+    word-wrap: break-word; /* Wrap long words */
+    font-family: 'Lexend';
+
+
+ }
+
+ /* Style for the timestamp */
+ .message .content .timestamp {
+     font-size: 11px; /* Smaller font size */
+     color: white; /* Lighter grey color */
+     margin-top: 5px; /* Space above the timestamp */
+     align-self: flex-end; /* Align timestamp to the right within the bubble */
+     font-family: 'Lexend';
+
+
+ }
+
+  /* Style for the timestamp */
+  .own-message .content .timestamp {
+    font-size: 11px; /* Smaller font size */
+    color: #FD5A23; /* Lighter grey color */
+    margin-top: 5px; /* Space above the timestamp */
+    align-self: flex-end; /* Align timestamp to the right within the bubble */
+    font-family: 'Lexend';
+
+
+}
+
+.read-message{
+    background-color: #c24f32ff;
+}
+
+
+
+ /* Adjust bubble corners */
+ .message .content {
+     border-bottom-left-radius: 5px; /* Less rounded corner near avatar */
+ }
+ .message.own-message .content {
+     border-bottom-right-radius: 5px; /* Less rounded corner near avatar (own) */
+     border-bottom-left-radius: 18px; /* Reset other corner */
+ }
+
+ /* Remove rule for content margin */
+ /*
+ .message:not(.own-message) .content {
+     margin-top: 0;
+ }
+ */
+
+
+.chat-input {
+    padding: 15px 25px;
+    border-top: 5px solid #eee;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    
+    background-color: #202020;
+   
+    border-radius: 0 0 10px 10px;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    min-height: 60px;
+    flex-shrink: 0;
+    
+}
+
+.chat-input input {
+    flex-grow: 1;
+    width: auto;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #eee;
+    color: #dcddde;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Lexend';
+    min-height: 50px;
+    max-height: 100px; /* Add maximum height */
+
+    overflow-y: auto; /* Allow vertical scrolling if needed */
+    resize: none; /* Prevent manual resizing */
+    line-height: 1.4; /* Improve text readability */
+    transition: all .25s linear;
+    color:black;
+
+}
+
+.chat-input input:focus {
+    outline: none;
+    color: #FD5A23;
+    background-color: #ffffff; /* Slightly lighter background when focused */
+    box-shadow: 0 0 0 2px #FD5A23; /* Add a subtle focus ring */
+}
+
+.chat-input input::placeholder {
+    color: #72767d;
+}
+
+/* Styles for the action icons next to input */
+.chat-input .input-actions {
+    display: flex;
+    align-items: center;
+}
+
+.chat-input .input-actions i {
+    color: #b9bbbe;
+    font-size: 24px; /* Increased icon size */
+    cursor: pointer;
+    padding: 10px; /* Increased clickable area */
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin: 0 2px; /* Added margin between icons */
+}
+
+.chat-input .input-actions i:hover {
+    color: #ffffff; /* Brighter color on hover */
+    background-color: #FD5A23; /* Background on hover */
+}
+
+/* Container for icons on the right */
+.chat-input .input-actions.right {
+    display: flex;
+    gap: 8px; /* Increased space between right-side icons */
+}
+
+.chat-input .input-actions.left {
+    margin-right: 5px; /* Add some space after the left actions */
+}
+
+
+.createGroupChat{
+    position: absolute;
+    display: none;
+    justify-self: center;
+    align-self: center;
+    z-index: 500;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff8a;
+    animation: show 0.6s linear !important;
+
+}
+
+form{
+    background-color: white;
+    z-index: 501;
+    
+    width: 50vw;
+    height: 50vh;
+    border-radius: 8px;
+    display: none;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 20vh;
+    animation: slide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) !important;
+    overflow: hidden;
+
+}
+
+@keyframes show {
+    0% {
+        background-color: #ffffff00;
+        
+    }
+    
+    
+
+    
+    100% {
+        background-color: #ffffff8a;
+        
+
+    }
+}
+
+
+
+@keyframes hide {
+    0% {
+        background-color: #ffffff8a;
+        
+    }
+    
+    
+
+    
+    100% {
+        background-color: #2e2e2e00;
+        
+
+    }
+}
+
+@keyframes slide {
+    0% {
+        top: -50vh;
+        
+    }
+    
+    
+
+    
+    100% {
+        top: 20vh;
+        
+
+    }
+}
+
+
+@keyframes unslide {
+    0% {
+        top: 20vh;
+        
+    }
+    
+    
+
+    
+    100% {
+        top: -50vh;
+        
+
+    }
+}
+
+
+
+form h1{
+    font-size: 10vh;
+    text-align: center;
+    color: #FD5A23;
+}
+
+.choices{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    position: relative;
+    overflow: hidden;
+    
+}
+
+
+.choices .btn{
+    
+    color: white;
+    background-color: #FD5A23;
+    outline: none;
+    border: none;
+    transition: all .25s linear;
+
+    border-radius: 8px;
+    width: 25%;
+    height: fit-content;
+    padding: 1vh;
+    font-size: 2vh;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+    text-align: center;
+}
+
+.choices i{
+    height:  9vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 7vh;
+}
+
+.line{
+    height: 100%;
+    background-color: white;
+    width: 2px;
+}
+
+
+
+
+
+.choices .btn:hover{
+    
+    
+    animation: flicker 2s infinite;
+}
+
+
+@keyframes flicker {
+    0% {
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+        color: white;
+    }
+    
+    50% {
+        box-shadow: 0 0 25px rgba(110, 95, 248, 0.8);
+        color: rgba(110, 95, 248, 0.8);
+        
+    }
+
+    
+    100% {
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+
+        color: white;
+
+    }
+}
+
+
+#close{
+    font-size: 2vh;
+    color: #FD5A23;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    position: absolute;
+    top: 2vh;
+    right: 2vh;
+    height: fit-content;
+    overflow:hidden;
+}
+
+#close i{
+    height: 2.1vh;
+
+}
+
+#close:hover{
+    animation: flickerColor 2s infinite;
+}
+
+@keyframes flickerColor {
+    0% {
+        
+        color: #FD5A23;
+    }
+    
+    50% {
+        
+        color: black;
+        
+    }
+
+    
+    100% {
+        
+
+        color: #FD5A23;
+
+    }
+}
+.hider{
+    animation: hide 0.6s linear;
+
+}
+
+.unslider{
+    animation: unslide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) !important;
+}
+
+#users{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    transition: all .25s linear;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#inputs{
+    width: 25%;
+    height: 20vh;
+    
+    text-align: center;
+    
+
+}
+
+
+
+.input-group{
+    display: flex;
+    width: 100%;
+    justify-self: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 2.5vh;
+    
+}
+
+.input-group input{
+    width: 60%;
+    font-family: 'Lexend';
+
+    padding: 0.25vw;
+    height: 1.5vw;
+    border-radius: 8px;
+    background-color: #ff9b7a;
+    margin: 5%;
+    padding: 2.5;
+    border: none;
+    color: white;
+    transition: background-color .25s linear;
+    outline: none;
+    
+
+}
+
+.input-group input:focus{
+
+    background-color: #FD5A23;
+    outline: none;
+    color: white;
+}
+
+.deleteInput{
+    border-radius: 8px;
+
+    background-color: rgb(255, 150, 150);
+    outline: none;
+    border: none;
+    color: white;
+    height: 1.75vw;
+    transition: all .25s linear;
+    width: 1.75vw;
+}
+
+.deleteInput:hover{
+    background-color: rgb(255, 100, 100);
+}
+
+.deleteInput i{
+    font-size: 1vw;
+    overflow: hidden;
+    margin: 0;
+    height: fit-content;
+    
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FD5A23;
+    transition: background .25s linear;
+    
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #e9e9e9;
+}
+
+.btns{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 10vh;
+}
+
+.btns button{
+    width: 15vw;
+    height: 3vh;
+    border-radius: 8px;
+    background-color: #FD5A23;
+    outline: none;
+    border: none;
+    color: white;
+    transition: all .25s linear;
+}
+
+.btns button:hover{
+    background-color: #FD5A23;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.error{
+    color: rgb(255, 150, 150);
+    font-size: 2vh;
+    text-align: center;
+    margin-top: 1vh;
+}
+
+/* Emoji picker container */
+.emoji-picker-container {
+    position: absolute;
+    bottom: 70px;
+    right: 20px;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    background: white;
+    padding: 8px;
+}
+
+.emoji-picker-container.active {
+    display: block;
+}
+
+/* Style for the emoji button when active */
+.emoji-button-active {
+    color: #FF7A4D !important;
+}
+
+/* GIF picker container */
+.gif-picker-container {
+    position: absolute;
+    bottom: 70px;
+    right: 20px;
+    z-index: 1000;
+    display: none;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.gif-picker-container.active {
+    display: block;
+}
+
+/* Style for the GIF button when active */
+.gif-button-active {
+    color: #FF7A4D !important;
+}
+
+.gif-text-button, .gif-label {
+    background: transparent !important;
+    color: #FF7A4D;
+    border-radius: 8px;
+    font-family: 'Lexend', 'Inter', 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+    box-shadow: none;
+    padding: 4px 10px;
+}
+.gif-label:hover {
+    background: #40444b !important;
+    color: #fff !important;
+    transition: background 0.2s, color 0.2s;
+}
+.gif-button-active {
+    background: #FF7A4D;
+    color: #fff;
+}
+
+/* GIF search container */
+.gif-search-container {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.gif-search-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.gif-search-button {
+    margin-left: 5px;
+    padding: 8px 12px;
+    background-color: #FF7A4D;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* GIF results container */
+.gif-results-container {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.gif-item {
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.gif-item:hover {
+    transform: scale(1.05);
+}
+
+.gif-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Image Upload Popup Styles */
+.image-upload-container {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    width: 300px;
+    background-color: #FFFFFF;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+}
+
+.image-upload-container.active {
+    display: block;
+}
+
+.upload-content {
+    padding: 15px;
+}
+
+.upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.upload-header h3 {
+    margin: 0;
+    color: #000000;
+    font-size: 16px;
+}
+
+.close-upload {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.close-upload:hover {
+    color: #FD5A23;
+}
+
+.upload-area {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover, .upload-area.dragover {
+    border-color: #FD5A23;
+    background-color: rgba(253, 90, 35, 0.05);
+}
+
+.upload-area i {
+    font-size: 36px;
+    color: #FD5A23;
+    margin-bottom: 10px;
+}
+
+.upload-area p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.preview-area {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.preview-area img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+}
+
+.upload-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #FD5A23;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: #FF7A4D;
+    box-shadow: 0 4px 8px rgba(253, 90, 35, 0.2);
+}
+
+.chat-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Smooth overlay for image preview */
+.image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.image-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.image-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    background: white;
+    animation: overlayImageIn 0.3s cubic-bezier(0.43, 0.34, 0.85, 1.52);
+}
+@keyframes overlayImageIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Style for active plus button */
+.input-actions .fa-plus.active {
+    color: #FD5A23;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 1vh;
+    
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FD5A23;
+    transition: background .25s linear;
+    
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #FD5A23;
+}
+
+
+.typingMessage .content{
+    background-color: #c24f32ff !important;
+}
+
+.typingMessage img{
+    width: 2vw;
+}
+
+.replyMessage{
+    background-color: #ff7e53;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    
+
+}
+
+.own-message .replyMessage{
+    background-color: #eee;
+    color: #ff7e53;
+    border-radius: 8px;
+    padding: 5px;
+    border-bottom-right-radius: 0;
+
+}
+.replyMessage .replyUser{
+    font-family: 'Lexend', sans-serif;
+    font-weight: bold;
+}
+.replyMessage .replyContent{
+    font-family: 'Lexend', sans-serif;
+}
+
+.popup{
+    color: #FD5A23;
+    overflow: hidden; /* Prevent scrolling */
+    height: auto; /* Let height adjust to content */
+    max-height: 30vh; /* Maximum height */
+}
+
+.popup i{
+    text-align: center;
+    font-size: 8vh; /* Reduced from 10vh */
+    margin-bottom: 2vh; /* Reduced from 3vh */
+    overflow: hidden;
+    width: 100%;
+    margin-top: 1vh;
+}
+
+.popup h2{
+    text-align: center;
+    padding-bottom: 0.5vh; /* Reduced from 1vh */
+    margin: 0;
+}
+
+.popup p{
+    font-family: 'Lexend', sans-serif;
+    text-align: center;
+    margin: 1vh 0;
+}
+
+.btnsMenu{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1vh; /* Added small margin */
+}
+
+.popup button{
+    margin-top: 1vh; /* Reduced from 2vh */
+    text-align: center;
+    width: 5vw;
+    border-radius: 8px;
+    background-color: white;
+    color: #FD5A23;
+    transition: all .25s linear;
+}
+
+.popup button:hover{
+    background-color: #FD5A23 !important;
+    color: white !important;
+}

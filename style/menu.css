@@ -1,0 +1,359 @@
+#meny{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8vh;
+    z-index: 499;
+}
+
+.sidebarmenu{
+    background-color: #FD5A23;
+    width: 8vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
+#collapser{
+  
+    background-color: transparent;
+    outline: none;
+    top: 0;
+    
+    border: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12vh;
+ 
+    
+}
+
+
+#collapser:hover{
+    background-color: transparent;
+    color: white;
+}
+
+#collapser{
+    background-color: transparent;
+
+}
+
+#collapser:hover{
+    background-color: transparent;
+
+}
+
+#collapser i{
+    color:#ffffff;
+    font-size: 2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8vh;
+    height: 4vh;
+    border: 5px solid transparent;
+   
+    transition:background-color .5s linear, color 1s linear, border-radius .05s linear, width .05s linear;
+}   
+
+.linker{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+#collapser i:hover{
+    border-radius: 50%;
+    width: 4vh;
+    
+    background-color: white;
+    color: #FD5A23;
+    
+}
+
+
+.spacer{
+    border: 1px solid white;
+    border-radius: 50px;
+    height: 0vh;
+    width: 50%;
+    margin-bottom: 3vh;
+}
+
+.links{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50%;
+}
+
+.links a i{
+    color: white;
+    font-size: 2vh;
+    overflow: hidden;
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    transition:background-color .5s linear, color 1s linear, border-radius .05s linear, width .05s linear;
+   
+}
+
+.links a{
+    width: 8vh;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+}
+
+.links a:hover i{
+    overflow: hidden;
+    border-radius: 50%;
+    width: 5vh;
+    
+    background-color: white;
+    color: #FD5A23;
+}
+.links a i:hover{
+
+    color: white;
+    background-color: white;
+    color: #FD5A23;
+}
+
+.sirvo{
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0vw;
+    height: 100vh;
+    z-index: 50;
+    animation: splash 1.5s cubic-bezier(0.4, 0, 1, 1); 
+    display: flex;
+}
+
+#splash{
+    position: relative;
+    left: -179vh;
+  
+    
+}
+
+#splash2{
+    position: relative;
+    top: 2vh;
+    opacity: 0.25;
+}
+
+
+.sirvo img{
+    height: 100vh;
+
+}
+
+.cover{
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 49;
+    opacity: 1;
+    animation: unblur .5s cubic-bezier(0.4, 0, 1, 1);
+}
+
+@keyframes unblur {
+    0%{
+        opacity: 0;
+
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes blur4 {
+    0%{
+        opacity: 1;
+
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+
+.mener{
+    background-color: #FD5A23;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.linksmener{
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 5vh;
+    overflow: hidden;
+    width: 25vw;
+    color: white;
+    align-items: first baseline;
+    animation: unblur2 2.5s cubic-bezier(0.4, 0, 1, 1); 
+}
+
+#closer{
+    background-color: white;
+    outline: none;
+    top: 0;
+    
+    border: 5px solid transparent;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 6vh;
+    width: 6vh;
+    color: #FD5A23;
+    position: absolute;
+    left: 3vh;
+    overflow: hidden;
+
+    top: 3vh;
+    animation: unblur2 2.5s cubic-bezier(0.4, 0, 1, 1); 
+    transition: all .25s cubic-bezier(0.4, 0, 1, 1);
+}   
+
+#closer i{
+    color: #FD5A23;
+    overflow: hidden;
+
+    font-size: 3vh;
+    transition: color .25s cubic-bezier(0.4, 0, 1, 1), background-color .25s cubic-bezier(0.4, 0, 1, 1),transform .25s cubic-bezier(0.4, 0, 1, 1);
+    background-color: white;
+}
+
+#closer:hover{
+    background-color: #FD5A23;
+    outline: 5px solid white;
+}
+
+#closer:hover i{
+    color: white;
+    transform: rotateZ(90deg);
+    overflow: hidden;
+    background-color: #FD5A23;
+}
+
+@keyframes unblur2 {
+    0%{
+        opacity: 0;
+
+    }
+
+    70%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+
+@keyframes blur {
+    0%{
+        opacity: 1;
+
+    }
+
+    30%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+.linksmener i{
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.linksmener i h1{
+    color: white;
+    font-size: 4vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    margin-left: 3vw;
+    font-family: 'Poppins';
+}
+
+.linksmener a{
+    border-bottom: transparent 5px solid;
+    border-top: transparent 5px solid;
+    padding-bottom: 50px;
+    overflow: hidden;
+    padding-top: 50px;
+    padding-left: 10px;
+    left: 0;
+    top: 0;
+    padding-right: 10px;
+    transition: all .25s cubic-bezier(0.4, 0, 1, 1);
+    position: relative;
+}
+
+.linksmener a:hover {
+    border-bottom: white 5px solid;
+    position: relative;
+    left: 1vw;
+    top: -1vh;
+    border-top: white 5px solid;
+}
+
+
+@keyframes splash {
+    0%{
+        left: -200vw;
+    }
+    100%{
+        left: 0vw;
+    }
+}
+
+@keyframes unsplash {
+    0%{
+        left: 0vw;
+    }
+    100%{
+        left: -200vw;
+    }
+}
