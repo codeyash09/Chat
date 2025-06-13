@@ -62,7 +62,7 @@ async function fixTyping(currentChat, onOrOff){
             .select('*') 
             .eq('chat_id', currentChat); 
 
-      
+        
         console.log('Typing: ' + counter++)
         if(userId == data[0].host){
             numId = 0;
@@ -84,7 +84,7 @@ async function fixTyping(currentChat, onOrOff){
             .update({ typing: typingNew })
             .eq("chat_id", currentChat);
  
-
+        
         if (updateError) {
             console.error("Error updating chat:", updateError);
             return;

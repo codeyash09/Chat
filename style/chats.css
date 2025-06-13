@@ -563,7 +563,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     min-height: 50px;
     max-height: 100px; /* Add maximum height */
 
-    overflow-y: auto; /* Allow vertical scrolling if needed */
+    overflow-y: visible; /* Allow vertical scrolling if needed */
     resize: none; /* Prevent manual resizing */
     line-height: 1.4; /* Improve text readability */
     transition: all .25s linear;
@@ -586,16 +586,19 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .chat-input .input-actions {
     display: flex;
     align-items: center;
+    overflow: visible;
+
 }
 
 .chat-input .input-actions i {
-    color: #b9bbbe;
+    color: #666666ff;
     font-size: 24px; /* Increased icon size */
     cursor: pointer;
     padding: 10px; /* Increased clickable area */
     border-radius: 8px;
     transition: all 0.2s ease;
     margin: 0 2px; /* Added margin between icons */
+    overflow: visible;
 }
 
 .chat-input .input-actions i:hover {

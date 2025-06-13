@@ -8,7 +8,7 @@ let userId = window.localStorage.getItem("userIdentify");
 let username;
 let sumRead = 0;
 let prevChats;
-
+let counter = 0;
 if(userId == null || userId == "null"){
     window.location.replace('/pages/signup.html');
 }else{
@@ -20,7 +20,7 @@ if(userId == null || userId == "null"){
             .from('Users')
             .select('username')
             .eq('id', userId);
-
+        console.log("Reader " + counter++);
         if (error) {
             console.error('Error fetching data:', error);
             return null;
@@ -77,6 +77,7 @@ async function TotalRead(payload, index){
             .from('Chats')
             .select('members, chat_id, messages, host, read')
             .or(`members.cs.{"${username}"},host.eq."${userId}"`);
+        console.log("Reader " + counter++);
 
         for(let i = 0; i<data.length; i++){
             if(data[i].host == userId){

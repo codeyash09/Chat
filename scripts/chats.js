@@ -16,7 +16,7 @@ if(userId == null || userId == "null"){
 }
 
 
-let chatMess = document.getElementById("chat-messages")
+let chatMess = document.getElementById("chat-messages");
 let chatList = document.getElementById("pageList");
 let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
@@ -308,79 +308,79 @@ messageInput.addEventListener("keydown", async function(event) {
     }
 });
 
-sendButton.addEventListener("click", async () => {
-    const messageText = messageInput.value.trim();
-    if (!messageText) return; 
+// sendButton.addEventListener("click", async () => {
+//     const messageText = messageInput.value.trim();
+//     if (!messageText) return; 
 
-    const chatId = currentChat; 
-    const sender = username; 
-    const timestamp = new Date().toISOString();
+//     const chatId = currentChat; 
+//     const sender = username; 
+//     const timestamp = new Date().toISOString();
 
-    try {
+//     try {
 
-        const { data, error } = await db
-            .from("Chats")
-            .select("*")
-            .eq("chat_id", chatId)
-            .single();
+//         const { data, error } = await db
+//             .from("Chats")
+//             .select("*")
+//             .eq("chat_id", chatId)
+//             .single();
 
-        if (error || !data) {
-            console.error("Failed to fetch chat:", error ?? "Chat not found");
-            return;
-        }
+//         if (error || !data) {
+//             console.error("Failed to fetch chat:", error ?? "Chat not found");
+//             return;
+//         }
 
-        const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
-        const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
-        const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
+//         const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
+//         const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
+//         const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
         
         
-        let updatedRead = [];
+//         let updatedRead = [];
 
 
 
-        updatedRead = data.read.map(Number);
+//         updatedRead = data.read.map(Number);
 
-        if(Array.isArray(data.read)){
-            if("" + userId + "" == data.host){
-                for(let i = 0; i<data.members.length; i++){
-                    if(data.members[i] != "" + username + ""){  
-                        updatedRead[i]++;
-                    }   
-                }
-            }else{
-                for(let i = 0; i<data.members.length; i++){
-                    if(data.members[i] != "" + username + ""){  
-                        updatedRead[i]++;
-                    }   
-                }
-                updatedRead[data.members.length]++;
-            }
+//         if(Array.isArray(data.read)){
+//             if("" + userId + "" == data.host){
+//                 for(let i = 0; i<data.members.length; i++){
+//                     if(data.members[i] != "" + username + ""){  
+//                         updatedRead[i]++;
+//                     }   
+//                 }
+//             }else{
+//                 for(let i = 0; i<data.members.length; i++){
+//                     if(data.members[i] != "" + username + ""){  
+//                         updatedRead[i]++;
+//                     }   
+//                 }
+//                 updatedRead[data.members.length]++;
+//             }
             
-        }
+//         }
 
 
 
    
 
-        const { error: updateError } = await db
-            .from("Chats")
-            .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
-            .eq("chat_id", chatId);
+//         const { error: updateError } = await db
+//             .from("Chats")
+//             .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
+//             .eq("chat_id", chatId);
 
-        if (updateError) {
-            console.error("Error updating chat:", updateError);
-            return;
-        }
+//         if (updateError) {
+//             console.error("Error updating chat:", updateError);
+//             return;
+//         }
 
         
-        messageInput.value = ""; 
+//         messageInput.value = ""; 
 
-    } catch (err) {
-        console.error("Unexpected error:", err);
-    }
+//     } catch (err) {
+//         console.error("Unexpected error:", err);
+//     }
 
     
-});
+// });
 
 function convertToLocalTime(centralTime) {
     let date = new Date(centralTime);
@@ -401,7 +401,7 @@ function convertToLocalTime(centralTime) {
 }
 
 
-async function openChat(id) {
+async function openChat(id, payload = null) {
 
 
 
@@ -415,16 +415,23 @@ async function openChat(id) {
     });
     
     document.querySelector('a[data-chat-id="' + id + '"]').classList.add("currentTab");
+    
+    let chat;
+    if(payload != null && payload.host != undefined && payload.messages != undefined){
+        chat = payload;
+        chatsSys = chat;
 
-
-
-    let chat = await fetchChat(id);
+    }else{
+        chat = await fetchChat(id);
+        chat = chat[0];
+        chatsSys = chat;
+    }
+    
     const chatMess = document.querySelector(".chat-messages");
     chatMess.innerHTML = ""; 
     
 
-    chat = chat[0];
-    chatsSys = chat;
+    
     
 
 

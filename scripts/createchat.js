@@ -195,6 +195,7 @@ async function createChat(){
         read: readArr,
         typing: typingArr,
     }
+    
     ]);
 
     if (error) {

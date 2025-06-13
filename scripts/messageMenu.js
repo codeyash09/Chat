@@ -1,7 +1,7 @@
 import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
 import {db} from '/scripts/createChat.js';
 
-
+let counter = 0;
 // Function to create and show the popup menu
 function createMessageMenu(messageElement, isOwnMessage) {
     // Create popup menu
@@ -298,6 +298,8 @@ async function UpdateMessageReact(messEl, updatedText){
       .from('Chats') 
       .update({messages: newMess}) 
       .eq('chat_id', currentChat); 
+    console.log("Menu " + counter++);
+    
 }
 
 // Handle reply
@@ -457,6 +459,8 @@ async function UpdateMessage(messEl, updatedText){
       .from('Chats') 
       .update({messages: newMess}) 
       .eq('chat_id', currentChat); 
+    
+    
 }
 
 // Handle unsend (delete for everyone)

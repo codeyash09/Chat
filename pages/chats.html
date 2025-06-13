@@ -135,6 +135,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            overflow: visible;
         }
 
         .chat-input input[type="text"] {
@@ -163,7 +164,7 @@
         }
 
         .input-wrapper .input-actions i:hover {
-            color: #FD5A23;
+            color: white;
         }
         
         .message {
@@ -787,6 +788,7 @@
                 display: flex !important;
                 align-items: center !important;
                 height: 100% !important;
+                overflow: visible;
             }
 
             .chat-input input[type="text"] {
@@ -809,6 +811,7 @@
                 align-items: center !important;
                 gap: 0px !important;
                 height: 100% !important;
+                overflow: visible;
             }
 
             .input-wrapper .input-actions i {
@@ -820,7 +823,7 @@
             }
 
             .input-wrapper .input-actions i:hover {
-                color: #FD5A23 !important;
+                color: white !important;
             }
 
             /* Style for the plus button */
@@ -836,15 +839,19 @@
                 border: none !important;
                 cursor: pointer !important;
                 transition: all 0.2s ease !important;
+                overflow: visible;
             }
 
             .upload-label:hover {
                 background: #FF7A4D !important;
                 transform: scale(1.05) !important;
+                overflow: visible;
+
             }
 
             .upload-label i {
                 font-size: 18px !important;
+                overflow: visible;
             }
 
             /* Remove any remaining margins/padding from messages */
