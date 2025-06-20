@@ -17,7 +17,9 @@ if(userId == null || userId == "null"){
 
 
 let chatMess = document.getElementById("chat-messages");
-let chatList = document.getElementById("pageList");
+let chatList = document.getElementById("messagesBannerHolder");
+let chatsList = document.getElementById("pageList");
+
 let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
 
@@ -71,7 +73,7 @@ username.then(result =>{
         username = result[0].username;
         
         showChats();
-
+        showChatlers();
     }
 });
 
@@ -138,35 +140,108 @@ async function showChats() {
   
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
-        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${chat.chat_id}']`);
         let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
         let readNum = chat.read[userNum];
         if (!tab) {
             tab = document.createElement("a");
+            tab.classList.add("messagesBanner");
             tab.setAttribute("data-chat-id", chat.chat_id);
+
+            let person = document.createElement('div');
+            person.classList.add("person");
+            let avatar = document.createElement('div');
+            avatar.classList.add("avatarBanner");
+            let texts = document.createElement('div');
+            texts.classList.add("text");
+            person.appendChild(avatar);
+            let uselr = document.createElement('div');
             if (chat.groupchat) {
-                tab.innerHTML = chat.title;
+
+
+                uselr.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    tab.innerHTML = chat.members[0];
+                    uselr.innerHTML = chat.members[0];
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {
-                        tab.innerHTML = hoster[0].username;
+                        uselr.innerHTML = hoster[0].username;
                     }
                 }
             }
+
+            uselr.classList.add("user");
+
+
+            let lastMessage = document.createElement('div');
+            lastMessage.classList.add("lastMessage");
+            let timel = document.createElement('div');
+            timel.classList.add('timer');
+            if(chat.senders){
+                for(let i = chat.senders.length - 1; i >= 0; i--){
+                    if(!chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
+
+                        let finalMessage;
+                        if(chat.messages[i].includes('<div class="replyMessage">')){
+                            let raw = chat.messages[i];
+                       
+
+   
+                            const match = raw.match(/<\/[^>]+>([^<]+)(?:<|$)/);
+
+                            finalMessage = match ? match[1].trim() : '';
+                        }else{
+                            finalMessage = chat.messages[i];
+                        }
+
+                        
+                        
+                        if(chat.senders[i] == username){
+                            lastMessage.innerHTML = chat.senders[i] + ": " + finalMessage;
+
+                        }else{
+                            lastMessage.innerHTML = "You: " + finalMessage;
+                            
+                        }
+                        
+
+                        timel.innerHTML = convertToLocalTime(chat.times[i]);
+
+                        break;
+                    }
+
+
+                }
+
+
+            }
+            
+
+            let time = document.createElement('div');
+            time.classList.add('time');
+            texts.appendChild(uselr);
+            texts.appendChild(lastMessage);
+            person.appendChild(texts);
+            
+            tab.appendChild(person);
             tab.addEventListener("click", () => openChat(chat.chat_id));
             tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
+            time.appendChild(timel);
+            tab.appendChild(time);
             chatList.appendChild(tab);
         }
         
-        const existingBadge = tab.querySelector('.read-notification');
+        const existingBadge = tab.querySelector('.reader');
         if (readNum > 0) {
             if (existingBadge) {
                 existingBadge.textContent = readNum;
             } else {
-                tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+                let badger = document.createElement('div');
+                badger.classList.add('reader');
+                badger.innerHTML = readNum;
+
+                tab.querySelector('.time').appendChild(badger);
             }
             totalRead += readNum;
         } else if (existingBadge) {
@@ -183,7 +258,7 @@ async function showChats() {
     
     if (sortedChats.length > 0) {
         const mostRecentId = sortedChats[0].chat_id;
-        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        const tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${mostRecentId}']`);
         if (tab && tab.parentNode.firstChild !== tab) {
             tab.style.transform = 'scale(1.05)';
             tab.style.opacity = '0.7';
@@ -196,10 +271,10 @@ async function showChats() {
     }
     
     if (currentChat) {
-        document.querySelectorAll('a[data-chat-id]').forEach(element => {
+        document.querySelectorAll('#messagesBannerHolder a[data-chat-id]').forEach(element => {
             element.classList.remove("currentTab");
         });
-        const currentElement = document.querySelector(`a[data-chat-id="${currentChat}"]`);
+        const currentElement = document.querySelector(`#messagesBannerHolder a[data-chat-id="${currentChat}"]`);
         if (currentElement) {
             currentElement.classList.add("currentTab");
         }
@@ -209,6 +284,7 @@ async function showChats() {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
 }
+
 
 
 
@@ -405,7 +481,11 @@ async function openChat(id, payload = null) {
 
 
 
-    
+    let home = document.querySelector('.home');
+
+    if(!home.classList.contains('hide')){
+        home.classList.add('hide');
+    }
 
 
     currentChat = id;
@@ -453,14 +533,40 @@ async function openChat(id, payload = null) {
         
 
     if(chat.groupchat){
-        chatHeader.innerHTML = chat.title;
+        chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title;
+        let btn = document.querySelector('.homeBtn');
+
+
+        btn.addEventListener('click', ()=>{
+
+            changeRow();
+            home.classList.remove('hide');
+        })
+        btn.children[0].addEventListener('click', ()=>{
+
+            changeRow();
+            
+            home.classList.remove('hide');
+        })
         chatInput.placeholder = "Message " + chat.title;
     }else{
         if(chat.host == "" + userId + ""){
-            chatHeader.innerHTML = chat.members[0];
+            chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.members[0];
             chatInput.placeholder = "Message " + chat.members[0];
 
+            let btn = document.querySelector('.homeBtn');
 
+
+            btn.addEventListener('click', ()=>{
+                changeRow();
+
+                home.classList.remove('hide');
+            })
+            btn.children[0].addEventListener('click', ()=>{
+                changeRow();
+
+                home.classList.remove('hide');
+            })
         }else{
             let hoster = fetchUsers(chat.host);
             hoster.then(result =>{
@@ -487,9 +593,13 @@ async function openChat(id, payload = null) {
         const message = document.createElement("div");
         message.classList.add("message");
         message.setAttribute('data-message-id', i);
+        if(chat.senders[i]!=username){
+            const avatar = document.createElement("div");
+            avatar.classList.add("avatar");
+            message.appendChild(avatar);
 
-        const avatar = document.createElement("div");
-        avatar.classList.add("avatar");
+        }
+        
         const content = document.createElement("div");
         content.classList.add("content");
         const usernameElement = document.createElement("div");
@@ -510,7 +620,6 @@ async function openChat(id, payload = null) {
             message.classList.add("own-message");
         }
 
-        message.appendChild(avatar);
         message.appendChild(content);
         content.appendChild(usernameElement);
         content.appendChild(text);
@@ -613,7 +722,7 @@ async function updateRead(updatedRead){
     }
 
     changeRow();
-
+    changeRowler();
     
 }
 
@@ -624,6 +733,8 @@ db
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, (payload) => {
         
         changeRow();
+        changeRowler();
+
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, (payload) => {
        
@@ -636,6 +747,7 @@ db
         } else {
             // Otherwise, just refresh the chat list (to update unread counts or order)
             changeRow();
+            changeRowler();
         }
     })
     .subscribe();
@@ -688,7 +800,7 @@ async function changeRow() {
     // Update or add chat tabs
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
-        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${chat.chat_id}']`);
         let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
         let readNum = chat.read[userNum];
         if (!tab) {
@@ -732,7 +844,7 @@ async function changeRow() {
     // Move the most recent chat tab to the left (first position)
     if (sortedChats.length > 0) {
         const mostRecentId = sortedChats[0].chat_id;
-        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        const tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${mostRecentId}']`);
         if (tab && tab.parentNode.firstChild !== tab) {
             tab.style.transform = 'scale(1.05)';
             tab.style.opacity = '0.7';
@@ -762,7 +874,7 @@ async function changeRow() {
 
 
 function moveTabToLeft(chatId) {
-    const tab = document.querySelector(`.pages-list a[data-chat-id='${chatId}']`);
+    const tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${chatId}']`);
     if (tab) {
         tab.style.transform = 'scale(1.05)';
         tab.style.opacity = '0.7';
@@ -777,5 +889,242 @@ function moveTabToLeft(chatId) {
 
 // Inside changeRow(), after updating the DOM:
 moveTabToLeft(currentChat);
+
+
+async function showChatlers() {
+
+    totalRead = 0;
+    const { data, error } = await db
+        .from('Chats')
+        .select('*')
+        .or(`members.cs.{"${username}"},host.eq."${userId}"`);
+
+    if (error || !data || data.length === 0) {
+        console.error("No chats found or error fetching chats:", error);
+        return;
+    }
+
+   
+    const sortedChats = data.sort((a, b) => {
+        let lastA;
+        let lastB;
+
+       
+        if (a.times && a.times.length > 0) {
+            lastA = a.times.at(-1);
+        } else {
+            lastA = null;
+        }
+
+        if (b.times && b.times.length > 0) {
+            lastB = b.times.at(-1);
+        } else {
+            lastB = null;
+        }
+
+       
+        if (lastA === null && lastB === null) {
+            return 0; 
+        }
+
+        if (lastA === null) {
+            return 1;
+        }
+
+        if (lastB === null) {
+            return -1; 
+        }
+
+        return new Date(lastB) - new Date(lastA); 
+    });
+
+    
+    let prevOrder;
+    if (rowSys && rowSys.length > 0) {
+        prevOrder = rowSys.map(c => c.chat_id);
+    } else {
+        prevOrder = [];
+    }
+    rowSys = sortedChats;
+
+  
+    savedScrollPosition = chatMess.scrollTop;
+
+  
+    const existingChatIds = new Set(Array.from(chatsList.children).map(el => el.getAttribute("data-chat-id")));
+    for (const chat of sortedChats) {
+        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
+        let readNum = chat.read[userNum];
+        if (!tab) {
+            tab = document.createElement("a");
+            tab.setAttribute("data-chat-id", chat.chat_id);
+            if (chat.groupchat) {
+                tab.innerHTML = chat.title;
+            } else {
+                if (chat.host === "" + userId) {
+                    tab.innerHTML = chat.members[0];
+                } else {
+                    let hoster = await fetchUsers(chat.host);
+                    if (hoster[0]) {
+                        tab.innerHTML = hoster[0].username;
+                    }
+                }
+            }
+            tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
+            chatsList.appendChild(tab);
+        }
+        
+        const existingBadge = tab.querySelector('.read-notification');
+        if (readNum > 0) {
+            if (existingBadge) {
+                existingBadge.textContent = readNum;
+            } else {
+                tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+            }
+            totalRead += readNum;
+        } else if (existingBadge) {
+            existingBadge.remove();
+        }
+    }
+    
+    for (const element of Array.from(chatsList.children)) {
+        const chatId = element.getAttribute("data-chat-id");
+        if (!sortedChats.some(chat => chat.chat_id === chatId)) {
+            chatsList.removeChild(element);
+        }
+    }
+    
+    if (sortedChats.length > 0) {
+        const mostRecentId = sortedChats[0].chat_id;
+        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        if (tab && tab.parentNode.firstChild !== tab) {
+            tab.style.transform = 'scale(1.05)';
+            tab.style.opacity = '0.7';
+            setTimeout(() => {
+                tab.style.transform = '';
+                tab.style.opacity = '';
+                tab.parentNode.insertBefore(tab, tab.parentNode.firstChild);
+            }, 150);
+        }
+    }
+    
+    if (currentChat) {
+        document.querySelectorAll('a[data-chat-id]').forEach(element => {
+            element.classList.remove("currentTab");
+        });
+        const currentElement = document.querySelector(`a[data-chat-id="${currentChat}"]`);
+        if (currentElement) {
+            currentElement.classList.add("currentTab");
+        }
+    }
+    openChat(sortedChats[0].chat_id);
+    setTimeout(() => {
+        chatMess.scrollTop = savedScrollPosition;
+    }, 0);
+}
+
+async function changeRowler() {
+    const { data, error } = await db
+        .from('Chats')
+        .select('*')
+        .or(`members.cs.{"${username}"},host.eq."${userId}"`);
+
+    if (error || !data || data.length === 0) {
+        console.error("No chats found or error fetching chats:", error);
+        return;
+    }
+
+    // Sort chats by the most recent message timestamp
+    const sortedChats = data.sort((a, b) => {
+        const lastMessageTimeA = new Date(a.times?.slice(-1)[0] || 0);
+        const lastMessageTimeB = new Date(b.times?.slice(-1)[0] || 0);
+        return lastMessageTimeB - lastMessageTimeA;
+    });
+
+    // Save the previous order for comparison
+    const prevOrder = rowSys ? rowSys.map(c => c.chat_id) : [];
+    rowSys = sortedChats;
+
+    // Save scroll position
+    savedScrollPosition = chatMess.scrollTop;
+
+    // Update or add chat tabs
+    const existingChatIds = new Set(Array.from(chatsList.children).map(el => el.getAttribute("data-chat-id")));
+
+    for (const chat of sortedChats) {
+        let tab = document.querySelector(`.pages-list a[data-chat-id='${chat.chat_id}']`);
+        let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
+        let readNum = chat.read[userNum];
+        if (!tab) {
+            tab = document.createElement("a");
+            tab.setAttribute("data-chat-id", chat.chat_id);
+            if (chat.groupchat) {
+                tab.innerHTML = chat.title;
+            } else {
+                if (chat.host === "" + userId) {
+                    tab.innerHTML = chat.members[0];
+                } else {
+                    let hoster = await fetchUsers(chat.host);
+                    if (hoster[0]) {
+                        tab.innerHTML = hoster[0].username;
+                    }
+                }
+            }
+            tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
+            chatsList.appendChild(tab);
+        }
+        // Update unread badge
+        const existingBadge = tab.querySelector('.read-notification');
+        if (readNum > 0) {
+            if (existingBadge) {
+                existingBadge.textContent = readNum;
+            } else {
+                tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+            }
+        } else if (existingBadge) {
+            existingBadge.remove();
+        }
+    }
+    // Remove tabs for deleted chats
+    for (const element of Array.from(chatsList.children)) {
+        const chatId = element.getAttribute("data-chat-id");
+        if (!sortedChats.some(chat => chat.chat_id === chatId)) {
+            chatsList.removeChild(element);
+        }
+    }
+    // Move the most recent chat tab to the left (first position)
+    if (sortedChats.length > 0) {
+        const mostRecentId = sortedChats[0].chat_id;
+        const tab = document.querySelector(`.pages-list a[data-chat-id='${mostRecentId}']`);
+        if (tab && tab.parentNode.firstChild !== tab) {
+            tab.style.transform = 'scale(1.05)';
+            tab.style.opacity = '0.7';
+            setTimeout(() => {
+                tab.style.transform = '';
+                tab.style.opacity = '';
+                tab.parentNode.insertBefore(tab, tab.parentNode.firstChild);
+            }, 150);
+        }
+    }
+    // Highlight current chat tab
+    if (currentChat) {
+        document.querySelectorAll('a[data-chat-id]').forEach(element => {
+            element.classList.remove("currentTab");
+        });
+        const currentElement = document.querySelector(`a[data-chat-id="${currentChat}"]`);
+        if (currentElement) {
+            currentElement.classList.add("currentTab");
+        }
+    }
+    // Restore scroll position
+    setTimeout(() => {
+        chatMess.scrollTop = savedScrollPosition;
+    }, 0);
+}
+
+
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, timers};

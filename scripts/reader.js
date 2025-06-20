@@ -46,6 +46,8 @@ async function TotalRead(payload, index){
         if(data.host == userId){
             sumRead += 1;
             let inboxLink = document.querySelector('a[href="/pages/chats.html"]');
+            console.log(inboxLink);
+
             let readMessage = document.createElement('div');
             readMessage.classList.add('readMessageNonification');
             readMessage.id = 'readMessageNonification';
@@ -59,6 +61,8 @@ async function TotalRead(payload, index){
             if(data.members[x] == "" + username + ""){
                 sumRead += 1;
                 let inboxLink = document.querySelector('a[href="/pages/chats.html"]');
+                console.log(inboxLink);
+
                 let readMessage = document.createElement('div');
                 readMessage.classList.add('readMessageNonification');
                 readMessage.id = 'readMessageNonification';
@@ -94,6 +98,7 @@ async function TotalRead(payload, index){
         }
         if(sumRead > 0){
             let inboxLink = document.querySelector('a[href="/pages/chats.html"]');
+            console.log(inboxLink);
             let readMessage = document.createElement('div');
             readMessage.classList.add('readMessageNonification');
             readMessage.id = 'readMessageNonification';

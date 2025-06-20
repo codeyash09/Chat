@@ -1441,3 +1441,166 @@ form h1{
     color: #FD5A23 !important;
     display: none !important;
 }
+
+.avatarBanner{
+    width: 4vh;
+    height: fit-content;
+    font-family: 'Lexend';
+    height: 4vh;
+    background-color: #FD5A23;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin: 0 10px;
+}
+
+.home{
+    position: absolute;
+    top: 0;
+    left: 0vw;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    background-color: white;
+    transition: left .5s ease-in-out;
+}
+
+.messagesBanner{
+    cursor: pointer;
+    margin-left: 30vw;
+    width: 40vw;
+    display: flex;
+    color: #FD5A23;
+    font-family: 'Lexend', sans-serif;
+    height: 5vh;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid #FD5A23;
+    padding-bottom: 2vh;
+    padding-top: 2vh;
+    overflow: hidden;
+    transition: all .5s linear;
+}
+
+.messagesBanner .text{
+    padding-left: 1vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+
+.user{
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: 1.5vh;
+
+}
+
+.lastMessage{
+    font-family: 'Lexend', sans-serif;
+    font-weight: 400;
+    font-size: 1.5vh;
+
+ 
+}
+
+.person{
+    display: flex;
+}
+
+.home .title{
+    font-family: 'Lexend', sans-serif;
+    font-weight: 400;
+    color: #FD5A23;
+    font-size: 3vh;
+    background-color: #f5f5f5;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    height: 10vh;
+    position: fixed;
+    z-index: 500;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.295);
+}
+
+.messagesBannerHolder{
+    position: relative;
+    top: 10vh;
+    height: 90vh;
+
+    
+
+}
+
+.messagesBanner .time{
+    font-family: 'Lexend', sans-serif;
+    font-size: 20px;
+    padding-left: 50px;
+}
+
+
+.messagesBanner:hover{
+    background-color: #ff9f80;
+    color:white;
+    
+}
+
+.messagesBanner .timer{
+    font-family: 'Lexend', sans-serif;
+    font-size: 1vh;
+    padding-right: 2vh;
+}
+
+.messagesBanner .reader{
+    font-family: 'Lexend', sans-serif;
+    font-size: 1vh;
+
+    background-color: #FD5A23;
+    width: 2vh;
+    height: 2vh;
+    border-radius: 50px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+    text-align: center;
+    
+
+}
+
+.hide{
+    left: -200vw;
+}
+
+.homeBtn i{
+    font-size: 1.5vh;
+    font-weight: 800;
+    overflow: hidden;
+    height: fit-content;
+    width: 50px;
+    position: relative;
+    z-index: 500000;
+}
+
+.homeBtn {
+    border: none;
+    margin-right: 2vw;
+    outline: none;
+    
+}
+
+@media screen and (max-width: 768px) {
+    .messagesBanner{
+        width: 80vw;
+        margin-left: 10vw;
+
+    }
+
+    .homeBtn{
+        margin-right: 5vw;
+
+    }
+}
