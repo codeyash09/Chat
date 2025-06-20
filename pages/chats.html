@@ -741,7 +741,7 @@
             }
 
             .main-chat {
-                height: 100vh !important;
+                height: 93vh !important;
                 width: 100vw !important;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -923,6 +923,76 @@
 
             .context-menu-item {
                 padding: 10px 12px;
+            }
+
+            
+            @keyframes zoomInText {
+                0% {
+                    transform: scale(0.8) !important;
+                    display: none;
+                    color: #FD5A23 !important;
+                    opacity: 0;
+                }
+                1%{
+                    display: block;
+                }
+                10% {
+                    visibility: visible;
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1) !important;
+                    color: #666666ff !important;
+                }
+            }
+
+            @keyframes zoomIn {
+                0% {
+                    transform: scale(0.8) !important;
+                    display: none;
+                    color: #FD5A23 !important;
+                
+                }
+                1%{
+                    display: block;
+                }
+                10% {
+                    visibility: visible;
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1) !important;
+                    color: white !important;
+                }
+            }
+
+            .file1 i, .plane2 i{
+                animation: zoomInText 0.5s cubic-bezier(0.5,-0.36, 0.72, 1.71) forwards !important;
+                color: white !important;
+
+            }
+
+            .plane1 i, .file2 i{
+                animation: zoomInText 0.5s cubic-bezier(0.5,-0.36, 0.72, 1.71) reverse !important;
+                
+                
+                color: #FD5A23 !important;
+                display: none !important;
+            }
+
+
+            .file1 , .plane2 {
+                animation: zoomIn 0.5s cubic-bezier(0.5,-0.36, 0.72, 1.71) forwards !important;
+                color: white !important;
+
+            }
+
+            .plane1 , .file2 {
+                animation: zoomIn 0.5s cubic-bezier(0.5,-0.36, 0.72, 1.71) reverse !important;
+                
+                
+                color: #FD5A23 !important;
+                display: none !important;
             }
         }
 
@@ -1152,11 +1222,18 @@
                         <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
                     </div>
                 </div>
-                <div class="input-actions">
+                <div class="input-actions file1" id="filer">
                     <label for="fileUpload" class="upload-label">
                         <i class="fa-solid fa-plus" title="Add Attachment"></i>
                     </label>
                     <input type="file" id="fileUpload" style="display: none;">
+                </div>
+
+                <div class="input-actions plane1" id="planer">
+                    <label for="send" class="upload-label">
+                        <i class="fa-solid fa-paper-plane" title="Send"></i>
+                    </label>
+                    
                 </div>
             </div>
         </div>
@@ -1294,6 +1371,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+
     <!-- Add this before your closing body tag -->
     <script src="/scripts/gifs.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emoji-mart/data"></script>

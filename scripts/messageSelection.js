@@ -1,3 +1,42 @@
+import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
+import {db} from '/scripts/createChat.js';
+
+
+let userId = window.localStorage.getItem("userIdentify");
+let username = fetchUser();
+
+async function fetchUser() {
+  const { data, error } = await db
+    .from('Users')
+    .select('username')
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+
+  return data;
+}
+
+username
+  .then(result => {
+
+    if (result && result.length > 0) {
+
+      const userObject = result[0];
+      
+     
+      username = userObject.username;
+      
+
+    } 
+  })
+  .catch(error => {
+    
+    console.error("An error occurred:", error);
+  });
+
 let isSelectionMode = false;
 let selectedMessages = new Set();
 let lastClickTime = 0;
@@ -58,7 +97,7 @@ function initMessageSelection() {
             for (const messageId of selectedMessages) {
                 const message = document.querySelector(`.message[data-message-id="${messageId}"]`);
                 if (message) {
-                    await deleteMessage(messageId);
+                    DeleteMessage(message);
                 }
             }
             exitSelectionMode();
@@ -81,6 +120,16 @@ function initMessageSelection() {
             e.preventDefault();
         }
     });
+}
+
+async function DeleteMessage(messEl){
+    let newMess = messages;
+    newMess[parseInt(messEl.querySelector('.messId').innerHTML)] += "<deleted for='" + username + "' style='display:none'></deleted>";
+
+    const { data, error } = await db
+    .from('Chats') 
+    .update({messages: newMess}) 
+    .eq('chat_id', currentChat); 
 }
 
 function enterSelectionMode() {
@@ -146,6 +195,8 @@ function toggleMessageSelection(message) {
         exitSelectionMode();
     }
 }
+
+
 
 function updateSelectionCount() {
     document.getElementById('selectedCount').textContent = selectedMessages.size;

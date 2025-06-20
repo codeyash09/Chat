@@ -2,10 +2,13 @@ import {db} from '/scripts/createChat.js';
 import {currentChat,username,userId, displayTypingBool, newpayload} from '/scripts/chats.js';
 
 
+
 let chatMess = document.getElementById("chat-messages")
 let chatList = document.getElementById("pageList");
 let chatHeader = document.getElementById("chat-header");
 let chatInput = document.getElementById("chatInput");
+let plusBtn = document.getElementById('filer');
+let sendBtn = document.getElementById('planer');
 
 let typing = false;
 let oldCurrent = currentChat;
@@ -14,13 +17,27 @@ let numId;
 let user;
 
 chatInput.addEventListener("input", async () => {
+       
+
     if(chatInput.value != "" && chatInput.value != " " && chatInput.value != null){
+        plusBtn.classList.remove('file1');
+        plusBtn.classList.add('file2');
+
+        sendBtn.classList.remove('plane1');
+        sendBtn.classList.add('plane2');
         if(typing == false){
+            
             await fixTyping(currentChat, true);
         }
     }else{
         typing = false;
         await fixTyping(currentChat, false);
+
+        plusBtn.classList.remove('file2');
+        plusBtn.classList.add('file1');
+
+        sendBtn.classList.remove('plane2');
+        sendBtn.classList.add('plane1');
         
     }
 
@@ -28,6 +45,11 @@ chatInput.addEventListener("input", async () => {
 
 
 setInterval(afk, 200);
+
+
+
+
+
 
 async function afk(){
  
@@ -48,6 +70,12 @@ chatInput.addEventListener('blur', async (event) =>{
     event.preventDefault();
     await fixTyping(currentChat, false);
     typing = false;
+    plusBtn.classList.remove('file2');
+    plusBtn.classList.add('file1');
+
+    sendBtn.classList.remove('plane2');
+    sendBtn.classList.add('plane1');
+        
 });
 
 //First: Host Then Others

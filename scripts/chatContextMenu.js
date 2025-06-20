@@ -1,5 +1,42 @@
 // Chat context menu functionality
 let contextMenu = null;
+import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
+import {db} from '/scripts/createChat.js';
+
+let userId = window.localStorage.getItem("userIdentify");
+let username = fetchUser();
+
+async function fetchUser() {
+  const { data, error } = await db
+    .from('Users')
+    .select('username')
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+
+  return data;
+}
+
+username
+  .then(result => {
+
+    if (result && result.length > 0) {
+
+      const userObject = result[0];
+      
+     
+      username = userObject.username;
+      
+
+    } 
+  })
+  .catch(error => {
+    
+    console.error("An error occurred:", error);
+  });
 
 function createContextMenu() {
     // Remove existing context menu if any
@@ -110,7 +147,7 @@ function hideContextMenu() {
     }
 }
 
-function handleContextMenuAction(action) {
+async function handleContextMenuAction(action) {
     const chatId = contextMenu.dataset.chatId;
     
     switch (action) {
@@ -123,8 +160,17 @@ function handleContextMenuAction(action) {
             console.log('Muting notifications for chat:', chatId);
             break;
         case 'clear':
-            // TODO: Implement clear chat
-            console.log('Clearing chat:', chatId);
+            let newMess = messages;
+
+            for(let i = 0; i < messages.length; i++){
+                newMess[i] += "<deleted for='" + username + "' style='display:none'></deleted>";
+            }
+
+            const { data, error } = await db
+                .from('Chats') 
+                .update({messages: newMess}) 
+                .eq('chat_id', chatId); 
+            
             break;
         case 'leave':
             // TODO: Implement leave chat
@@ -132,6 +178,7 @@ function handleContextMenuAction(action) {
             break;
     }
 }
+
 
 // Close context menu when clicking outside
 document.addEventListener('click', (event) => {

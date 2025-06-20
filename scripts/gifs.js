@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             toggleGifPicker();
         });
-        console.log('GIF button event listener added');
+       
     } else {
         console.error('GIF button not found');
     }

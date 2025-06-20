@@ -1,8 +1,10 @@
 // Image upload functionality for chat application
 
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get DOM elements
-    const plusButton = document.querySelector('.input-actions.left .fa-plus');
+    const plusButton = document.querySelector('i[title="Add Attachment"]');
+
     const chatInput = document.getElementById('chatInput');
     let imageUploadContainer = null;
     
@@ -172,9 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             toggleImageUpload();
         });
-        console.log('Image upload button event listener added');
+        
     } else {
-        console.error('Plus button not found');
+        console.log('Plus button not found');
     }
     
     // Close image upload when clicking outside

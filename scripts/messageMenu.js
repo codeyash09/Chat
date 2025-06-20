@@ -1,7 +1,115 @@
 import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
 import {db} from '/scripts/createChat.js';
 
+
+let userId = window.localStorage.getItem("userIdentify");
+let username = fetchUser();
+
+async function fetchUser() {
+  const { data, error } = await db
+    .from('Users')
+    .select('username')
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+
+  return data;
+}
+
+username
+  .then(result => {
+
+    if (result && result.length > 0) {
+
+      const userObject = result[0];
+      
+     
+      username = userObject.username;
+      
+
+    } 
+  })
+  .catch(error => {
+    
+    console.error("An error occurred:", error);
+  });
+
 let counter = 0;
+
+function openCustomEmojiPicker(messageElement, menuPopup) {
+    // Create a container for the emoji picker
+    const pickerContainer = document.createElement('div');
+    pickerContainer.className = 'custom-emoji-picker-container';
+    document.body.appendChild(pickerContainer);
+
+
+    const menuRect = menuPopup.getBoundingClientRect();
+    pickerContainer.style.position = 'absolute';
+    if(messageElement.classList[1] == "own-message"){
+        pickerContainer.style.left = `${menuRect.left}px`; 
+
+    }else{
+        pickerContainer.style.left = `${menuRect.left}px`; 
+
+    }
+    
+    pickerContainer.style.top = `${menuRect.top}px`;
+    pickerContainer.style.zIndex = '1001'; 
+
+
+    if (window.EmojiMart) {
+        const picker = new window.EmojiMart.Picker({
+           
+            onEmojiSelect: (emoji) => {
+              
+                handleEmojiReaction(emoji.native, messageElement);
+                
+                
+                if (document.body.contains(pickerContainer)) {
+                    document.body.removeChild(pickerContainer);
+                }
+               
+                document.removeEventListener('click', closePickerOnClickOutside);
+            },
+            theme: 'light',
+            emojiSize: 20,
+            perLine: 8,
+            previewPosition: 'none',
+            skinTonePosition: 'none',
+            maxFrequentRows: 4,
+            categories: ['frequent', 'people', 'nature', 'foods', 'activity', 'places', 'objects', 'symbols', 'flags'],
+        });
+
+        pickerContainer.appendChild(picker);
+    } else {
+        console.error('EmojiMart library not loaded!');
+        
+        if (document.body.contains(pickerContainer)) {
+            document.body.removeChild(pickerContainer);
+        }
+        return;
+    }
+
+
+    const closePickerOnClickOutside = (event) => {
+
+        if (!pickerContainer.contains(event.target)) {
+            if (document.body.contains(pickerContainer)) {
+                document.body.removeChild(pickerContainer);
+            }
+            document.removeEventListener('click', closePickerOnClickOutside);
+        }
+    };
+
+   
+    setTimeout(() => {
+        document.addEventListener('click', closePickerOnClickOutside);
+    }, 100);
+}
+
 // Function to create and show the popup menu
 function createMessageMenu(messageElement, isOwnMessage) {
     // Create popup menu
@@ -46,29 +154,16 @@ function createMessageMenu(messageElement, isOwnMessage) {
     customEmojiButton.innerHTML = '<i class="fa-solid fa-plus"></i>';
     customEmojiButton.title = 'Add Custom Emoji';
     customEmojiButton.addEventListener('click', () => {
-        // Get the emoji picker element
-        const emojiPicker = document.querySelector('em-emoji-picker');
-        if (emojiPicker) {
-            // Position the emoji picker near the plus button
-            const rect = customEmojiButton.getBoundingClientRect();
-            emojiPicker.style.position = 'fixed';
-            emojiPicker.style.left = `${rect.left - 320}px`; // Move 320px to the left
-            emojiPicker.style.top = `${rect.bottom + 10}px`;
-            emojiPicker.style.zIndex = '1000';
-            emojiPicker.style.display = 'block';
+        //Code Goes Here
 
-            // Add click handler for emoji selection
-            const handleEmojiSelect = (e) => {
-                if (e.detail && e.detail.emoji) {
-                    handleEmojiReaction(e.detail.emoji, messageElement);
-                    emojiPicker.style.display = 'none';
-                    popup.classList.remove('show');
-                    emojiPicker.removeEventListener('emoji-click', handleEmojiSelect);
-                }
-            };
 
-            emojiPicker.addEventListener('emoji-click', handleEmojiSelect);
-        }
+        openCustomEmojiPicker(messageElement, popup);
+      
+       
+        popup.classList.remove('show');
+
+
+        //Code Above here
     });
     emojiSection.appendChild(customEmojiButton);
     
@@ -110,15 +205,26 @@ function createMessageMenu(messageElement, isOwnMessage) {
         });
         actionsSection.appendChild(editButton);
 
-        // Delete (unsend) button for own messages
+
         const deleteButton = document.createElement('button');
         deleteButton.className = 'message-popup-action delete-action';
-        deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i> Unsend';
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i> Delete for me';
         deleteButton.addEventListener('click', () => {
-            handleUnsend(messageElement);
+            handleDelete(messageElement);
             popup.classList.remove('show');
         });
         actionsSection.appendChild(deleteButton);
+        // Delete (unsend) button for own messages
+        const unsendButton = document.createElement('button');
+        unsendButton.className = 'message-popup-action delete-action';
+        unsendButton.innerHTML = '<i class="fa-solid fa-trash"></i> Unsend';
+        unsendButton.addEventListener('click', () => {
+            handleUnsend(messageElement);
+            popup.classList.remove('show');
+        });
+        actionsSection.appendChild(unsendButton);
+
+        
     } else {
         // Delete button for received messages
         const deleteButton = document.createElement('button');
@@ -554,11 +660,28 @@ async function UnsendMessage(messEl){
 
 // Handle delete (delete for me)
 function handleDelete(messageElement) {
-    if (confirm('Are you sure you want to delete this message? This will only remove it from your view.')) {
-        // TODO: Update message in database to show as deleted for this user
-        messageElement.style.display = 'none';
-        console.log('Message deleted for user');
-    }
+    customConfirm('Are you sure you want to delete this message? This will only remove it from your view.')
+        .then((userConfirmation) =>{
+            if(userConfirmation){
+                messageElement.style.opacity = '0.5';
+                const text = messageElement.querySelector('.text');
+                text.textContent = 'This message was deleted';
+                text.style.fontStyle = 'italic';
+                DeleteMessage(messageElement);
+            }
+        })
+    
+}
+
+async function DeleteMessage(messEl){
+
+    let newMess = messages;
+    newMess[parseInt(messEl.querySelector('.messId').innerHTML)] += "<deleted for='" + username + "' style='display:none'></deleted>";
+
+    const { data, error } = await db
+    .from('Chats') 
+    .update({messages: newMess}) 
+    .eq('chat_id', currentChat); 
 }
 
 // Add right-click handlers to all messages

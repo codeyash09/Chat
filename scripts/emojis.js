@@ -49,7 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 emojiPickerContainer.appendChild(emojiPicker);
-                console.log('Emoji picker initialized');
+                console.log(emojiPicker);
+                
             } else {
                 console.error('EmojiMart library not loaded');
             }
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             toggleEmojiPicker();
         });
-        console.log('Emoji button event listener added');
+        
     } else {
         console.error('Emoji button not found');
     }
