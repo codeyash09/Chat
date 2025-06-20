@@ -540,13 +540,13 @@ async function openChat(id, payload = null) {
         btn.addEventListener('click', ()=>{
 
             changeRow();
-            showChats();
+          
             home.classList.remove('hide');
         })
         btn.children[0].addEventListener('click', ()=>{
 
             changeRow();
-            showChats();
+            
             
             home.classList.remove('hide');
         })
@@ -561,13 +561,13 @@ async function openChat(id, payload = null) {
 
             btn.addEventListener('click', ()=>{
                 changeRow();
-                showChats();
+              
 
                 home.classList.remove('hide');
             })
             btn.children[0].addEventListener('click', ()=>{
                 changeRow();
-                showChats();
+              
 
                 home.classList.remove('hide');
             })
