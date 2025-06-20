@@ -573,6 +573,7 @@ async function openChat(id, payload = null) {
                 home.classList.remove('hide');
             })
         }else{
+            
             let hoster = fetchUsers(chat.host);
             hoster.then(result =>{
                 if(result[0] != undefined){
@@ -581,9 +582,28 @@ async function openChat(id, payload = null) {
                     chatHeader.innerHTML = hoster;
                     chatInput.placeholder = "Message " + hoster;
 
+                    chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' +hoster;
+                    chatInput.placeholder = "Message " + hoster;
 
+                    let btn = document.querySelector('.homeBtn');
+
+
+                    btn.addEventListener('click', ()=>{
+                        changeRow();
+                    
+
+                        home.classList.remove('hide');
+                    })
+                    btn.children[0].addEventListener('click', ()=>{
+                        changeRow();
+                    
+
+                        home.classList.remove('hide');
+                    })
                 }
             });
+
+            
 
         }
     }
