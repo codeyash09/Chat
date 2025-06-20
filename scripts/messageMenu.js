@@ -359,9 +359,18 @@ function handleEmojiReaction(emoji, messageElement) {
     // Get or create reactions container
     let reactionsContainer = messageElement.querySelector('.message-reactions');
     if (!reactionsContainer) {
+
+        
         reactionsContainer = document.createElement('div');
         reactionsContainer.className = 'message-reactions';
-        messageElement.children[1].children[1].appendChild(reactionsContainer); // Changed from .content to messageElement
+        if(messageElement.classList.contains('own-message')){
+           
+            messageElement.children[0].children[1].appendChild(reactionsContainer); // Changed from .content to messageElement
+            
+        }else{
+            messageElement.children[1].children[1].appendChild(reactionsContainer); // Changed from .content to messageElement
+
+        }
     }
 
     // Check if this emoji reaction already exists
@@ -392,8 +401,13 @@ function handleEmojiReaction(emoji, messageElement) {
         
         reactionsContainer.appendChild(reactionElement);
     }
+    if(messageElement.classList.contains("own-message")){
+        UpdateMessageReact(messageElement, messageElement.children[0].children[1].innerHTML);
 
-    UpdateMessageReact(messageElement, messageElement.children[1].children[1].innerHTML);
+    }else{
+        UpdateMessageReact(messageElement, messageElement.children[1].children[1].innerHTML);
+
+    }
 }
 
 async function UpdateMessageReact(messEl, updatedText){
