@@ -71,7 +71,7 @@ username = fetchUser();
 username.then(result =>{
     if(result[0] != undefined){
         username = result[0].username;
-        
+        console.log(username);
         showChats();
         showChatlers();
     }
@@ -198,10 +198,11 @@ async function showChats() {
                         
                         
                         if(chat.senders[i] == username){
-                            lastMessage.innerHTML = chat.senders[i] + ": " + finalMessage;
+                            lastMessage.innerHTML = "You: " + finalMessage;
+
 
                         }else{
-                            lastMessage.innerHTML = "You: " + finalMessage;
+                            lastMessage.innerHTML = chat.senders[i] + ": " + finalMessage;
                             
                         }
                         
