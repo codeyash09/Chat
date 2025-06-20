@@ -1324,6 +1324,8 @@ form h1{
 }
 
 .popup{
+    width: 30vw;
+    left: 35vw;
     color: #FD5A23;
     overflow: hidden; /* Prevent scrolling */
     height: auto; /* Let height adjust to content */
@@ -1593,6 +1595,15 @@ form h1{
 }
 
 @media screen and (max-width: 768px) {
+    .popup{
+        width: 50vw;
+        left: 25vw;
+    }
+
+    .popup button{
+        width: 15vw;
+    }
+
     .messagesBanner{
         width: 80vw;
         margin-left: 10vw;

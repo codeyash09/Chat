@@ -603,13 +603,13 @@ function customConfirm(message){
     return new Promise((resolve) =>{
         let popup = document.createElement('div');
         popup.style.position = 'fixed';
-        popup.style.width = '15vw';
+        
         popup.style.height = '30vh';
 
         popup.classList.add('popup');
 
         popup.style.top = '35vh';
-        popup.style.left = '42.5vw';
+       
 
         popup.style.backgroundColor = 'white';
 
