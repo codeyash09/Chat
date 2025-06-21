@@ -902,6 +902,7 @@
 
             .message .text {
                 font-size: 14px;
+                
             }
 
             /* Adjust selection mode for mobile */
@@ -1070,10 +1071,27 @@
             padding: 5px;
             font-size: 14px;
             margin-bottom: 4px;
-            width: 100%;
+            max-width: 1200px !important;
             display: flex;
             align-items: center;
             gap: 4px;
+            position: absolute;
+            top:-40px;
+            white-space: no-wrap !important;
+            left: 0;
+        }
+
+
+
+        @media (min-width: 1200px) {
+        .reply-bubble {
+            white-space: normal; /* Allow wrapping on wider screens */
+        }
+        }
+
+        .own-message .replyMessage{
+            right: 0;
+
         }
 
         .replyMessage::before {
@@ -1084,6 +1102,8 @@
             border-radius: 2px;
             margin-right: 4px;
         }
+
+
 
         .replyContent {
             color: #666;
@@ -1101,25 +1121,37 @@
 
         .own-message .replyMessage {
             margin-left: 0;
+            right: 15px;
             border-bottom-right-radius: 0;
+            
         }
 
         /* Make received message reply styling match own messages exactly */
         .message .replyMessage {
+            width: fit-content;
             background-color: #eee;
             color: #666;
             border-radius: 8px;
             padding: 5px;
-            border-bottom-right-radius: 0;
+            
+            left: 15px;
+            white-space: no-wrap !important;
+
         }
 
         .message .replyContent {
             color: #666;
+            white-space: nowrap;
+            overflow: visible;
         }
 
         .message .replyUser {
             color: #666;
             font-weight: 500;
+            white-space: nowrap;    
+            max-width: 1200px;
+            width: fit-content;
+            overflow: visible;
         }
 
         .message .timestamp {
@@ -1145,6 +1177,12 @@
             right: 0;
         }
 
+        .own-message .replyMessage{
+            position: absolute;
+            left: auto;
+            right: 15px;
+        }
+
         /* Ensure message container has proper positioning for absolute positioning of timestamp */
         .message {
             position: relative;
@@ -1154,6 +1192,8 @@
         /* Remove the previous padding we added */
         .chat-messages {
             padding: 0;
+           
+            
         }
     </style>
 </head>

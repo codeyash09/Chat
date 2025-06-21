@@ -281,7 +281,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
-    scroll-behavior: unset;
+
    
     border: 2px solid #eee;
     
@@ -1462,8 +1462,16 @@ form h1{
     width: 100vw;
     height: 100vh;
     z-index: 50;
+
     background-color: white;
-    transition: left .5s ease-in-out;
+    opacity: 1;
+    /* background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);*/
+    transition: left .5s ease-in-out, opacity 0.25s ease-in-out; 
 }
 
 .messagesBanner{
@@ -1476,11 +1484,23 @@ form h1{
     height: 5vh;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 4px solid #FD5A23;
-    padding-bottom: 2vh;
-    padding-top: 2vh;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
     overflow: hidden;
-    transition: all .5s linear;
+    transition: all .5s ease-out;
+    border-bottom: 4px solid transparent;
+
+
+    
+    background: rgba(255, 255, 255, 0);
+    border-radius: 16px; 
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border: 1px solid rgba(255, 255, 255, 0);
+
+
 }
 
 .messagesBanner .text{
@@ -1508,6 +1528,7 @@ form h1{
 
 .person{
     display: flex;
+    max-width: 75%;
 }
 
 .home .title{
@@ -1515,7 +1536,8 @@ form h1{
     font-weight: 400;
     color: #FD5A23;
     font-size: 3vh;
-    background-color: #f5f5f5;
+    border-bottom: 2px solid #00000002;
+    background-color: #f5f5f563;
     text-align: center;
     display: flex;
     align-items: center;
@@ -1524,7 +1546,6 @@ form h1{
     height: 10vh;
     position: fixed;
     z-index: 500;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.295);
 }
 
 .messagesBannerHolder{
@@ -1544,9 +1565,15 @@ form h1{
 
 
 .messagesBanner:hover{
-    background-color: #ff9f80;
-    color:white;
-    
+    background: #fd592365;
+    border-radius: 16px; 
+    backdrop-filter: blur(12.5px);
+    -webkit-backdrop-filter: blur(12.5px);
+    border: 1px solid #fd5923a4;
+    color: white;
+    margin-left: 32vw;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
 }
 
 .messagesBanner .timer{
@@ -1575,23 +1602,45 @@ form h1{
 
 .hide{
     left: -200vw;
+    opacity: 0;
 }
 
 .homeBtn i{
     font-size: 1.5vh;
     font-weight: 800;
     overflow: hidden;
-    height: fit-content;
-    width: 50px;
+    height: 1.6vh;
+    border-radius: 50px;
+    width: 1.6vh;
     position: relative;
     z-index: 500000;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color .5s linear;
 }
 
 .homeBtn {
     border: none;
+    
     margin-right: 2vw;
     outline: none;
     
+}
+
+.homeBtn:hover{
+    background-color: transparent !important;
+}
+
+.homeBtn i:hover{
+    background-color: transparent;
+    color: black;
+}
+
+.homeBtn:hover i{
+    background-color: transparent;
+    color: black;
 }
 
 @media screen and (max-width: 768px) {
@@ -1608,6 +1657,10 @@ form h1{
         width: 80vw;
         margin-left: 10vw;
 
+    }
+
+    .messagesBanner:hover{
+        margin-left: 12vw;
     }
 
     .homeBtn{

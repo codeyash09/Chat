@@ -49,7 +49,14 @@ function openCustomEmojiPicker(messageElement, menuPopup) {
     const menuRect = menuPopup.getBoundingClientRect();
     pickerContainer.style.position = 'absolute';
     if(messageElement.classList[1] == "own-message"){
-        pickerContainer.style.left = `${menuRect.left}px`; 
+        if(window.screen.width < 768){
+            pickerContainer.style.right = `${10}px`; 
+            
+        }else{
+            pickerContainer.style.right = `${30}px`; 
+
+        }
+
 
     }else{
         pickerContainer.style.left = `${menuRect.left}px`; 
@@ -112,6 +119,7 @@ function openCustomEmojiPicker(messageElement, menuPopup) {
 
 // Function to create and show the popup menu
 function createMessageMenu(messageElement, isOwnMessage) {
+    
     // Create popup menu
     const popup = document.createElement('div');
     popup.className = 'message-popup';
@@ -453,8 +461,10 @@ async function UpdateMessageReact(messEl, updatedText){
 
 // Handle reply
 function handleReply(messageElement) {
+
+    
     const sender = messageElement.querySelector('.username').textContent;
-    const messageText = messageElement.querySelector('.text').textContent;
+    let messageText = messageElement.querySelector('.text').innerHTML;
     const chatInput = document.getElementById('chatInput');
 
 
@@ -465,11 +475,41 @@ function handleReply(messageElement) {
 
 
 
+    if(messageText.includes('<div class="replyMessage">')){
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(messageText, 'text/html');
+
+        
+        doc.querySelectorAll('.replyMessage').forEach(el => el.remove());
+
+        
+
+        
+        messageText = doc.body.textContent.trim();
+
+    }
+    if(messageText.includes('<div class="message-reactions">')){
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(messageText, 'text/html');
+
+        
+        doc.querySelectorAll('.message-reaction').forEach(el => el.remove());
+
+        
+
+        
+        messageText = doc.body.textContent.trim();
+
+    }
+    
+    if(messageText.length > 50){
+        messageText = messageText.slice(0, 50) + "...";
+    }
+    
 
 
 
-
-    chatInput.value = `<div class="replyMessage"><div class="replyUser">${sender}</div><div class="replyContent">${messageText}</div></div>`;
+    chatInput.value = `<div class="replyMessage"><div class="replyUser">${sender}</div><div class="replyContent">${messageText}</div><div style="display:none" class="ider">${messageElement.id}</div></div>`;
     chatInput.focus();
 }
 

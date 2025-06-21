@@ -182,14 +182,14 @@ async function handleContextMenuAction(action) {
 
 // Close context menu when clicking outside
 document.addEventListener('click', (event) => {
-    contextMenu = document.querySelector('chat-context-menu'); 
+    contextMenu = document.querySelector('.chat-context-menu'); 
     if (contextMenu && !contextMenu.contains(event.target)) {
         hideContextMenu();
     }
 });
 // Close context menu when clicking outside
 document.addEventListener('focus', (event) => {
-    contextMenu = document.querySelector('chat-context-menu'); 
+    contextMenu = document.querySelector('.chat-context-menu'); 
 
     if (contextMenu && !contextMenu.contains(event.target)) {
         hideContextMenu();
@@ -197,7 +197,7 @@ document.addEventListener('focus', (event) => {
 });
 
 document.querySelector(".homeBtn").addEventListener('click', (event) => {
-    contextMenu = document.querySelector('chat-context-menu'); 
+    contextMenu = document.querySelector('.chat-context-menu'); 
 
     if (contextMenu && !contextMenu.contains(event.target)) {
         hideContextMenu();

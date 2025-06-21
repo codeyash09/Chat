@@ -234,6 +234,7 @@ async function showChats() {
         }
         
         const existingBadge = tab.querySelector('.reader');
+       
         if (readNum > 0) {
             if (existingBadge) {
                 existingBadge.textContent = readNum;
@@ -618,6 +619,7 @@ async function openChat(id, payload = null) {
         const message = document.createElement("div");
         message.classList.add("message");
         message.setAttribute('data-message-id', i);
+        message.id = i;
         if(chat.senders[i]!=username){
             const avatar = document.createElement("div");
             avatar.classList.add("avatar");
@@ -651,7 +653,18 @@ async function openChat(id, payload = null) {
         content.appendChild(time);
         content.appendChild(messId);
 
+        if(chat.messages[i].includes('<div class="replyMessage">')){
+            message.style.setProperty('margin-top', '40px', 'important');
+            message.querySelector(".replyMessage").addEventListener('click', ()=> {
+                window.location.hash = message.querySelector('.ider').innerHTML;
+            })
+            
+        }
         chatMess.appendChild(message);
+
+
+        
+
     }
 
     let updatedRead = chat.read;
@@ -668,7 +681,7 @@ async function openChat(id, payload = null) {
     }
 
     chatMess.addEventListener("scroll", () => {
-        
+        window.location.hash = '';
         const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
         const atThreshold = chatMess.scrollTop >= -threshold;
 
@@ -753,6 +766,7 @@ async function updateRead(updatedRead){
 
 let i = 0;
 
+
 db
     .channel('realtime-changes')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, (payload) => {
@@ -821,11 +835,11 @@ async function changeRow() {
 
     // Save scroll position
     savedScrollPosition = chatMess.scrollTop;
-
+    let tab;
     // Update or add chat tabs
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
-        let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${chat.chat_id}']`);
+        tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${chat.chat_id}']`);
         let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
         let readNum = chat.read[userNum];
         if (!tab) {
@@ -848,12 +862,18 @@ async function changeRow() {
             chatList.appendChild(tab);
         }
         // Update unread badge
-        const existingBadge = tab.querySelector('.read-notification');
+        const existingBadge = tab.querySelector('.reader');
+        
+
         if (readNum > 0) {
             if (existingBadge) {
                 existingBadge.textContent = readNum;
             } else {
-                tab.innerHTML += ` <span class='read-notification'>${readNum}</span>`;
+                let badger = document.createElement('div');
+                badger.classList.add('reader');
+                badger.innerHTML = readNum;
+
+                tab.querySelector('.time').appendChild(badger);
             }
         } else if (existingBadge) {
             existingBadge.remove();
