@@ -241,29 +241,58 @@ function createMessageMenu(messageElement, isOwnMessage) {
     
     // Position the popup
     const rect = messageElement.getBoundingClientRect();
+    const chatRect = document.getElementById('chat-messages').getBoundingClientRect();
     
-    // Check if message is near the bottom of the chat
-    const chatMessages = document.getElementById('chat-messages');
-    const chatRect = chatMessages.getBoundingClientRect();
-    const isRecentMessage = rect.bottom > chatRect.bottom - 200; // If message is within 200px of bottom
-    const isVeryRecentMessage = rect.bottom > chatRect.bottom - 100; // If message is within 100px of bottom
-    const isSecondMostRecent = rect.bottom > chatRect.bottom - 150 && rect.bottom <= chatRect.bottom - 100; // If message is between 100-150px from bottom
+    // Temporarily append to get accurate height, then remove
+    document.body.appendChild(popup);
+    const popupHeight = popup.offsetHeight;
+   
     
-    // Position based on message type
-    if (isOwnMessage) {
-        // For own messages, position to the left of the message
-        popup.style.left = `${rect.left - 220}px`; // Move 220px to the left (was 245px)
-        popup.style.top = isVeryRecentMessage ? `${rect.top - 200}px` : 
-                         isSecondMostRecent ? `${rect.top - 200}px` :
-                         isRecentMessage ? `${rect.top - 120}px` : 
-                         `${rect.top - 80}px`; // Move higher for very recent messages
-    } else {
-        // For received messages, position to the right side of the message
-        popup.style.left = `${rect.right + 20}px`; // Move 20px to the right (was 30px)
-        popup.style.top = isVeryRecentMessage ? `${rect.top - 200}px` : 
-                         isRecentMessage ? `${rect.top - 120}px` : 
-                         `${rect.top - 80}px`; // Move higher for very recent messages
+    document.body.removeChild(popup);
+
+    // Calculate available space below the message
+    const spaceBelow = window.innerHeight - rect.bottom;
+
+    // Determine if the popup would overflow if placed below
+    let overflowsBottom;
+    if(isOwnMessage){
+        overflowsBottom = (rect.bottom + 400) > window.innerHeight;
+
+    }else{
+        overflowsBottom = (rect.bottom + 300) > window.innerHeight;
+
     }
+
+    console.log(rect.bottom);
+    console.log(popupHeight);
+
+    if (!overflowsBottom) {
+        // Position below the message
+        popup.style.top = `${rect.bottom + 5}px`; // 5px padding below the message
+        // Center horizontally below the message or align with message start/end
+        if (isOwnMessage) {
+            popup.style.right = `${window.innerWidth - rect.right}px`;
+            popup.style.left = 'auto'; // Ensure left is not set if right is
+        } else {
+            popup.style.left = `${rect.left}px`;
+            popup.style.right = 'auto'; // Ensure right is not set if left is
+        }
+    } else {
+        // Position below the message
+        // Center horizontally below the message or align with message start/end
+        if (isOwnMessage) {
+            popup.style.top = `${rect.top - 405}px`; // 5px padding below the message
+
+            popup.style.right = `${window.innerWidth - rect.right}px`;
+            popup.style.left = 'auto'; // Ensure left is not set if right is
+        } else {
+            popup.style.top = `${rect.top - 305}px`; // 5px padding below the message
+
+            popup.style.left = `${rect.left}px`;
+            popup.style.right = 'auto'; // Ensure right is not set if left is
+        }
+    }
+    
     
     // Add to document
     document.body.appendChild(popup);
