@@ -101,7 +101,7 @@ function showContextMenu(event, chatId) {
     if (!contextMenu) {
         createContextMenu();
     }
-
+    console.log("hi");
     // Store the chat ID for the menu actions
     contextMenu.dataset.chatId = chatId;
 
@@ -182,10 +182,30 @@ async function handleContextMenuAction(action) {
 
 // Close context menu when clicking outside
 document.addEventListener('click', (event) => {
+    contextMenu = document.querySelector('chat-context-menu'); 
     if (contextMenu && !contextMenu.contains(event.target)) {
         hideContextMenu();
     }
 });
+// Close context menu when clicking outside
+document.addEventListener('focus', (event) => {
+    contextMenu = document.querySelector('chat-context-menu'); 
+
+    if (contextMenu && !contextMenu.contains(event.target)) {
+        hideContextMenu();
+    }
+});
+
+document.querySelector(".homeBtn").addEventListener('click', (event) => {
+    contextMenu = document.querySelector('chat-context-menu'); 
+
+    if (contextMenu && !contextMenu.contains(event.target)) {
+        hideContextMenu();
+    }
+});
+
+
+
 
 // Prevent context menu from showing on right-click of the menu itself
 document.addEventListener('contextmenu', (event) => {
