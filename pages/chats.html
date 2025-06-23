@@ -860,7 +860,7 @@
 
             /* Remove any remaining margins/padding from messages */
             .message {
-                margin: 0 0 10px 0 !important;
+                margin: 0 0 1px 1px !important;
                 padding: 0 10px !important;
             }
 
@@ -871,6 +871,11 @@
             /* Adjust message width for mobile */
             .message {
                 max-width: 85%;
+            }
+
+            .message .avatar{
+                width: 35px;
+                height: 35px;
             }
 
             /* Adjust input area for mobile */
@@ -1186,7 +1191,7 @@
         /* Ensure message container has proper positioning for absolute positioning of timestamp */
         .message {
             position: relative;
-            margin-bottom: 10px; /* Reduced from 20px to 10px */
+            margin-bottom: 1px; /* Reduced from 20px to 10px */
         }
 
         /* Remove the previous padding we added */
@@ -1406,7 +1411,8 @@
         <div class="home">
 
             <div class="title">Chats</div>
-            <div id="messagesBannerHolder" class="messagesBannerHolder">
+            <button id="newChatBtn2"><div class="btnHolder"><i class="fa-solid fa-plus"></i></div></button>
+            <div id="messagesBannerHolder" class="messagesBannerHolder" style="max-height: 70vh;">
                 <a class="messagesBanner">
                     <div class="person">
                         <div class="avatarBanner"></div>
@@ -1425,6 +1431,21 @@
 
                 
             </div>
+            
+            <div class="searcher" id="searcher">
+                <div class="search-wrapper">
+                    <img src="/images/ai.png" alt="AI icon" class="search-icon">
+                    <input id="aiInput" type="text" placeholder="Chat with Qubit AI">
+                </div>
+
+            </div>
+            <div class="searchHold" id="wall">
+                <div class="messagers">
+                    
+                    
+                    
+                </div>
+            </div>  
             
         </div>
     </div>
@@ -1466,7 +1487,8 @@
     <script type="module" src="/scripts/messageSelection.js"></script>
     <script type="module" src="/scripts/chatContextMenu.js"></script>
     <script type="module" src="/scripts/home.js"></script>
-
+    <script type="module" src="/scripts/stack.js"></script>
+    <script type="module" src="/scripts/ai.js"></script>
     
     
 </body>

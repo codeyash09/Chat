@@ -9,6 +9,7 @@ let read = 10;
 let totalRead = 0;
 
 let userId = window.localStorage.getItem("userIdentify");
+let lastSender = null;
 
 
 if(userId == null || userId == "null"){
@@ -482,7 +483,6 @@ function convertToLocalTime(centralTime) {
 async function openChat(id, payload = null) {
 
 
-
     let home = document.querySelector('.home');
 
     if(!home.classList.contains('hide')){
@@ -608,12 +608,15 @@ async function openChat(id, payload = null) {
 
         }
     }
-   
+    lastSender= null;
+    
     for (let i = chat.messages.length - 1; i >= 0; i--) {
 
         if(chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
             continue;
         }
+
+        
 
 
         const message = document.createElement("div");
@@ -629,9 +632,14 @@ async function openChat(id, payload = null) {
         
         const content = document.createElement("div");
         content.classList.add("content");
-        const usernameElement = document.createElement("div");
+        let usernameElement;
+        usernameElement = document.createElement("div");
         usernameElement.classList.add("username");
         usernameElement.innerHTML = chat.senders?.[i] || "Unknown User";
+        if(!chat.groupchat){
+            usernameElement.style.display = 'none';
+        }
+        
         const text = document.createElement("div");
         text.classList.add("text");
         text.innerHTML = chat.messages?.[i] || "No message";
@@ -648,18 +656,26 @@ async function openChat(id, payload = null) {
         }
 
         message.appendChild(content);
+        
         content.appendChild(usernameElement);
+
+        
         content.appendChild(text);
         content.appendChild(time);
         content.appendChild(messId);
 
         if(chat.messages[i].includes('<div class="replyMessage">')){
-            message.style.setProperty('margin-top', '40px', 'important');
+            message.style.setProperty('margin-top', '50px', 'important');
             message.querySelector(".replyMessage").addEventListener('click', ()=> {
                 window.location.hash = message.querySelector('.ider').innerHTML;
             })
             
         }
+
+
+        
+        
+
         chatMess.appendChild(message);
 
 

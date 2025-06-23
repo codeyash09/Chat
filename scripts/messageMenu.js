@@ -328,7 +328,7 @@ function createMessageMenu(messageElement, isOwnMessage) {
                 popup.remove();
             }, 800);
             
-            document.removeEventListener('mousemove', closePopup);
+            document.removeEventListener('click', closePopup);
             document.removeEventListener('scroll', closePopup);
             return;
         }
@@ -380,13 +380,13 @@ function createMessageMenu(messageElement, isOwnMessage) {
                 popup.remove();
             }, 800);
             
-            document.removeEventListener('mousemove', closePopup);
+            document.removeEventListener('click', closePopup);
             document.removeEventListener('scroll', closePopup);
         }
     };
     
     // Use mousemove instead of click for smoother cursor tracking
-    document.addEventListener('mousemove', closePopup);
+    document.addEventListener('click', closePopup);
     // Add scroll event listener
     document.addEventListener('scroll', closePopup, true);
 }
@@ -401,7 +401,7 @@ function handleEmojiReaction(emoji, messageElement) {
         reactionsContainer = document.createElement('div');
         reactionsContainer.className = 'message-reactions';
         if(messageElement.classList.contains('own-message')){
-           
+            
             messageElement.children[0].children[1].appendChild(reactionsContainer); // Changed from .content to messageElement
             
         }else{

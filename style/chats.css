@@ -280,7 +280,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     padding: 20px;
     display: flex;
     flex-direction: column-reverse;
-    gap: 10px;
+  
 
    
     border: 2px solid #eee;
@@ -336,7 +336,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     padding: 20px;
     display: flex;
     flex-direction: column-reverse;
-    gap: 10px;
+   
 
     padding-bottom: 30px; /* Add more padding at bottom */
     margin-bottom: 0; /* Remove any bottom margin */
@@ -1643,6 +1643,129 @@ form h1{
     color: black;
 }
 
+
+
+.searcher{
+    position: fixed;
+    top: 80vh;
+    width: 100%;
+   
+    display: flex;
+    justify-content: center;
+    transition: all .25s ease-in-out;
+    z-index: 500000;
+}
+
+.searcher input{
+    width: 30vw;
+    height: 3vh;
+    border-radius: 500px;
+    
+    outline: none;
+    border: none;
+    background-color: #eee;
+    
+    font-family: 'Lexend';
+
+    padding-left: 2vw;
+    padding-right: 8vh;
+    padding-top: 1.5vh;
+    padding-bottom: 1.5vh;
+    max-width: 30vw;
+    font-size: 1.5vh;
+    border: 3px solid transparent;
+    
+}
+
+
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 1vw; /* Adjust as needed */
+  transform: translateY(-50%);
+  width: 5vh; /* Set desired size */
+
+  
+}
+
+.search-wrapper input[type="text"] {
+  padding-left: 40px; /* Make room for the icon */
+  height: 36px;
+  font-size: 16px;
+}
+
+.searcher input:focus{
+    border: 3px solid transparent;
+    background: linear-gradient(white, white), 
+                linear-gradient(to right, #8b64e8, #2a0e5e);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+   
+}
+
+.searchHold{
+    width: 100%;
+    position: fixed;
+    top: 90vh;
+    height: 100vh;
+    background-color: white;
+    z-index: 50000;
+    opacity: 0;
+    transition: all .25s ease-in-out;
+    display: flex;
+    justify-content: center;
+}
+
+.messagers{
+    max-height: 70vh;
+    margin-top: 5vh;
+}
+
+.messager{
+    margin-left: 3vw;
+    color: white;
+    font-family: 'Lexend';
+    background-color: #FD5A23;
+    padding: 3px;
+    width: fit-content;
+    max-width: 1200px;
+    border-radius: 16px;
+    border-bottom-left-radius: 0;
+    border: 3px solid white;
+    display: flex;
+    justify-self: flex-start;
+    margin-bottom: 3vh;
+}
+
+.messager .text{
+    font-family: 'Lexend';
+    
+}
+
+.own-messager{
+    margin-right: 3vw;
+
+    display: flex;
+    justify-self: flex-end;
+    background-color: white;
+    color: #FD5A23;
+    border: 3px solid #FD5A23;
+    border-bottom-left-radius: 16px;
+    
+    border-bottom-right-radius: 0;
+}
+
+
+.messagers{
+    width: 60vw;
+    
+}
+
 @media screen and (max-width: 768px) {
     .popup{
         width: 50vw;
@@ -1667,4 +1790,74 @@ form h1{
         margin-right: 5vw;
 
     }
+
+
+    .searcher input{
+        width: 60vw !important;
+        max-width: 60vw;
+    }
+    .search-icon {
+     
+        width: 5vh; /* Set desired size */
+        right: 1.5vh;
+
+    
+    }
+
+    
+    .messagers{
+        width: 90vw;
+        
+    }
+
+    .messager{
+        max-width: 60vw;
+        
+    }
+}
+
+
+#newChatBtn2{
+    background-color: transparent;
+    border: none;
+    font-size: 3vh;
+    overflow: visible !important;
+    position: fixed;
+    color: #FD5A23;
+    opacity: 1;
+    top: 8.45vh;
+    z-index: 50000;
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+}
+
+#newChatBtn2 i{
+    overflow: visible;
+    border: 5px solid transparent;
+    border-radius: 50px;
+    background-color: transparent;
+
+
+}
+
+#newChatBtn2:hover{
+    background-color: transparent !important;
+    
+}
+
+
+
+.btnHolder:hover i{
+   
+    border-radius: 50px;
+    background-color: #FD5A23 !important;
+    color: white;
+    width: 3vh;
+    border: 5px solid #FD5A23;
+}
+
+.btnHolder{
+    width: fit-content;
 }
