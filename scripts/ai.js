@@ -1,4 +1,9 @@
 const OPENROUTER_API_KEY = "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"; // Get this from https://openrouter.ai
+
+
+// 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
+
+
 let on = false;
 let aing = false;
 let responses = [];
@@ -20,7 +25,8 @@ async function chatWithAi(prompt, retryCount) {
   let mess = [];
 
  
-
+  mess.push({role: "system", content: "You are a helpful assistant named Qubit AI"});
+  
   for (let i = 0; i < prompts.length; i++) {
     mess.push({ role: "user", content: prompts[i] });
     if (responses[i]) {
@@ -29,17 +35,17 @@ async function chatWithAi(prompt, retryCount) {
   }
   console.log(mess);
 
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+      Authorization: `Bearer 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`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "google/gemini-2.0-flash-exp:free", // or "qwen/qwen3-235b-a22b:free"
-      messages: mess
+      model: "llama3-8b-8192",
+      messages: mess,
     }),
-  });
+  })
 
   const result = await response.json();
 
@@ -49,7 +55,13 @@ async function chatWithAi(prompt, retryCount) {
       text5 = "Sorry, an unexpected error has occured please try again later.";
       
     }else{
-      await delay(7000);
+      const retryAfter = response.headers.get("Retry-After");
+      if (retryAfter) {
+        await delay(parseInt(retryAfter) * 1000);
+      }else{
+        await delay(7000);
+      }
+
       return chatWithAi(prompt, retryCount + 1);
 
     }
