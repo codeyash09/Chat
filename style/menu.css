@@ -357,3 +357,12 @@
         left: -200vw;
     }
 }
+
+.links a:hover i,
+.links a i:hover,
+.mener,
+#closer {
+    color: #a58ee6 !important;
+    background-color: #a58ee6 !important;
+    border-color: #a58ee6 !important;
+}

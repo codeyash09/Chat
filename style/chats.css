@@ -7,24 +7,18 @@ body {
     display: flex;
     margin: 0;
     padding: 0;
-    background-color: white;
-    color: #ffffff;
+    background-color: #fff;
+    color: #222;
 }
 
 /* Fix for icons - update this section */
 i.fa-solid, i.fa-regular, i.fa-brands {
-    font-family: "Font Awesome 6 Free" !important;
-    font-weight: 900;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
+    color: #220952ff !important;
 }
 
 /* Ensure icons are visible in user actions */
 .user-info .user-actions i {
-    color: #b9bbbe;
+    color: #220952ff;
     visibility: visible;
     font-size: 18px;
 }
@@ -36,11 +30,11 @@ i.fa-solid, i.fa-regular, i.fa-brands {
 }
 
 .sidebar h2 {
-    color: #ffffff;
+    color: #220952ff;
     margin-top: 0;
     font-size: 16px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #40444b;
+    border-bottom: 1px solid #eee;
 }
 
 .channels-list {
@@ -58,19 +52,23 @@ i.fa-solid, i.fa-regular, i.fa-brands {
     margin-bottom: 2px;
     display: flex; /* Align avatar and text */
     align-items: center; /* Vertically center avatar and text */
+    background: #fff;
+    color: #222;
 }
 
 .channels-list li .avatar { /* Style for sidebar avatars */
     width: 32px; /* Slightly smaller avatar for the list */
     height: 32px;
-    background-color: #7289da; /* Placeholder color */
+    background-color: #220952ff; /* Placeholder color */
     border-radius: 50%; /* Make it circular */
     margin-right: 10px; /* Space between avatar and text */
     flex-shrink: 0; /* Prevent avatar from shrinking */
 }
 
-.channels-list li:hover, .channels-list li.active {
-    background-color: #40444b; /* Hover/active background */
+.channels-list li.active,
+.channels-list li:hover {
+    background-color: #f3eafd !important;
+    color: #220952ff !important;
 }
 
 .add-chat-button { /* Styles for the new button */
@@ -79,8 +77,8 @@ i.fa-solid, i.fa-regular, i.fa-brands {
     justify-content: center;
     width: 32px; /* Match avatar size or adjust as needed */
     height: 32px;
-    background-color: #40444b; /* Button background */
-    color: #b9bbbe; /* Plus sign color */
+    background-color: #f5f5f5;
+    color: #220952ff;
     border-radius: 8px; /* Rounded square */
     font-size: 24px; /* Size of the plus sign */
     font-weight: bold;
@@ -91,8 +89,8 @@ i.fa-solid, i.fa-regular, i.fa-brands {
 }
 
 .add-chat-button:hover {
-    background-color: #5865f2; /* Discord blue on hover */
-    color: #ffffff; /* White plus on hover */
+    background-color: #220952ff;
+    color: #fff;
 }
 
 
@@ -107,16 +105,16 @@ i.fa-solid, i.fa-regular, i.fa-brands {
 .user-info {
     margin-top: auto; /* Pushes to the bottom */
     padding: 10px; /* Adjusted padding */
-    border-top: 1px solid #40444b;
+    border-top: 1px solid #eee;
     display: flex; /* Use flexbox for layout */
     align-items: center; /* Vertically center items */
-    background-color: #292b2f; /* Slightly darker background for this area */
+    background-color: #fff;
 }
 
 .user-info .avatar { /* Style for user's own avatar */
     width: 32px;
     height: 32px;
-    background-color: #7289da; /* Placeholder color */
+    background-color: #220952ff; /* Placeholder color */
     border-radius: 50%;
     margin-right: 8px;
     flex-shrink: 0;
@@ -143,7 +141,7 @@ i.fa-solid, i.fa-regular, i.fa-brands {
 .user-info .username {
     font-size: 14px; /* Slightly larger font */
     font-weight: 500;
-    color: #ffffff;
+    color: #220952ff;
     margin-right: auto; /* Pushes icons to the right */
     white-space: nowrap; /* Prevent wrapping */
     overflow: hidden; /* Hide overflow */
@@ -156,7 +154,7 @@ i.fa-solid, i.fa-regular, i.fa-brands {
 }
 
 .user-info .user-actions i { /* Style for icons */
-    color: #b9bbbe;
+    color: #220952ff;
     cursor: pointer;
     padding: 4px; /* Add some clickable area */
     margin-left: 4px; /* Space between icons */
@@ -165,8 +163,8 @@ i.fa-solid, i.fa-regular, i.fa-brands {
 }
 
 .user-info .user-actions i:hover {
-    background-color: #40444b;
-    color: #dcddde;
+    background-color: #f5f5f5;
+    color: #111;
 }
 
 /* Remove styles for DND Active State on body */
@@ -190,8 +188,8 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .currentTab{
-    background-color: rgb(45, 17, 97) !important;
-    color: white !important;
+    background-color: #f5f5f5 !important;
+    color: #220952ff !important;
     cursor: pointer;
 }
 
@@ -210,7 +208,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 #newChatBtn i{
-    color: white;
+    color: #220952ff;
     font-size: 1.5vh;
     text-align: center;
     justify-self: center;
@@ -231,13 +229,14 @@ body.dnd-active .user-info .user-actions .fa-moon {
     margin-left: 1vw;
     position: relative;
     bottom: -0.7vh;
+    background: #fff;
 }
 
 .long-page-list:hover{
     overflow-x: scroll;
 }
 .pages-list a {
-    color: white;
+    color: #220952ff;
     background-color: transparent;
     
     margin: 0;
@@ -254,13 +253,17 @@ body.dnd-active .user-info .user-actions .fa-moon {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-
+.pages-list a.active,
+.pages-list a:hover {
+    background-color: #f3eafd !important;
+    color: #220952ff !important;
+}
 
 .read-notification {
     border-radius: 50%;
     display: inline-flex;
     background-color: #220952ff;
-    color: white;
+    color: #fff;
     width: 2vh;
     justify-content: center;
     align-self: center;
@@ -277,9 +280,12 @@ body.dnd-active .user-info .user-actions .fa-moon {
     width: 100%;
     height: 95%;
     flex-direction: column;
-    background-color: black; /* Main chat area background */
+    background-color: #fff !important;
     position: relative; /* Add this to create a positioning context */
     overflow: hidden; /* Prevent any overflow issues */
+    border-left: 2px solid #eee !important;
+    border-right: 2px solid #eee !important;
+    box-shadow: none !important;
 }
 
 .chat-messages {
@@ -288,18 +294,11 @@ body.dnd-active .user-info .user-actions .fa-moon {
     padding: 20px;
     display: flex;
     flex-direction: column-reverse;
-    
-
-   
-    border-left: 2px solid white;
-    border-right: 2px solid white;
-
-    
+    background-color: #fff !important;
+    border-left: 2px solid #eee !important;
+    border-right: 2px solid #eee !important;
+    box-shadow: none !important;
     margin-bottom: 0;
-
-    
-    background: linear-gradient(to bottom, rgb(7,7,7), rgb(13, 2, 34));
-  
 }
 
 @media screen and (max-width: 768px) {
@@ -327,10 +326,10 @@ body.dnd-active .user-info .user-actions .fa-moon {
     display: flex;
     align-items: center;
     gap: 15px;
-    background-color: rgb(13, 2, 34);
+    background-color: #fff !important;
    
-    border: 2px solid #eee;
-    border-top: 5px solid #eee;
+    border: 2px solid #eee !important;
+    border-top: 2px solid #eee !important;
     
     border-radius: 0 0 10px 10px;
     position: absolute; /* Change from sticky to absolute */
@@ -340,18 +339,19 @@ body.dnd-active .user-info .user-actions .fa-moon {
     z-index: 10;
     min-height: 60px;
     
+    box-shadow: none !important;
 }
 
 .chat-header {
     padding: 15px 20px;
-    border-bottom: 5px solid #acacac;
+    border-bottom: 2px solid #eee !important;
     font-size: 18px;
     font-weight: bold;
-    color: white;
+    color: #220952ff;
     position: sticky;
     top: 0;
     z-index: 20; /* Increased z-index to ensure it stays on top */
-    background-color: rgb(7, 7, 7);
+    background-color: #fff !important;
     
     width: 100%; /* Ensure it takes full width */
     box-sizing: border-box; /* Include padding in width calculation */
@@ -359,6 +359,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     min-height: 60px; /* Set minimum height */
     display: flex; /* Use flexbox */
     align-items: center; /* Center content vertically */
+    box-shadow: none !important;
 }
 
 .chat-messages {
@@ -387,6 +388,8 @@ body.dnd-active .user-info .user-actions .fa-moon {
     font-family: 'RF Dewi';
     /* flex-direction: column; /* Removed */
     /* position: relative; /* Removed */
+    background: transparent;
+    color: #222;
 }
 
 /* Remove the message-body wrapper style */
@@ -404,8 +407,8 @@ body.dnd-active .user-info .user-actions .fa-moon {
     align-self: flex-end; /* Align own messages to the right */
     flex-direction: row-reverse; /* Reverse order for avatar on right */
     font-family: 'RF Dewi';
-
-
+    background-color: #fff;
+    color: #220952ff;
 }
 
 /* Remove row-reverse from message-body as it's gone */
@@ -440,9 +443,10 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .message .content {
     height:fit-content;
 
-    background-color: #40444b; /* Default bubble color */
+    background-color: #f5f5f5;
     padding: 10px 15px;
     font-family: 'RF Dewi';
+    color: #222;
 
    
     border-radius: 18px; /* Rounded corners for bubble */
@@ -453,11 +457,9 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .message.own-message .content {
-    background-color: black;
-    
+    background-color: #fff;
     color: #220952ff;
-    border: 2px solid white;
-
+    border: 2px solid #220952ff;
 }
 
 /* Username styling - applies to both */
@@ -466,7 +468,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     font-family: 'RF Dewi';
 
 
-    color: #ffffff; /* Ensure username is visible */
+    color: #220952ff; /* Ensure username is visible */
     margin-bottom: 4px;
     font-size: 13px; /* Slightly smaller username */
     display: block; /* Hide usernames by default */
@@ -500,7 +502,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
  .message .content .text {
     line-height: 1.4;
-    color: white; /* Ensure text color contrasts with bubble */
+    color: #222; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
     font-family: 'RF Dewi';
 
@@ -510,7 +512,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
  .own-message .content .text {
     line-height: 1.4;
-    color: white; /* Ensure text color contrasts with bubble */
+    color: #220952ff; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
     font-family: 'RF Dewi';
 
@@ -520,7 +522,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
  /* Style for the timestamp */
  .message .content .timestamp {
      font-size: 11px; /* Smaller font size */
-     color: white; /* Lighter grey color */
+     color: #888; /* Lighter grey color */
      margin-top: 5px; /* Space above the timestamp */
      align-self: flex-end; /* Align timestamp to the right within the bubble */
      font-family: 'RF Dewi';
@@ -540,7 +542,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .read-message{
-    background-color: #c24f32ff;
+    background-color: #f5f5f5;
 }
 
 
@@ -564,12 +566,12 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 .chat-input {
     padding: 15px 25px;
-    border-top: 5px solid #eee;
+    border-top: 2px solid #eee !important;
     overflow: visible;
     display: flex;
     align-items: center;
     
-    background-color: #202020;
+    background-color: #fff !important;
    
     border-radius: 0 0 10px 10px;
     position: sticky;
@@ -586,8 +588,8 @@ body.dnd-active .user-info .user-actions .fa-moon {
     padding: 15px 20px;
     border: none;
     border-radius: 10px;
-    background-color: #eee;
-    color: #dcddde;
+    background-color: #f5f5f5;
+    color: #222;
     box-sizing: border-box;
     font-size: 16px;
     font-family: 'RF Dewi';
@@ -605,12 +607,12 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .chat-input input:focus {
     outline: none;
     color: #220952ff;
-    background-color: #ffffff; /* Slightly lighter background when focused */
+    background-color: #fff; /* Slightly lighter background when focused */
     box-shadow: 0 0 0 2px #220952ff; /* Add a subtle focus ring */
 }
 
 .chat-input input::placeholder {
-    color: #72767d;
+    color: #888;
 }
 
 /* Styles for the action icons next to input */
@@ -622,7 +624,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .chat-input .input-actions i {
-    color: #666666ff;
+    color: #220952ff;
     font-size: 24px; /* Increased icon size */
     cursor: pointer;
     padding: 10px; /* Increased clickable area */
@@ -633,7 +635,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .chat-input .input-actions i:hover {
-    color: #ffffff; /* Brighter color on hover */
+    color: #fff; /* Brighter color on hover */
     background-color: #220952ff; /* Background on hover */
 }
 
@@ -658,13 +660,13 @@ body.dnd-active .user-info .user-actions .fa-moon {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #ffffff8a;
+    background-color: #fff8;
     animation: show 0.6s linear !important;
 
 }
 
 form{
-    background-color: white;
+    background-color: #fff;
     z-index: 501;
     
     width: 50vw;
@@ -674,7 +676,7 @@ form{
     justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
-    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.08);
     position: absolute;
     top: 20vh;
     animation: slide 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) !important;
@@ -769,7 +771,7 @@ form h1{
 
 .choices .btn{
     
-    color: white;
+    color: #fff;
     background-color: #220952ff;
     outline: none;
     border: none;
@@ -922,11 +924,11 @@ form h1{
     padding: 0.25vw;
     height: 1.5vw;
     border-radius: 8px;
-    background-color: rgb(44, 16, 97);
+    background-color: #f5f5f5;
     margin: 5%;
     padding: 2.5;
     border: none;
-    color: white;
+    color: #220952ff;
     transition: background-color .25s linear;
     outline: none;
     
@@ -935,25 +937,25 @@ form h1{
 
 .input-group input:focus{
 
-    background-color: #220952ff;
+    background-color: #fff;
     outline: none;
-    color: white;
+    color: #220952ff;
 }
 
 .deleteInput{
     border-radius: 8px;
 
-    background-color: rgb(255, 150, 150);
+    background-color: #ff9696;
     outline: none;
     border: none;
-    color: white;
+    color: #fff;
     height: 1.75vw;
     transition: all .25s linear;
     width: 1.75vw;
 }
 
 .deleteInput:hover{
-    background-color: rgb(255, 100, 100);
+    background-color: #ff6464;
 }
 
 .deleteInput i{
@@ -972,7 +974,7 @@ form h1{
   
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #eee;
+    background: #fff;
 }
 
 /* Handle */
@@ -985,7 +987,7 @@ form h1{
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #e9e9e9;
+    background: #220952ff;
 }
 
 .btns{
@@ -1003,12 +1005,13 @@ form h1{
     background-color: #220952ff;
     outline: none;
     border: none;
-    color: white;
+    color: #fff;
     transition: all .25s linear;
 }
 
 .btns button:hover{
-    background-color: #220952ff;
+    background-color: #f5f5f5;
+    color: #220952ff;
 }
 
 .hidden{
@@ -1016,7 +1019,7 @@ form h1{
 }
 
 .error{
-    color: rgb(255, 150, 150);
+    color: #ff9696;
     font-size: 2vh;
     text-align: center;
     margin-top: 1vh;
@@ -1031,7 +1034,7 @@ form h1{
     display: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
-    background: #220952ff;
+    background: #fff;
     padding: 8px;
 }
 
@@ -1041,7 +1044,7 @@ form h1{
 
 /* Style for the emoji button when active */
 .emoji-button-active {
-    color: rgb(44, 16, 97) !important;
+    color: #220952ff !important;
 }
 
 /* GIF picker container */
@@ -1051,7 +1054,7 @@ form h1{
     right: 20px;
     z-index: 1000;
     display: none;
-    background-color: rgb(22, 22, 22);
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     width: 320px;
@@ -1065,12 +1068,12 @@ form h1{
 
 /* Style for the GIF button when active */
 .gif-button-active {
-    color: rgb(44, 16, 97) !important;
+    color: #220952ff !important;
 }
 
 .gif-text-button, .gif-label {
     background: transparent !important;
-    color: rgb(44, 16, 97);
+    color: #220952ff;
     border-radius: 8px;
     font-family: 'RF Dewi', 'Inter', 'Arial', sans-serif;
     font-weight: bold;
@@ -1080,8 +1083,8 @@ form h1{
     padding: 4px 10px;
 }
 .gif-label:hover {
-    background: #40444b !important;
-    color: #fff !important;
+    background: #f5f5f5 !important;
+    color: #220952ff !important;
     transition: background 0.2s, color 0.2s;
 }
 .gif-button-active {
@@ -1103,17 +1106,27 @@ form h1{
     border: 1px solid black;
     border-radius: 4px;
     font-size: 14px;
-    background-color: #220952ff;
+    background-color: #f5f5f5;
+    color: #220952ff;
 }
 
 .gif-search-button {
-    margin-left: 5px;
-    padding: 8px 12px;
-    background-color: #220952ff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    background: #222 !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.gif-search-button i {
+    color: #fff !important;
+}
+
+.gif-search-button:hover, .gif-search-button:active {
+    background: #444 !important;
+    color: #fff !important;
+}
+
+.gif-search-button:hover i, .gif-search-button:active i {
+    color: #fff !important;
 }
 
 /* GIF results container */
@@ -1131,10 +1144,12 @@ form h1{
     border-radius: 4px;
     overflow: hidden;
     transition: transform 0.2s;
+    background: #fff;
 }
 
 .gif-item:hover {
     transform: scale(1.05);
+    background: #f5f5f5;
 }
 
 .gif-item img {
@@ -1149,7 +1164,7 @@ form h1{
     bottom: 80px;
     left: 20px;
     width: 300px;
-    background-color: #FFFFFF;
+    background-color: #fff;
     border: 2px solid #eee;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -1177,14 +1192,14 @@ form h1{
 
 .upload-header h3 {
     margin: 0;
-    color: #000000;
+    color: #220952ff;
     font-size: 16px;
 }
 
 .close-upload {
     background: none;
     border: none;
-    color: #999;
+    color: #888;
     cursor: pointer;
     font-size: 16px;
 }
@@ -1194,7 +1209,7 @@ form h1{
 }
 
 .upload-area {
-    border: 2px dashed #ddd;
+    border: 2px dashed #220952ff;
     border-radius: 8px;
     padding: 30px 20px;
     text-align: center;
@@ -1204,11 +1219,12 @@ form h1{
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    background-color: #f5f5f5;
 }
 
 .upload-area:hover, .upload-area.dragover {
     border-color: #220952ff;
-    background-color: rgba(253, 90, 35, 0.05);
+    background-color: #fff;
 }
 
 .upload-area i {
@@ -1219,7 +1235,7 @@ form h1{
 
 .upload-area p {
     margin: 0;
-    color: #666;
+    color: #888;
     font-size: 14px;
 }
 
@@ -1232,6 +1248,7 @@ form h1{
     max-width: 100%;
     max-height: 200px;
     border-radius: 4px;
+    background: #fff;
 }
 
 .upload-button {
@@ -1239,7 +1256,7 @@ form h1{
     width: 100%;
     padding: 10px;
     background-color: #220952ff;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -1249,8 +1266,9 @@ form h1{
 }
 
 .upload-button:hover {
-    background-color: rgb(44, 16, 97);
-    box-shadow: 0 4px 8px rgba(253, 90, 35, 0.2);
+    background-color: #fff;
+    color: #220952ff;
+    box-shadow: 0 4px 8px rgba(253, 90, 35, 0.08);
 }
 
 .chat-image {
@@ -1258,6 +1276,7 @@ form h1{
     max-height: 200px;
     border-radius: 4px;
     cursor: pointer;
+    background: #fff;
 }
 
 /* Smooth overlay for image preview */
@@ -1267,7 +1286,7 @@ form h1{
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.7);
+    background: rgba(255,255,255,0.7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1285,7 +1304,7 @@ form h1{
     max-height: 90vh;
     border-radius: 8px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    background: white;
+    background: #fff;
     animation: overlayImageIn 0.3s cubic-bezier(0.43, 0.34, 0.85, 1.52);
 }
 @keyframes overlayImageIn {
@@ -1324,7 +1343,7 @@ form h1{
 
 
 .typingMessage .content{
-    background-color: #1d1942ff !important;
+    background-color: #f5f5f5 !important;
 }
 
 .typingMessage img{
@@ -1333,7 +1352,7 @@ form h1{
 
 .replyMessage{
     background-color: #220952ff;
-    color: white;
+    color: #fff;
     border-radius: 8px;
     padding: 5px;
     
@@ -1341,7 +1360,7 @@ form h1{
 }
 
 .own-message .replyMessage{
-    background-color: #eee;
+    background-color: #f5f5f5;
     color: #220952ff;
     border-radius: 8px;
     padding: 5px;
@@ -1363,6 +1382,7 @@ form h1{
     overflow: hidden; /* Prevent scrolling */
     height: auto; /* Let height adjust to content */
     max-height: 30vh; /* Maximum height */
+    background: #fff;
 }
 
 .popup i{
@@ -1398,14 +1418,14 @@ form h1{
     text-align: center;
     width: 5vw;
     border-radius: 8px;
-    background-color: white;
+    background-color: #fff;
     color: #220952ff;
     transition: all .25s linear;
 }
 
 .popup button:hover{
     background-color: #220952ff !important;
-    color: white !important;
+    color: #fff !important;
 }
 
 @keyframes zoomInText {
@@ -1496,7 +1516,7 @@ form h1{
     height: 100vh;
     z-index: 50;
 
-    background: linear-gradient(to bottom, rgb(7,7,7),rgb(7,7,7), #21074fff);
+    background: #fff;
     opacity: 1;
     /* background: rgba(255, 255, 255, 0.7);
     border-radius: 16px;
@@ -1512,7 +1532,7 @@ form h1{
     margin-left: 30vw;
     width: 40vw;
     display: flex;
-    color: white;
+    color: #220952ff;
     font-family: 'RF Dewi', sans-serif;
     height: 5vh;
     align-items: center;
@@ -1527,7 +1547,7 @@ form h1{
 
 
     
-    background: transparent;
+    background: #fff;
   
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
@@ -1549,26 +1569,26 @@ form h1{
     font-family: 'RF Dewi', sans-serif;
     font-weight: 500;
     font-size: 1.5vh;
-
+    color: #220952ff;
 }
 
 .lastMessage{
     font-family: 'RF Dewi', sans-serif;
     font-weight: 400;
     font-size: 1.5vh;
-
- 
+    color: #888;
 }
 
 .person{
     display: flex;
     max-width: 75%;
+    color: #220952ff;
 }
 
 .home .title{
     font-family: 'RF Dewi', sans-serif;
     font-weight: 400;
-    color: white;
+    color: #220952ff;
     font-size: 3vh;
     
     text-align: left;
@@ -1600,6 +1620,7 @@ form h1{
     font-family: 'RF Dewi', sans-serif;
     font-size: 20px;
     padding-left: 50px;
+    color: #888;
 }
 
 
@@ -1608,6 +1629,7 @@ form h1{
     font-size: 1.7vh;
     font-weight: 600;
     padding-right: 2vh;
+    color: #888;
 }
 
 .messagesBanner .reader{
@@ -1618,7 +1640,7 @@ form h1{
     width: 2vh;
     height: 2vh;
     border-radius: 50px;
-    color: white;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1631,6 +1653,7 @@ form h1{
 .hide{
     left: -200vw;
     opacity: 0;
+    background: #fff;
 }
 
 .homeBtn i{
@@ -1647,11 +1670,12 @@ form h1{
     justify-content: center;
     align-items: center;
     transition: color .5s linear;
+    color: #220952ff;
 }
 
 .homeBtn {
     border: none;
-    color: white;
+    color: #220952ff;
     margin-right: 2vw;
     outline: none;
     
@@ -1663,12 +1687,12 @@ form h1{
 
 .homeBtn i:hover{
     background-color: transparent;
-    color: white;
+    color: #fff;
 }
 
 .homeBtn:hover i{
     background-color: transparent;
-    color: white;
+    color: #fff;
 }
 
 
@@ -1682,6 +1706,7 @@ form h1{
     justify-content: center;
     transition: all .25s ease-in-out;
     z-index: 500000;
+    background: #fff;
 }
 
 .searcher input{
@@ -1691,9 +1716,9 @@ form h1{
     
     outline: none;
     border: none;
-    background-color: black;
-    color: white;
-    border: 3px solid rgba(0, 0, 0, 0.164);
+    background-color: #fff;
+    color: #220952ff;
+    border: 3px solid #eee;
     
     font-family: 'RF Dewi';
     
@@ -1727,15 +1752,12 @@ form h1{
   padding-left: 40px; /* Make room for the icon */
   height: 36px;
   font-size: 16px;
+  color: #220952ff;
 }
 
 .searcher input:focus{
-    border: 3px solid transparent;
-    background: linear-gradient(black, black), 
-                linear-gradient(to right, #8b64e8, #2a0e5e);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-   
+    border: 3px solid #220952ff;
+    background: #fff;
 }
 
 .searchHold{
@@ -1745,7 +1767,7 @@ form h1{
     width: 100%;
     top: 90vh;
     height: 100vh;
-    background: linear-gradient(to bottom, rgb(7,7,7),rgb(7,7,7), #21074fff);
+    background: #fff;
 
     z-index: 50000;
     opacity: 0;
@@ -1757,11 +1779,12 @@ form h1{
 .messagers{
     max-height: 70vh;
     margin-top: 5vh;
+    background: #fff;
 }
 
 .messager{
     margin-left: 3vw;
-    color: white;
+    color: #fff;
     font-family: 'RF Dewi';
     background-color: #220952ff;
     padding: 3px;
@@ -1785,9 +1808,9 @@ form h1{
 
     display: flex;
     justify-self: flex-end;
-    background-color: black;
-    color: white;
-    border: 3px solid white;
+    background-color: #fff;
+    color: #220952ff;
+    border: 3px solid #220952ff;
     border-bottom-left-radius: 16px;
     
     border-bottom-right-radius: 0;
@@ -2091,4 +2114,235 @@ form h1{
     color: #222 !important;
     border: none !important;
   }
+}
+
+.sidebar {
+    background-color: #f3eafd !important;
+    border-right: 1px solid #eee !important;
+}
+
+.sidebarmenu {
+    background-color: #f3eafd !important;
+}
+
+.linker, .links, .linksmener {
+    background-color: #f3eafd !important;
+}
+
+.nav-items a, .bottom-nav a {
+    color: #220952ff;
+}
+
+.nav-items a:hover, .bottom-nav a:hover {
+    background-color: #f5f5f5;
+    color: #220952ff;
+}
+
+.folder-header {
+    background-color: #fff;
+    color: #220952ff;
+}
+
+.folder-header:hover {
+    background-color: #f5f5f5;
+    color: #220952ff;
+}
+
+.collapse-btn {
+    background-color: #fff;
+    color: #220952ff;
+}
+
+.collapse-btn:hover {
+    background-color: #f5f5f5;
+    color: #220952ff;
+}
+
+#meny {
+    background-color: #fff !important;
+}
+
+#chat-header, .chat-header {
+    background-color: #fff !important;
+    color: #220952ff !important;
+    border-bottom: 1px solid #eee !important;
+}
+
+.main-container {
+    background-color: #fff !important;
+}
+
+.main-chat {
+    background-color: #fff !important;
+}
+
+.chat-messages {
+    background-color: #fff !important;
+}
+
+/* --- Desktop now matches mobile styles --- */
+.chat-messages {
+    border: 0px solid white !important;
+}
+
+.chat-header {
+    border: 0px solid white !important;
+}
+
+.chat-input {
+    border: 0px solid white !important;
+}
+
+.messager {
+    padding: 5px !important;
+}
+
+body,
+.main-chat,
+.chat-messages,
+.chat-header,
+.chat-input,
+.message .content,
+.message .text,
+.own-message .content,
+.own-message .text,
+.messagesBanner,
+.user,
+.lastMessage,
+.home .title,
+.sidebar h2,
+.channels-list li,
+.add-chat-button,
+.user-info,
+.user-info .username,
+.user-info .user-actions i,
+.popup,
+.btns button,
+.input-group input {
+    color: #111 !important;
+    background: #fff !important;
+    background-color: #fff !important;
+    border-color: #eee !important;
+}
+
+.messagesBanner .reader {
+    color: #fff !important;
+    background: #220952ff !important;
+}
+
+.add-chat-button,
+.btns button {
+    background: #f5f5f5 !important;
+    color: #220952ff !important;
+}
+.add-chat-button:hover,
+.btns button:hover {
+    background: #e0e0e0 !important;
+    color: #111 !important;
+}
+.popup {
+    background: #fff !important;
+    color: #111 !important;
+}
+.chat-input .input-actions i {
+    color: #220952ff !important;
+}
+.chat-input .input-actions i:hover {
+    color: #fff !important;
+    background: #220952ff !important;
+}
+.input-group input {
+    background: #fff !important;
+    color: #111 !important;
+    border: 1px solid #eee !important;
+}
+.input-group input::placeholder {
+    color: #888 !important;
+}
+.sidebar h2 {
+    color: #220952ff !important;
+    border-bottom: 1px solid #eee !important;
+}
+.channels-list li.active, .channels-list li:hover {
+    background: #f5f5f5 !important;
+    color: #220952ff !important;
+}
+.message .timestamp, .own-message .timestamp {
+    color: #888 !important;
+}
+
+#gifButton,
+#emojiButton {
+    color: #888 !important;
+}
+
+#gifButton:hover,
+#emojiButton:hover {
+    color: #555 !important;
+}
+
+#gifButton .fa-note-sticky {
+    color: #888 !important;
+}
+#gifButton:hover .fa-note-sticky {
+    color: #555 !important;
+}
+
+.channels-list li.active,
+.channels-list li:hover,
+.pages-list a.active,
+.pages-list a:hover,
+.selection,
+.selected,
+.message.selected,
+.context-menu-item:hover,
+.folder-header:hover,
+.collapse-btn:hover,
+.selection-mode.active,
+.selection-actions .delete-all:hover,
+.selection-actions .cancel:hover {
+    background-color: #f3eafd !important;
+    color: #220952ff !important;
+}
+
+.upload-label:hover {
+    background-color: #f3eafd !important;
+    color: #220952ff !important;
+}
+
+#emojiButton:hover {
+    background-color: #f3eafd !important;
+    color: #220952ff !important;
+}
+
+#gifButton:hover,
+#gifButton:hover .fa-note-sticky {
+    background-color: #f3eafd !important;
+    color: #220952ff !important;
+}
+
+.message-popup {
+    background: #fff !important;
+    color: #222 !important;
+    border: 1px solid #eee !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+}
+
+.message-popup-action {
+    color: #222 !important;
+    background: none !important;
+}
+
+.message-popup-action:hover {
+    background: #f3eafd !important;
+    color: #220952ff !important;
+}
+
+.message-popup-action.delete-action {
+    color: #ff4444 !important;
+}
+
+.message-popup-action.delete-action:hover {
+    background: #ff4444 !important;
+    color: #fff !important;
 }
