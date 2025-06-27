@@ -52,6 +52,19 @@ async function fetchUser() {
 
 let currentChat;
 
+async function fetchName(username) {
+    const { data, error } = await db
+      .from('Users')
+      .select('name')
+      .eq('username', username);
+  
+    if (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  
+    return data;
+}
 
 
 async function fetchUsers(id) {
@@ -162,17 +175,19 @@ async function showChats() {
         texts.classList.add("text");
         person.appendChild(avatar);
         let uselr = document.createElement('div');
+
+      
         if (chat.groupchat) {
 
 
             uselr.innerHTML = chat.title;
         } else {
             if (chat.host === "" + userId) {
-                uselr.innerHTML = chat.members[0];
+                uselr.innerHTML = (await fetchName(chat.members[0]))[0].name;
             } else {
                 let hoster = await fetchUsers(chat.host);
                 if (hoster[0]) {
-                    uselr.innerHTML = hoster[0].username;
+                    uselr.innerHTML = (await fetchName(hoster[0].username))[0].name;
                 }
             }
         }
@@ -211,7 +226,7 @@ async function showChats() {
 
 
                     }else{
-                        lastMessage.innerHTML = chat.senders[i] + ": " + finalMessage;
+                        lastMessage.innerHTML = (await fetchName(chat.senders[i]))[0].name + ": " + finalMessage;
                         
                     }
                     
@@ -717,8 +732,8 @@ async function openChat(id, payload = null) {
         chatInput.placeholder = "Message " + chat.title;
     }else{
         if(chat.host == "" + userId + ""){
-            chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.members[0];
-            chatInput.placeholder = "Message " + chat.members[0];
+            chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name;
+            chatInput.placeholder = "Message " + (await fetchName(chat.members[0]))[0].name;
 
             let btn = document.querySelector('.homeBtn');
 
@@ -738,9 +753,9 @@ async function openChat(id, payload = null) {
         }else{
             
             let hoster = fetchUsers(chat.host);
-            hoster.then(result =>{
+            hoster.then(async result =>{
                 if(result[0] != undefined){
-                    hoster = result[0].username;
+                    hoster = (await fetchName(result[0].username))[0].name;
                     
                     chatHeader.innerHTML = hoster;
                     chatInput.placeholder = "Message " + hoster;
@@ -1031,11 +1046,11 @@ async function changeRow() {
                 tab.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    tab.innerHTML = chat.members[0];
+                    tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {
-                        tab.innerHTML = hoster[0].username;
+                        tab.innerHTML = (await fetchName(hoster[0].username))[0].name;
                     }
                 }
             }
@@ -1118,6 +1133,9 @@ function moveTabToLeft(chatId) {
 moveTabToLeft(currentChat);
 
 
+
+
+
 async function showChatlers() {
 
     totalRead = 0;
@@ -1190,11 +1208,11 @@ async function showChatlers() {
                 tab.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    tab.innerHTML = chat.members[0];
+                    tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {
-                        tab.innerHTML = hoster[0].username;
+                        tab.innerHTML =(await fetchName(hoster[0].username))[0].name;
                     }
                 }
             }
@@ -1291,11 +1309,11 @@ async function changeRowler() {
                 tab.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    tab.innerHTML = chat.members[0];
+                    tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {
-                        tab.innerHTML = hoster[0].username;
+                        tab.innerHTML = (await fetchName(hoster[0].username))[0].name;
                     }
                 }
             }

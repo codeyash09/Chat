@@ -1588,8 +1588,102 @@
         
 
         <div class="home">
+            <div id="sett" class="settingsPopup" style="width: 100vw;height: 100vh;position: absolute;z-index: 500000000000000000000000;display: none;justify-content: center;align-items: center;background-color: #00000098;transition: all .25s linear;top: 0;left: 0;">
+                <div class="container" style="width: 50vw;height: 50vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5);">
+                    <div id="clobtn" class="closeBtn" style="position: absolute; right: 25vw;width:4vh; height: 4vh; font-size: 20px;display: flex;justify-content: center;align-items: center;"><i id="cloBtn" class="fa-solid fa-circle-xmark"></i></div>
+                </div>
+            </div>
+
+
+            
+            <div id="bitsPopup" class="bitsPopup" style="display: none; justify-content: center; align-items: center; position: absolute;width: 10vw;height: 15vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5);z-index: 500000000000000000000000;right: 9vw;top:8vh;box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);">
+                
+            </div>
+            <div id="nonPopup" class="nonPopup" style="display: none; justify-content: center; align-items: center; position: absolute;width: 10vw;height: 15vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5);z-index: 500000000000000000000000;right: 6vw;top:8vh;box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);">
+                
+            </div>
+            
             <button id="newChatBtn2"><div class="btnHolder"><i class="fa-solid fa-plus"></i></div></button>
-            <div class="title">Qubit</div>
+            <div class="title">
+                <div class="txt">Qubit</div>
+          
+
+                <div class="imges">
+                    <div id="pfpGen" class="avatar"></div>
+                    
+                    <img id="bits" src="/images/bits.png" alt="">
+                    <i id="bell" class="fa-solid fa-bell"></i>
+
+                </div>
+               
+
+                <script>
+                    let pfp = document.getElementById("pfpGen");
+                    let popup = document.getElementById("sett");
+
+                    pfp.addEventListener("click", ()=>{
+                        popup.style.display = 'flex';
+                    })
+
+                    document.getElementById("clobtn").addEventListener("click", ()=>{
+                        popup.style.display='none';
+                    });
+
+                    document.getElementById("cloBtn").addEventListener("click", ()=>{
+                        popup.style.display='none';
+                    });
+
+                    let bitsPop = document.getElementById("bitsPopup");
+
+                    let bits = document.getElementById("bits");
+
+                    bits.addEventListener("click", ()=>{
+                        bitsPop.style.display = 'flex';
+
+                        setTimeout(() => {
+                            // defer adding the listener if needed, or just add it right away
+                            document.addEventListener("click", hidey);
+                        }, 0);
+                   
+                    })
+
+                    function hidey(event){
+                        if (!bitsPop.contains(event.target)) {
+                            bitsPop.style.display = 'none';
+                            document.removeEventListener("click", hidey)
+                        }
+                        
+                    }
+                    let nonPop = document.getElementById("nonPopup");
+
+                    let bell = document.getElementById("bell");
+
+                    bell.addEventListener("click", ()=>{
+                        nonPop.style.display = 'flex';
+
+                        setTimeout(() => {
+                            // defer adding the listener if needed, or just add it right away
+                            document.addEventListener("click", hideys);
+                        }, 0);
+                   
+                    })
+
+                    function hideys(event){
+                        if (!nonPop.contains(event.target)) {
+                            nonPop.style.display = 'none';
+                            document.removeEventListener("click", hideys)
+                        }
+                        
+                    }
+
+
+
+
+
+
+
+                </script>
+            </div>
            
             <div id="messagesBannerHolder" class="messagesBannerHolder" style="max-height: 70vh;">
                 <a class="messagesBanner">

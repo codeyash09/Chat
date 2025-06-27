@@ -1594,6 +1594,7 @@ form h1{
     text-align: left;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
     margin-left: 12vh;
     height: 10vh;
@@ -2387,4 +2388,88 @@ body,
 
 .recc:hover{
     background-color: #eee;
+}
+
+.messagesBanner:has(.replyBar){
+    padding-bottom: 8vh !important;
+}
+
+.replyBar{
+    position: absolute;
+    bottom: 3vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.replyInput{
+    width: 75%;
+    padding: 1vh;
+    border-radius: 50px;
+    outline: none;
+    border: 2px solid rgba(0, 0, 0, 0.137);
+    font-family: 'RF Dewi';
+    transition: all .25s linear;
+}
+
+
+.replyInput:focus{
+    border: 2px solid rgba(0, 0, 0, 1);
+    
+}
+
+
+
+
+.txt{
+    font-family: 'RF Dewi';
+}
+
+.imges{
+    position: absolute;
+    right: 15vw;
+    display: flex;
+    justify-content: space-around;
+    overflow: visible;
+    align-items: center;
+    width: 10vw;
+}
+
+@media screen and (max-width: 1200px) {
+    .imges{
+        right: 20vw;
+
+        width: 30vw;
+    }
+
+    .bitsPopup{
+        position: absolute !important;width: 30vw!important;height: 15vh!important;background-color: white!important;border-radius: 16px!important;outline: 2px solid rgba(0, 0, 0, 0.5)!important;z-index: 500000000000000000000000!important;right: 5vh!important;top:8vh!important;
+    }
+    .nonPopup{
+        position: absolute !important;width: 30vw!important;height: 15vh!important;background-color: white!important;border-radius: 16px!important;outline: 2px solid rgba(0, 0, 0, 0.5)!important;z-index: 500000000000000000000000!important;right: 3vh!important;top:8vh!important;
+    }
+}
+
+.imges img{
+    width: 3vh;
+}
+
+.imges .avatar{
+    width: 3vh;
+    background-color: #220952ff;
+    height: 3vh;
+    border-radius: 50px;
+}
+
+.imges i{
+    overflow: visible;
+    color: black !important;
+    font-size: 2.5vh;
+}
+
+
+i{
+    overflow: visible !important;
 }
