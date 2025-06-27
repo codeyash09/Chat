@@ -2272,12 +2272,18 @@ body,
 }
 
 #gifButton,
-#emojiButton {
+#emojiButton,
+#magicButton {
     color: #888 !important;
 }
 
+#magicButton:hover{
+    background-color: #f3eafd !important;
+}
+
 #gifButton:hover,
-#emojiButton:hover {
+#emojiButton:hover,
+#magicButton:hover {
     color: #555 !important;
 }
 
@@ -2345,4 +2351,40 @@ body,
 .message-popup-action.delete-action:hover {
     background: #ff4444 !important;
     color: #fff !important;
+}
+
+.magicPopup{
+    position: absolute;
+    right: 4vw;
+    bottom: 150px;
+    background-color: #f3eafd;
+    border: 2px solid black;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 16px;
+    z-index: 5000;
+    transition: all .25s linear;
+    opacity: 1;
+    display: none;
+    padding-left: 0.5vh;
+    padding-right: 0.5vh;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+}
+
+.recc{
+    font-family: 'RF Dewi';
+    border-radius: 16px;
+    padding: 1vh;
+    background-color: white;
+    border: 2px solid black;
+    margin-bottom: 0.5vh;
+    margin-top: 0.5vh;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    
+}
+
+.recc:hover{
+    background-color: #eee;
 }

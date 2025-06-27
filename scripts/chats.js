@@ -34,6 +34,7 @@ let savedScrollPosition;
 let username;
 let messages;
 let sendlers;
+let memblers;
 let timers;
 async function fetchUser() {
   const { data, error } = await db
@@ -740,6 +741,7 @@ async function openChat(id, payload = null) {
 
     messages = chat.messages;
     sendlers = chat.senders;
+    memblers = chat.members;
     timers = chat.times;
 
 
@@ -1207,4 +1209,4 @@ function formatChatListTimestamp(dateString) {
     }
 }
 
-export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, timers};
+export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers};

@@ -16,9 +16,10 @@ let counter = 0;
 let numId;
 let user;
 
-chatInput.addEventListener("input", async () => {
-       
+setInterval(chatLogic, 50);
 
+async function chatLogic(){
+    
     if(chatInput.value != "" && chatInput.value != " " && chatInput.value != null){
         plusBtn.classList.remove('file1');
         plusBtn.classList.add('file2');
@@ -30,8 +31,10 @@ chatInput.addEventListener("input", async () => {
             await fixTyping(currentChat, true);
         }
     }else{
-        typing = false;
-        await fixTyping(currentChat, false);
+        if(typing == true){
+            await fixTyping(currentChat, false);
+
+        }   
 
         plusBtn.classList.remove('file2');
         plusBtn.classList.add('file1');
@@ -40,8 +43,12 @@ chatInput.addEventListener("input", async () => {
         sendBtn.classList.add('plane1');
         
     }
+}
+       
 
-});
+    
+
+
 
 
 setInterval(afk, 200);
