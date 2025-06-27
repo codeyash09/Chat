@@ -40,9 +40,9 @@ function stacker(){
                     }else{
                         content.style.borderTopRightRadius = "18px";
                         content.style.borderBottomRightRadius = "18px";
-
+                        
                         content.parentElement.children[0].style.opacity = "0";
-
+                        
                     }
 
                     
@@ -91,7 +91,10 @@ function stacker(){
             }else{
                 content.style.borderTopLeftRadius = "18px";
                 content.parentElement.children[0].style.opacity = "0";
-
+                if(i == 0){
+                    content.parentElement.children[0].style.opacity = "1";
+                    
+                }
                 content.style.borderBottomRightRadius = "18px";
                 content.style.borderTopRightRadius = "18px";
                 

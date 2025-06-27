@@ -81,7 +81,7 @@ function openCustomEmojiPicker(messageElement, menuPopup) {
                
                 document.removeEventListener('click', closePickerOnClickOutside);
             },
-            theme: 'light',
+            theme: 'dark',
             emojiSize: 20,
             perLine: 8,
             previewPosition: 'none',

@@ -254,7 +254,7 @@ body {
     margin-left: 500px;
     width: 100%;
     height: 100vh;
-    background-color: #ffffff;
+    background-color: rgb(7, 7, 7);
     padding: 20px;
     box-sizing: border-box;
     overflow: hidden;
@@ -697,7 +697,7 @@ body {
     margin-left: 8vh;
     width: 100%;
     height: 100vh;
-    background-color: #ffffff;
+    background-color: rgb(7, 7, 7);
     padding: 20px;
     box-sizing: border-box;
     overflow: hidden;

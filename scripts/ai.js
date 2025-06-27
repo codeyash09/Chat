@@ -1,3 +1,7 @@
+import {db} from '/scripts/createchat.js';
+import {username, userId} from '/scripts/chats.js';
+
+
 const OPENROUTER_API_KEY = "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"; // Get this from https://openrouter.ai
 
 
@@ -8,14 +12,75 @@ let on = false;
 let aing = false;
 let responses = [];
 let prompts = [];
+let sortedChats;
+
+
+
+
+
+
 
 let isWaiting = false;
 let messages = document.querySelector('.messagers');
+
+
+
+
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+async function fetcher(){
+  const { data, error } = await db
+      .from('Chats')
+      .select('senders, messages, members')
+      .or(`members.cs.{"${username}"},host.eq."${userId}"`);
+
+  if (error || !data || data.length === 0) {
+      console.error("No chats found or error fetching chats:", error);
+      return;
+  }
+  
+  
+  sortedChats = data.sort((a, b) => {
+      let lastA;
+      let lastB;
+
+      
+      if (a.times && a.times.length > 0) {
+          lastA = a.times.at(-1);
+      } else {
+          lastA = null;
+      }
+
+      if (b.times && b.times.length > 0) {
+          lastB = b.times.at(-1);
+      } else {
+          lastB = null;
+      }
+
+      
+      if (lastA === null && lastB === null) {
+          return 0; 
+      }
+
+      if (lastA === null) {
+          return 1;
+      }
+
+      if (lastB === null) {
+          return -1; 
+      }
+
+      return new Date(lastB) - new Date(lastA); 
+  });
+
+  
+
+ 
+}
 
 async function chatWithAi(prompt, retryCount) {
   
@@ -24,8 +89,12 @@ async function chatWithAi(prompt, retryCount) {
 
   let mess = [];
 
- 
-  mess.push({role: "system", content: "You are a helpful assistant named Qubit AI"});
+  await fetcher();
+  
+  mess.push({role: "system", content: "You are a helpful assistant named Qubit AI. Please try to use a tone comfortable for the user and try to mimic how they talk to make them more comfortable."});
+  mess.push({role: "system", content: "The user goes by the username: " + username});
+
+  mess.push({role: "system", content: "You will use this information to help users with questions about chats the users have with each other, you are not a part of said chats: " + JSON.stringify(sortedChats)});
   
   for (let i = 0; i < prompts.length; i++) {
     mess.push({ role: "user", content: prompts[i] });
@@ -33,7 +102,7 @@ async function chatWithAi(prompt, retryCount) {
       mess.push({ role: "assistant", content: responses[i] });
     }
   }
-  console.log(mess);
+ 
 
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
@@ -161,3 +230,18 @@ input.addEventListener('keydown', function (event) {
 
 
 export {aing}
+
+
+
+let backBtn = document.getElementById("backerBtn");
+
+
+backBtn.addEventListener("click", ()=>{
+  document.getElementById("searcher").style.top = "80vh";
+  input.value = "";
+
+  wall.style.top = "90vh";
+  wall.style.opacity = '0';
+  aing = false;
+  
+})

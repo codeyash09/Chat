@@ -86,7 +86,9 @@ async function showChats() {
         .from('Chats')
         .select('*')
         .or(`members.cs.{"${username}"},host.eq."${userId}"`);
-
+    console.log('Data before includes:', data);
+    console.log('Type:', typeof data);
+    console.log('Is array:', Array.isArray(data));
     if (error || !data || data.length === 0) {
         console.error("No chats found or error fetching chats:", error);
         return;
@@ -134,7 +136,7 @@ async function showChats() {
         prevOrder = [];
     }
     rowSys = sortedChats;
-
+    console.log(sortedChats);
   
     savedScrollPosition = chatMess.scrollTop;
 
@@ -179,9 +181,11 @@ async function showChats() {
             lastMessage.classList.add("lastMessage");
             let timel = document.createElement('div');
             timel.classList.add('timer');
+           
             if(chat.senders){
                 for(let i = chat.senders.length - 1; i >= 0; i--){
-                    if(!chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
+                    
+                    if(!(chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>"))){
 
                         let finalMessage;
                         if(chat.messages[i].includes('<div class="replyMessage">')){

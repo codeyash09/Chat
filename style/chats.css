@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=RF Dewi:wght@100..900&display=swap');
+@import url('/fonts/RF Dewi/RFDewi-Bold/style.css');
 
 body {
     display: flex;
@@ -134,8 +135,8 @@ i.fa-solid, i.fa-regular, i.fa-brands {
     box-sizing: border-box;
 }
 /* Example status colors (would need JS to change) */
-.user-info .avatar .status-indicator.idle { background-color: #faa61a; } /* Yellow */
-.user-info .avatar .status-indicator.dnd { background-color: #f04747; } /* Red */
+.user-info .avatar .status-indicator.idle { background-color: rgb(65, 31, 128); } /* Yellow */
+.user-info .avatar .status-indicator.dnd { background-color: rgb(44, 16, 97); } /* Red */
 .user-info .avatar .status-indicator.offline { background-color: #747f8d; } /* Grey */
 
 
@@ -185,11 +186,11 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 /* Style for the moon icon when DND is toggled on */
 .user-info .user-actions .fa-moon.dnd-icon-active {
-    color: #faa61a; /* Orange color */
+    color: rgb(44, 16, 97); /* Orange color */
 }
 
 .currentTab{
-    background-color: #FD5A23 !important;
+    background-color: rgb(45, 17, 97) !important;
     color: white !important;
     cursor: pointer;
 }
@@ -201,10 +202,15 @@ body.dnd-active .user-info .user-actions .fa-moon {
     background-color: transparent;
     border: none;
     padding: 0;
-    margin: 0;
+    margin-left: 0.3vw;
+}
+
+#newChatBtn:hover{
+    background-color: transparent !important;
 }
 
 #newChatBtn i{
+    color: white;
     font-size: 1.5vh;
     text-align: center;
     justify-self: center;
@@ -231,19 +237,21 @@ body.dnd-active .user-info .user-actions .fa-moon {
     overflow-x: scroll;
 }
 .pages-list a {
-    color: #FD5A23;
-    background-color: white;
+    color: white;
+    background-color: transparent;
+    
     margin: 0;
     font-size: 2vh;
     cursor: pointer;
     padding: 0;
     width: max-content;
     padding-left: 10px;
+    margin-top: 5px;
     padding-right: 10px;
     display: inline;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
@@ -251,7 +259,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .read-notification {
     border-radius: 50%;
     display: inline-flex;
-    background-color: #FD5A23;
+    background-color: #220952ff;
     color: white;
     width: 2vh;
     justify-content: center;
@@ -269,7 +277,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     width: 100%;
     height: 95%;
     flex-direction: column;
-    background-color: rgb(255, 255, 255); /* Main chat area background */
+    background-color: black; /* Main chat area background */
     position: relative; /* Add this to create a positioning context */
     overflow: hidden; /* Prevent any overflow issues */
 }
@@ -280,14 +288,37 @@ body.dnd-active .user-info .user-actions .fa-moon {
     padding: 20px;
     display: flex;
     flex-direction: column-reverse;
-  
+    
 
    
-    border: 2px solid #eee;
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+
     
     margin-bottom: 0;
-    background-color: white;
+
+    
+    background: linear-gradient(to bottom, rgb(7,7,7), rgb(13, 2, 34));
   
+}
+
+@media screen and (max-width: 768px) {
+    .chat-messages{
+        border: 0px solid white;
+    }
+
+    .chat-header{
+        border: 0px solid white !important;
+
+    }
+
+    .chat-input{
+        border: 0px solid white !important;
+    }
+
+    .messager{
+        padding: 5px !important;
+    }
 }
 
 .chat-input {
@@ -296,7 +327,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     display: flex;
     align-items: center;
     gap: 15px;
-    background-color: white;
+    background-color: rgb(13, 2, 34);
    
     border: 2px solid #eee;
     border-top: 5px solid #eee;
@@ -316,11 +347,11 @@ body.dnd-active .user-info .user-actions .fa-moon {
     border-bottom: 5px solid #acacac;
     font-size: 18px;
     font-weight: bold;
-    color: #000000;
+    color: white;
     position: sticky;
     top: 0;
     z-index: 20; /* Increased z-index to ensure it stays on top */
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(7, 7, 7);
     
     width: 100%; /* Ensure it takes full width */
     box-sizing: border-box; /* Include padding in width calculation */
@@ -353,7 +384,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     height: fit-content;
    
     align-self: flex-start; /* Default to left alignment */
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
     /* flex-direction: column; /* Removed */
     /* position: relative; /* Removed */
 }
@@ -372,7 +403,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
     align-self: flex-end; /* Align own messages to the right */
     flex-direction: row-reverse; /* Reverse order for avatar on right */
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
 
 }
@@ -389,11 +420,11 @@ body.dnd-active .user-info .user-actions .fa-moon {
     width: 40px;
     height: fit-content;
 
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
     
 
     height: 40px;
-    background-color: #FD5A23; /* Discord blue placeholder */
+    background-color: #220952ff; /* Discord blue placeholder */
     border-radius: 50%;
     /* margin-right: 15px; Remove default margin */
     flex-shrink: 0;
@@ -411,9 +442,9 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
     background-color: #40444b; /* Default bubble color */
     padding: 10px 15px;
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
-
+   
     border-radius: 18px; /* Rounded corners for bubble */
     display: flex;
     flex-direction: column;
@@ -422,17 +453,17 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .message.own-message .content {
-    background-color: white;
+    background-color: black;
     
-    color: #FD5A23;
-    border: 2px solid #FD5A23;
+    color: #220952ff;
+    border: 2px solid white;
 
 }
 
 /* Username styling - applies to both */
 .message .content .username {
     font-weight: bold;
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
 
     color: #ffffff; /* Ensure username is visible */
@@ -459,9 +490,9 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
  .message .content .message.own-message .text {
     line-height: 1.4;
-    color: #FD5A23; /* Ensure text color contrasts with bubble */
+    color: #220952ff; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
 
  }
@@ -471,7 +502,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     line-height: 1.4;
     color: white; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
 
  }
@@ -479,9 +510,9 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
  .own-message .content .text {
     line-height: 1.4;
-    color: #FD5A23; /* Ensure text color contrasts with bubble */
+    color: white; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
 
  }
@@ -492,7 +523,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
      color: white; /* Lighter grey color */
      margin-top: 5px; /* Space above the timestamp */
      align-self: flex-end; /* Align timestamp to the right within the bubble */
-     font-family: 'Lexend';
+     font-family: 'RF Dewi';
 
 
  }
@@ -500,10 +531,10 @@ body.dnd-active .user-info .user-actions .fa-moon {
   /* Style for the timestamp */
   .own-message .content .timestamp {
     font-size: 11px; /* Smaller font size */
-    color: #FD5A23; /* Lighter grey color */
+    color: #220952ff; /* Lighter grey color */
     margin-top: 5px; /* Space above the timestamp */
     align-self: flex-end; /* Align timestamp to the right within the bubble */
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
 
 }
@@ -559,7 +590,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     color: #dcddde;
     box-sizing: border-box;
     font-size: 16px;
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
     min-height: 50px;
     max-height: 100px; /* Add maximum height */
 
@@ -573,9 +604,9 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 .chat-input input:focus {
     outline: none;
-    color: #FD5A23;
+    color: #220952ff;
     background-color: #ffffff; /* Slightly lighter background when focused */
-    box-shadow: 0 0 0 2px #FD5A23; /* Add a subtle focus ring */
+    box-shadow: 0 0 0 2px #220952ff; /* Add a subtle focus ring */
 }
 
 .chat-input input::placeholder {
@@ -603,7 +634,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
 .chat-input .input-actions i:hover {
     color: #ffffff; /* Brighter color on hover */
-    background-color: #FD5A23; /* Background on hover */
+    background-color: #220952ff; /* Background on hover */
 }
 
 /* Container for icons on the right */
@@ -723,7 +754,7 @@ form{
 form h1{
     font-size: 10vh;
     text-align: center;
-    color: #FD5A23;
+    color: #220952ff;
 }
 
 .choices{
@@ -739,7 +770,7 @@ form h1{
 .choices .btn{
     
     color: white;
-    background-color: #FD5A23;
+    background-color: #220952ff;
     outline: none;
     border: none;
     transition: all .25s linear;
@@ -803,7 +834,7 @@ form h1{
 
 #close{
     font-size: 2vh;
-    color: #FD5A23;
+    color: #220952ff;
     background-color: transparent;
     outline: none;
     border: none;
@@ -826,7 +857,7 @@ form h1{
 @keyframes flickerColor {
     0% {
         
-        color: #FD5A23;
+        color: #220952ff;
     }
     
     50% {
@@ -839,7 +870,7 @@ form h1{
     100% {
         
 
-        color: #FD5A23;
+        color: #220952ff;
 
     }
 }
@@ -886,12 +917,12 @@ form h1{
 
 .input-group input{
     width: 60%;
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
 
     padding: 0.25vw;
     height: 1.5vw;
     border-radius: 8px;
-    background-color: #ff9b7a;
+    background-color: rgb(44, 16, 97);
     margin: 5%;
     padding: 2.5;
     border: none;
@@ -904,7 +935,7 @@ form h1{
 
 .input-group input:focus{
 
-    background-color: #FD5A23;
+    background-color: #220952ff;
     outline: none;
     color: white;
 }
@@ -946,7 +977,7 @@ form h1{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #FD5A23;
+    background: #220952ff;
     transition: background .25s linear;
     
 
@@ -969,7 +1000,7 @@ form h1{
     width: 15vw;
     height: 3vh;
     border-radius: 8px;
-    background-color: #FD5A23;
+    background-color: #220952ff;
     outline: none;
     border: none;
     color: white;
@@ -977,7 +1008,7 @@ form h1{
 }
 
 .btns button:hover{
-    background-color: #FD5A23;
+    background-color: #220952ff;
 }
 
 .hidden{
@@ -1000,7 +1031,7 @@ form h1{
     display: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
-    background: white;
+    background: #220952ff;
     padding: 8px;
 }
 
@@ -1010,7 +1041,7 @@ form h1{
 
 /* Style for the emoji button when active */
 .emoji-button-active {
-    color: #FF7A4D !important;
+    color: rgb(44, 16, 97) !important;
 }
 
 /* GIF picker container */
@@ -1020,7 +1051,7 @@ form h1{
     right: 20px;
     z-index: 1000;
     display: none;
-    background-color: white;
+    background-color: rgb(22, 22, 22);
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     width: 320px;
@@ -1034,14 +1065,14 @@ form h1{
 
 /* Style for the GIF button when active */
 .gif-button-active {
-    color: #FF7A4D !important;
+    color: rgb(44, 16, 97) !important;
 }
 
 .gif-text-button, .gif-label {
     background: transparent !important;
-    color: #FF7A4D;
+    color: rgb(44, 16, 97);
     border-radius: 8px;
-    font-family: 'Lexend', 'Inter', 'Arial', sans-serif;
+    font-family: 'RF Dewi', 'Inter', 'Arial', sans-serif;
     font-weight: bold;
     font-size: 18px;
     letter-spacing: 1px;
@@ -1054,7 +1085,7 @@ form h1{
     transition: background 0.2s, color 0.2s;
 }
 .gif-button-active {
-    background: #FF7A4D;
+    background: #220952ff;
     color: #fff;
 }
 
@@ -1062,21 +1093,23 @@ form h1{
 .gif-search-container {
     display: flex;
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #220952ff;
 }
 
 .gif-search-input {
+    font-family: 'RF Dewi';
     flex: 1;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid black;
     border-radius: 4px;
     font-size: 14px;
+    background-color: #220952ff;
 }
 
 .gif-search-button {
     margin-left: 5px;
     padding: 8px 12px;
-    background-color: #FF7A4D;
+    background-color: #220952ff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -1157,7 +1190,7 @@ form h1{
 }
 
 .close-upload:hover {
-    color: #FD5A23;
+    color: #220952ff;
 }
 
 .upload-area {
@@ -1174,13 +1207,13 @@ form h1{
 }
 
 .upload-area:hover, .upload-area.dragover {
-    border-color: #FD5A23;
+    border-color: #220952ff;
     background-color: rgba(253, 90, 35, 0.05);
 }
 
 .upload-area i {
     font-size: 36px;
-    color: #FD5A23;
+    color: #220952ff;
     margin-bottom: 10px;
 }
 
@@ -1205,7 +1238,7 @@ form h1{
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #FD5A23;
+    background-color: #220952ff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -1216,7 +1249,7 @@ form h1{
 }
 
 .upload-button:hover {
-    background-color: #FF7A4D;
+    background-color: rgb(44, 16, 97);
     box-shadow: 0 4px 8px rgba(253, 90, 35, 0.2);
 }
 
@@ -1262,7 +1295,7 @@ form h1{
 
 /* Style for active plus button */
 .input-actions .fa-plus.active {
-    color: #FD5A23;
+    color: #220952ff;
 }
 
 ::-webkit-scrollbar {
@@ -1273,12 +1306,12 @@ form h1{
   
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #eee;
+    background: black;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #FD5A23;
+    background: #220952ff;
     transition: background .25s linear;
     
 
@@ -1286,12 +1319,12 @@ form h1{
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #FD5A23;
+    background: #220952ff;
 }
 
 
 .typingMessage .content{
-    background-color: #c24f32ff !important;
+    background-color: #1d1942ff !important;
 }
 
 .typingMessage img{
@@ -1299,7 +1332,7 @@ form h1{
 }
 
 .replyMessage{
-    background-color: #ff7e53;
+    background-color: #220952ff;
     color: white;
     border-radius: 8px;
     padding: 5px;
@@ -1309,24 +1342,24 @@ form h1{
 
 .own-message .replyMessage{
     background-color: #eee;
-    color: #ff7e53;
+    color: #220952ff;
     border-radius: 8px;
     padding: 5px;
     border-bottom-right-radius: 0;
 
 }
 .replyMessage .replyUser{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-weight: bold;
 }
 .replyMessage .replyContent{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
 }
 
 .popup{
     width: 30vw;
     left: 35vw;
-    color: #FD5A23;
+    color: #220952ff;
     overflow: hidden; /* Prevent scrolling */
     height: auto; /* Let height adjust to content */
     max-height: 30vh; /* Maximum height */
@@ -1348,7 +1381,7 @@ form h1{
 }
 
 .popup p{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     text-align: center;
     margin: 1vh 0;
 }
@@ -1366,12 +1399,12 @@ form h1{
     width: 5vw;
     border-radius: 8px;
     background-color: white;
-    color: #FD5A23;
+    color: #220952ff;
     transition: all .25s linear;
 }
 
 .popup button:hover{
-    background-color: #FD5A23 !important;
+    background-color: #220952ff !important;
     color: white !important;
 }
 
@@ -1379,7 +1412,7 @@ form h1{
     0% {
         transform: scale(0.8) !important;
         display: none;
-        color: #FD5A23 !important;
+        color: #220952ff !important;
         opacity: 0;
     }
     1%{
@@ -1399,7 +1432,7 @@ form h1{
     0% {
         transform: scale(0.8) !important;
         display: none;
-        color: #FD5A23 !important;
+        color: #220952ff !important;
        
     }
     1%{
@@ -1425,7 +1458,7 @@ form h1{
     animation: zoomInText 0.5s cubic-bezier(0.5,-0.36, 0.72, 1.71) reverse !important;
     
     
-    color: #FD5A23 !important;
+    color: #220952ff !important;
     display: none !important;
 }
 
@@ -1440,16 +1473,16 @@ form h1{
     animation: zoomIn 0.5s cubic-bezier(0.5,-0.36, 0.72, 1.71) reverse !important;
     
     
-    color: #FD5A23 !important;
+    color: #220952ff !important;
     display: none !important;
 }
 
 .avatarBanner{
     width: 4vh;
     height: fit-content;
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
     height: 4vh;
-    background-color: #FD5A23;
+    background-color: #220952ff;
     border-radius: 50%;
     flex-shrink: 0;
     margin: 0 10px;
@@ -1463,7 +1496,7 @@ form h1{
     height: 100vh;
     z-index: 50;
 
-    background-color: white;
+    background: linear-gradient(to bottom, rgb(7,7,7),rgb(7,7,7), #21074fff);
     opacity: 1;
     /* background: rgba(255, 255, 255, 0.7);
     border-radius: 16px;
@@ -1479,8 +1512,8 @@ form h1{
     margin-left: 30vw;
     width: 40vw;
     display: flex;
-    color: #FD5A23;
-    font-family: 'Lexend', sans-serif;
+    color: white;
+    font-family: 'RF Dewi', sans-serif;
     height: 5vh;
     align-items: center;
     justify-content: space-between;
@@ -1489,16 +1522,17 @@ form h1{
     margin-bottom: 2vh;
     margin-top: 2vh;
     overflow: hidden;
-    transition: all .5s ease-out;
+    transition: background-color .5s ease-out;
     border-bottom: 4px solid transparent;
 
 
     
-    background: rgba(255, 255, 255, 0);
-    border-radius: 16px; 
+    background: transparent;
+  
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
-    border: 1px solid rgba(255, 255, 255, 0);
+    border-bottom: 2px solid rgb(36, 36, 36);
+   
 
 
 }
@@ -1508,18 +1542,18 @@ form h1{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    
+    transition: all .25s linear;
 }
 
 .user{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-weight: 500;
     font-size: 1.5vh;
 
 }
 
 .lastMessage{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-weight: 400;
     font-size: 1.5vh;
 
@@ -1532,20 +1566,25 @@ form h1{
 }
 
 .home .title{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-weight: 400;
-    color: #FD5A23;
+    color: white;
     font-size: 3vh;
-    border-bottom: 2px solid #00000002;
-    background-color: #f5f5f563;
-    text-align: center;
+    
+    text-align: left;
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: center;
+    margin-left: 12vh;
     height: 10vh;
     position: fixed;
     z-index: 500;
+}
+
+@media screen and (max-width: 768px){
+    .home .title{
+        margin-left: 5vw;
+    }
 }
 
 .messagesBannerHolder{
@@ -1558,35 +1597,23 @@ form h1{
 }
 
 .messagesBanner .time{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-size: 20px;
     padding-left: 50px;
 }
 
 
-.messagesBanner:hover{
-    background: #fd592365;
-    border-radius: 16px; 
-    backdrop-filter: blur(12.5px);
-    -webkit-backdrop-filter: blur(12.5px);
-    border: 1px solid #fd5923a4;
-    color: white;
-    margin-left: 32vw;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-
-}
-
 .messagesBanner .timer{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-size: 1vh;
     padding-right: 2vh;
 }
 
 .messagesBanner .reader{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'RF Dewi', sans-serif;
     font-size: 1vh;
 
-    background-color: #FD5A23;
+    background-color: #220952ff;
     width: 2vh;
     height: 2vh;
     border-radius: 50px;
@@ -1623,7 +1650,7 @@ form h1{
 
 .homeBtn {
     border: none;
-    
+    color: white;
     margin-right: 2vw;
     outline: none;
     
@@ -1635,12 +1662,12 @@ form h1{
 
 .homeBtn i:hover{
     background-color: transparent;
-    color: black;
+    color: white;
 }
 
 .homeBtn:hover i{
     background-color: transparent;
-    color: black;
+    color: white;
 }
 
 
@@ -1648,7 +1675,7 @@ form h1{
 .searcher{
     position: fixed;
     top: 80vh;
-    width: 100%;
+    margin-left: 30vw;
    
     display: flex;
     justify-content: center;
@@ -1663,17 +1690,19 @@ form h1{
     
     outline: none;
     border: none;
-    background-color: #eee;
+    background-color: black;
+    color: white;
+    border: 3px solid rgba(0, 0, 0, 0.164);
     
-    font-family: 'Lexend';
-
+    font-family: 'RF Dewi';
+    
     padding-left: 2vw;
     padding-right: 8vh;
     padding-top: 1.5vh;
     padding-bottom: 1.5vh;
     max-width: 30vw;
     font-size: 1.5vh;
-    border: 3px solid transparent;
+   
     
 }
 
@@ -1701,7 +1730,7 @@ form h1{
 
 .searcher input:focus{
     border: 3px solid transparent;
-    background: linear-gradient(white, white), 
+    background: linear-gradient(black, black), 
                 linear-gradient(to right, #8b64e8, #2a0e5e);
     background-origin: border-box;
     background-clip: padding-box, border-box;
@@ -1709,11 +1738,14 @@ form h1{
 }
 
 .searchHold{
-    width: 100%;
+
     position: fixed;
+    isolation: isolate;
+    width: 100%;
     top: 90vh;
     height: 100vh;
-    background-color: white;
+    background: linear-gradient(to bottom, rgb(7,7,7),rgb(7,7,7), #21074fff);
+
     z-index: 50000;
     opacity: 0;
     transition: all .25s ease-in-out;
@@ -1729,21 +1761,21 @@ form h1{
 .messager{
     margin-left: 3vw;
     color: white;
-    font-family: 'Lexend';
-    background-color: #FD5A23;
+    font-family: 'RF Dewi';
+    background-color: #220952ff;
     padding: 3px;
     width: fit-content;
-    max-width: 1200px;
+    max-width: 40vw;
     border-radius: 16px;
-    border-bottom-left-radius: 0;
-    border: 3px solid white;
+    padding: 3px;
+ 
     display: flex;
     justify-self: flex-start;
-    margin-bottom: 3vh;
+    margin-bottom: 1vh;
 }
 
 .messager .text{
-    font-family: 'Lexend';
+    font-family: 'RF Dewi';
     
 }
 
@@ -1752,9 +1784,9 @@ form h1{
 
     display: flex;
     justify-self: flex-end;
-    background-color: white;
-    color: #FD5A23;
-    border: 3px solid #FD5A23;
+    background-color: black;
+    color: white;
+    border: 3px solid white;
     border-bottom-left-radius: 16px;
     
     border-bottom-right-radius: 0;
@@ -1782,16 +1814,19 @@ form h1{
 
     }
 
-    .messagesBanner:hover{
-        margin-left: 12vw;
-    }
+   
 
     .homeBtn{
         margin-right: 5vw;
 
     }
 
+    .searcher{
+        display: flex;
+        justify-content: center;
+        margin-left: 7vw;
 
+    }
     .searcher input{
         width: 60vw !important;
         max-width: 60vw;
@@ -1818,23 +1853,29 @@ form h1{
 
 
 #newChatBtn2{
-    background-color: transparent;
+    background-color: rgb(0, 0, 0);
     border: none;
+    border-radius: 50px;
     font-size: 3vh;
     overflow: visible !important;
     position: fixed;
-    color: #FD5A23;
+    color: white;
     opacity: 1;
-    top: 8.45vh;
-    z-index: 50000;
+    top: 70vh;
     display: flex;
     justify-content: center;
 
-    width: 100%;
+    width: 4vh;
+    overflow: visible !important;
+    height: 4vh;
+    z-index: 50000 !important;
+    right: 3vw;
+    cursor: pointer;
+    transition: all .25s cubic-bezier(0.65, 0.03, 1, 1);
 }
 
 #newChatBtn2 i{
-    overflow: visible;
+    overflow: visible !important;
     border: 5px solid transparent;
     border-radius: 50px;
     background-color: transparent;
@@ -1842,22 +1883,60 @@ form h1{
 
 }
 
-#newChatBtn2:hover{
-    background-color: transparent !important;
+#newChatBtn2:hover i{
+    color: #220952ff !important;
     
 }
 
 
 
-.btnHolder:hover i{
-   
-    border-radius: 50px;
-    background-color: #FD5A23 !important;
-    color: white;
-    width: 3vh;
-    border: 5px solid #FD5A23;
-}
 
 .btnHolder{
     width: fit-content;
+    overflow: visible;
+}
+
+.backBtn{
+    color: white;
+    font-size: 2vh;
+    position: fixed;
+    top:6.5vh;
+    left: 12vh;
+    overflow: visible;
+    z-index: 5000002;
+    overflow: visible;
+    isolation: isolate;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .backBtn{
+        left: 3vw;
+        top:3vw;
+    }
+}
+
+
+.btnHolderr{
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    
+}
+
+
+.btnHolderr i{
+    border-radius: 50px;
+    background-color: black !important;
+    color: white;
+    width: 2vh !important;
+    text-align: center;
+    border: 5px solid #220952ff;
+    transition: all.25s linear;
+}
+
+.btnHolderr:hover i{
+   
+    color: black;
 }
