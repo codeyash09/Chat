@@ -81,7 +81,7 @@ function openCustomEmojiPicker(messageElement, menuPopup) {
                
                 document.removeEventListener('click', closePickerOnClickOutside);
             },
-            theme: 'dark',
+            theme: window.innerWidth <= 768 ? 'light' : 'dark',
             emojiSize: 20,
             perLine: 8,
             previewPosition: 'none',
@@ -305,6 +305,21 @@ function createMessageMenu(messageElement, isOwnMessage) {
     // Add to document
     document.body.appendChild(popup);
     
+    // --- Push up messages above on mobile (tap/hold) ---
+    if (window.innerWidth <= 768) {
+        // Remove previous push-up-above classes
+        document.querySelectorAll('.message.push-up-above').forEach(m => m.classList.remove('push-up-above'));
+        // Find all next siblings (above, due to column-reverse)
+        let next = messageElement.nextElementSibling;
+        while (next) {
+            if (next.classList.contains('message')) {
+                next.classList.add('push-up-above');
+            }
+            next = next.nextElementSibling;
+        }
+    }
+    // --- End push up ---
+
     // Show popup
     popup.classList.add('show');
 
@@ -824,14 +839,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth <= 768) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if (entry.intersectionRatio > 0.3) {
                     entry.target.classList.add('visible');
-                } else {
+                } else if (entry.intersectionRatio === 0) {
                     entry.target.classList.remove('visible');
                 }
             });
         }, {
-            threshold: 0.1
+            threshold: [0, 0.3]
         });
 
         function observeMessages() {

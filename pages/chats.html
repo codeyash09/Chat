@@ -287,7 +287,8 @@
 
         .emoji-reaction {
             background: none;
-            border: none;
+            border: none !important;
+            box-shadow: none !important;
             font-size: 22px;
             cursor: pointer;
             padding: 6px 10px;
@@ -1319,6 +1320,56 @@
                 transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
                 transform: translateY(-20px);
                 z-index: 0;
+            }
+            .message-popup {
+                background: #fff !important;
+                color: #222 !important;
+                border: 1px solid #eee !important;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            }
+            .message-popup-date {
+                color: #666 !important;
+            }
+            .message-popup-action {
+                color: #222 !important;
+                background: none !important;
+            }
+            .message-popup-action:hover {
+                background: #f5f5f5 !important;
+                color: #220952ff !important;
+            }
+            .message-popup-action.delete-action {
+                color: #ff4444 !important;
+            }
+            .message-popup-action.delete-action:hover {
+                background: #ff4444 !important;
+                color: #fff !important;
+            }
+            .emoji-reaction {
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .emoji-picker-container {
+                background: #fff !important;
+                color: #222 !important;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                border-radius: 12px;
+            }
+            .emoji-picker-container * {
+                background: transparent !important;
+                color: #222 !important;
+                border: none !important;
+            }
+            .gif-picker-container {
+                background: #fff !important;
+                color: #222 !important;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                border-radius: 12px;
+            }
+            .gif-picker-container * {
+                background: transparent !important;
+                color: #222 !important;
+                border: none !important;
             }
         }
     </style>

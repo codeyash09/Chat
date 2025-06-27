@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatInput.selectionStart = cursorPos + emoji.native.length;
                         chatInput.selectionEnd = cursorPos + emoji.native.length;
                     },
-                    theme: 'dark',
+                    theme: window.innerWidth <= 768 ? 'light' : 'dark',
                     emojiSize: 20,
                     perLine: 8,
                     previewPosition: 'none',

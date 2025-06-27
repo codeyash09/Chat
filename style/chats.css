@@ -2059,11 +2059,36 @@ form h1{
   }
   .message-scroll-animate {
     opacity: 0;
-    transform: translateY(0.5rem);
-    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(1.2rem);
+    transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
   .message-scroll-animate.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .emoji-picker-container {
+    background: #fff !important;
+    color: #222 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 12px;
+  }
+  .emoji-picker-container * {
+    background: transparent !important;
+    color: #222 !important;
+    border: none !important;
+  }
+  .gif-picker-container {
+    background: #fff !important;
+    color: #222 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 12px;
+  }
+  .gif-picker-container * {
+    background: transparent !important;
+    color: #222 !important;
+    border: none !important;
   }
 }
