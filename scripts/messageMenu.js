@@ -81,7 +81,7 @@ function openCustomEmojiPicker(messageElement, menuPopup) {
                
                 document.removeEventListener('click', closePickerOnClickOutside);
             },
-            theme: window.innerWidth <= 768 ? 'light' : 'dark',
+            theme: 'light',
             emojiSize: 20,
             perLine: 8,
             previewPosition: 'none',
@@ -337,73 +337,51 @@ function createMessageMenu(messageElement, isOwnMessage) {
 
             // Add closing animation to popup
             popup.classList.add('closing');
-            
-            // Remove popup after animations complete
             setTimeout(() => {
                 popup.remove();
             }, 800);
-            
-            document.removeEventListener('click', closePopup);
-            document.removeEventListener('scroll', closePopup);
+            document.removeEventListener('click', closePopup, true);
+            document.removeEventListener('scroll', closePopup, true);
+            document.removeEventListener('mousemove', closePopup, true);
             return;
         }
 
-        // For mouse movement, check distance
+        // For mouse movement and click, check distance
         const isOverPopup = popup.contains(e.target);
         const isOverMessage = messageElement.contains(e.target);
         const isOverEmojiPicker = e.target.closest('em-emoji-picker');
-        
-        // If cursor is over popup or emoji picker, don't close
         if (isOverPopup || isOverEmojiPicker) {
             return;
         }
-        
         // Get popup position
         const popupRect = popup.getBoundingClientRect();
-        const messageRect = messageElement.getBoundingClientRect();
-        
-        // Calculate distance from popup and message
-        const distanceFromPopup = Math.min(
-            Math.abs(e.clientX - popupRect.left),
-            Math.abs(e.clientX - popupRect.right),
-            Math.abs(e.clientY - popupRect.top),
-            Math.abs(e.clientY - popupRect.bottom)
-        );
-        
-        const distanceFromMessage = Math.min(
-            Math.abs(e.clientX - messageRect.left),
-            Math.abs(e.clientX - messageRect.right),
-            Math.abs(e.clientY - messageRect.top),
-            Math.abs(e.clientY - messageRect.bottom)
-        );
-        
-        // If cursor is not over message and is far enough away
-        if (!isOverMessage && distanceFromMessage > 30) {
-            // Add falling animation to emojis
-            const emojis = popup.querySelectorAll('.emoji-reaction');
-            emojis.forEach((emoji, index) => {
-                setTimeout(() => {
-                    emoji.classList.add('falling');
-                }, index * 100);
-            });
-
-            // Add closing animation to popup
-            popup.classList.add('closing');
-            
-            // Remove popup after animations complete
-            setTimeout(() => {
-                popup.remove();
-            }, 800);
-            
-            document.removeEventListener('click', closePopup);
-            document.removeEventListener('scroll', closePopup);
+        // If mousemove, check if cursor is far from popup
+        if (e.type === 'mousemove') {
+            const dx = Math.max(popupRect.left - e.clientX, e.clientX - popupRect.right, 0);
+            const dy = Math.max(popupRect.top - e.clientY, e.clientY - popupRect.bottom, 0);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) return; // Only close if >100px away
         }
+        // If not over message or popup, or mouse is far, close
+        // Add falling animation to emojis
+        const emojis = popup.querySelectorAll('.emoji-reaction');
+        emojis.forEach((emoji, index) => {
+            setTimeout(() => {
+                emoji.classList.add('falling');
+            }, index * 100);
+        });
+        // Add closing animation to popup
+        popup.classList.add('closing');
+        setTimeout(() => {
+            popup.remove();
+        }, 800);
+        document.removeEventListener('click', closePopup, true);
+        document.removeEventListener('scroll', closePopup, true);
+        document.removeEventListener('mousemove', closePopup, true);
     };
-    
-    // Use mousemove instead of click for smoother cursor tracking
-    document.addEventListener('click', closePopup);
-    // Add scroll event listener
+    document.addEventListener('click', closePopup, true);
     document.addEventListener('scroll', closePopup, true);
+    document.addEventListener('mousemove', closePopup, true);
 }
 
 // Handle emoji reactions

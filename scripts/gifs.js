@@ -25,12 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.placeholder = 'Search GIFs...';
             searchInput.className = 'gif-search-input';
             
-            const searchButton = document.createElement('button');
-            searchButton.className = 'gif-search-button';
-            searchButton.innerHTML = '<i class="fa-solid fa-search"></i>';
+            // Remove the search button (icon) entirely
+            // const searchButton = document.createElement('button');
+            // searchButton.className = 'gif-search-button';
+            // searchButton.innerHTML = '<i class="fa-solid fa-search"></i>';
             
             searchContainer.appendChild(searchInput);
-            searchContainer.appendChild(searchButton);
+            // searchContainer.appendChild(searchButton); // Do not append
             
             // Create GIF results container
             const resultsContainer = document.createElement('div');
@@ -43,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.main-chat').appendChild(gifPickerContainer);
             
             // Add event listeners for search
-            searchButton.addEventListener('click', () => {
-                searchGifs(searchInput.value);
-            });
+            // searchButton.addEventListener('click', () => {
+            //     searchGifs(searchInput.value);
+            // });
             
             searchInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
