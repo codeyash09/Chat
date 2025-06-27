@@ -212,7 +212,7 @@ async function showChats() {
                         }
                         
 
-                        timel.innerHTML = convertToLocalTime(chat.times[i]);
+                        timel.innerHTML = formatChatListTimestamp(chat.times[i]);
 
                         break;
                     }
@@ -1190,6 +1190,21 @@ async function changeRowler() {
     }, 0);
 }
 
-
+// Helper to format chat list timestamp
+function formatChatListTimestamp(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    if (
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth() &&
+        date.getDate() === now.getDate()
+    ) {
+        // Today: show only time
+        return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    } else {
+        // Not today: show only date
+        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+}
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, timers};

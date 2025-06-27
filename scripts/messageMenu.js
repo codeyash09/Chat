@@ -787,4 +787,68 @@ document.addEventListener('DOMContentLoaded', () => {
             createMessageMenu(message, isOwnMessage);
         }
     });
+
+    // MOBILE: Tap handler for push-up effect
+    chatMessages.addEventListener('click', (e) => {
+        if (window.innerWidth > 768) return; // Only on mobile
+        if (window.isSelectionMode && window.isSelectionMode()) return;
+        const message = e.target.closest('.message');
+        if (!message) return;
+
+        // Always remove previous push-up classes before applying new ones
+        document.querySelectorAll('.message.push-up-above').forEach(m => m.classList.remove('push-up-above'));
+
+        // Find all next siblings (above, due to column-reverse)
+        let next = message.nextElementSibling;
+        while (next) {
+            if (next.classList.contains('message')) {
+                next.classList.add('push-up-above');
+            }
+            next = next.nextElementSibling;
+        }
+    });
+
+    // GLOBAL: Remove push-up effect if clicking outside messages or popups (mobile only)
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth > 768) return;
+        const isMessage = e.target.closest('.message');
+        const isPopup = e.target.closest('.message-popup');
+        if (!isMessage && !isPopup) {
+            const pushedMessages = document.querySelectorAll('.message.push-up-above');
+            pushedMessages.forEach(m => m.offsetHeight); // Force reflow
+            pushedMessages.forEach(m => m.classList.remove('push-up-above'));
+        }
+    });
+
+    // MOBILE: Scroll-in animation for messages (dynamic)
+    if (window.innerWidth <= 768) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        function observeMessages() {
+            document.querySelectorAll('.message').forEach(msg => {
+                if (!msg.classList.contains('message-scroll-animate')) {
+                    msg.classList.add('message-scroll-animate');
+                    observer.observe(msg);
+                }
+            });
+        }
+        observeMessages();
+
+        // MutationObserver to handle dynamically added messages
+        const chatMessages = document.getElementById('chat-messages');
+        const mutationObserver = new MutationObserver(() => {
+            observeMessages();
+        });
+        mutationObserver.observe(chatMessages, { childList: true, subtree: true });
+    }
 }); 

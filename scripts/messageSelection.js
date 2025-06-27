@@ -205,4 +205,6 @@ function updateSelectionCount() {
 // Initialize when the DOM is loaded
 document.addEventListener('DOMContentLoaded', initMessageSelection);
 
-export { initMessageSelection }; 
+export { initMessageSelection };
+
+window.isSelectionMode = () => isSelectionMode; 

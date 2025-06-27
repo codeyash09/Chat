@@ -1605,7 +1605,8 @@ form h1{
 
 .messagesBanner .timer{
     font-family: 'RF Dewi', sans-serif;
-    font-size: 1vh;
+    font-size: 1.7vh;
+    font-weight: 600;
     padding-right: 2vh;
 }
 
@@ -1939,4 +1940,130 @@ form h1{
 .btnHolderr:hover i{
    
     color: black;
+}
+
+@media screen and (max-width: 768px) {
+    .main-chat,
+    .chat-messages,
+    .chat-header,
+    .chat-input,
+    .searchHold,
+    .own-messager,
+    .messager,
+    .searcher input {
+        background: #fff !important;
+        background-color: #fff !important;
+        color: #000 !important;
+        border-color: #eee !important;
+    }
+    .chat-header,
+    .chat-input {
+        color: #220952ff !important;
+    }
+    .messager,
+    .own-messager {
+        color: #220952ff !important;
+        border-color: #eee !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .home {
+        background: #fff !important;
+        background-color: #fff !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body,
+    .main-chat,
+    .chat-messages,
+    .chat-header,
+    .chat-input,
+    .message .content,
+    .message .text,
+    .own-message .content,
+    .own-message .text,
+    .messagesBanner,
+    .user,
+    .lastMessage,
+    .home .title,
+    .sidebar h2,
+    .channels-list li,
+    .add-chat-button,
+    .user-info,
+    .user-info .username,
+    .user-info .user-actions i,
+    .popup,
+    .btns button,
+    .input-group input {
+        color: #111 !important;
+        background: #fff !important;
+        background-color: #fff !important;
+        border-color: #eee !important;
+    }
+    .messagesBanner .reader {
+        color: #fff !important;
+        background: #220952ff !important;
+    }
+    .add-chat-button,
+    .btns button {
+        background: #f5f5f5 !important;
+        color: #220952ff !important;
+    }
+    .add-chat-button:hover,
+    .btns button:hover {
+        background: #e0e0e0 !important;
+        color: #111 !important;
+    }
+    .popup {
+        background: #fff !important;
+        color: #111 !important;
+    }
+    .chat-input .input-actions i {
+        color: #220952ff !important;
+    }
+    .chat-input .input-actions i:hover {
+        color: #fff !important;
+        background: #220952ff !important;
+    }
+    .input-group input {
+        background: #fff !important;
+        color: #111 !important;
+        border: 1px solid #eee !important;
+    }
+    .input-group input::placeholder {
+        color: #888 !important;
+    }
+    .sidebar h2 {
+        color: #220952ff !important;
+        border-bottom: 1px solid #eee !important;
+    }
+    .channels-list li.active, .channels-list li:hover {
+        background: #f5f5f5 !important;
+        color: #220952ff !important;
+    }
+    .message .timestamp, .own-message .timestamp {
+        color: #888 !important;
+    }
+}
+
+@media (max-width: 768px) {
+  .message {
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .message.push-up-above {
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(-20px); /* Subtle push */
+    z-index: 0;
+  }
+  .message-scroll-animate {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .message-scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
