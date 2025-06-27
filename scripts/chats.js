@@ -73,7 +73,7 @@ username = fetchUser();
 username.then(result =>{
     if(result[0] != undefined){
         username = result[0].username;
-        console.log(username);
+        
         showChats();
         showChatlers();
     }
@@ -87,14 +87,12 @@ async function showChats() {
         .from('Chats')
         .select('*')
         .or(`members.cs.{"${username}"},host.eq."${userId}"`);
-    console.log('Data before includes:', data);
-    console.log('Type:', typeof data);
-    console.log('Is array:', Array.isArray(data));
+
     if (error || !data || data.length === 0) {
         console.error("No chats found or error fetching chats:", error);
         return;
     }
-
+    
    
     const sortedChats = data.sort((a, b) => {
         let lastA;
@@ -137,108 +135,263 @@ async function showChats() {
         prevOrder = [];
     }
     rowSys = sortedChats;
-    console.log(sortedChats);
+   
   
     savedScrollPosition = chatMess.scrollTop;
-
-  
+    let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${sortedChats[0].chat_id}']`);
+    if(tab){
+        document.getElementById("messagesBannerHolder").innerHTML = "";
+    }
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
-        let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${chat.chat_id}']`);
+        
         let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
         let readNum = chat.read[userNum];
-        if (!tab) {
-            tab = document.createElement("a");
-            tab.classList.add("messagesBanner");
-            tab.setAttribute("data-chat-id", chat.chat_id);
+        
+        
+        
+        tab = document.createElement("a");
+        tab.classList.add("messagesBanner");
+        tab.setAttribute("data-chat-id", chat.chat_id);
 
-            let person = document.createElement('div');
-            person.classList.add("person");
-            let avatar = document.createElement('div');
-            avatar.classList.add("avatarBanner");
-            let texts = document.createElement('div');
-            texts.classList.add("text");
-            person.appendChild(avatar);
-            let uselr = document.createElement('div');
-            if (chat.groupchat) {
+        let person = document.createElement('div');
+        person.classList.add("person");
+        let avatar = document.createElement('div');
+        avatar.classList.add("avatarBanner");
+        let texts = document.createElement('div');
+        texts.classList.add("text");
+        person.appendChild(avatar);
+        let uselr = document.createElement('div');
+        if (chat.groupchat) {
 
 
-                uselr.innerHTML = chat.title;
+            uselr.innerHTML = chat.title;
+        } else {
+            if (chat.host === "" + userId) {
+                uselr.innerHTML = chat.members[0];
             } else {
-                if (chat.host === "" + userId) {
-                    uselr.innerHTML = chat.members[0];
-                } else {
-                    let hoster = await fetchUsers(chat.host);
-                    if (hoster[0]) {
-                        uselr.innerHTML = hoster[0].username;
-                    }
+                let hoster = await fetchUsers(chat.host);
+                if (hoster[0]) {
+                    uselr.innerHTML = hoster[0].username;
                 }
             }
+        }
 
-            uselr.classList.add("user");
+        uselr.classList.add("user");
 
 
-            let lastMessage = document.createElement('div');
-            lastMessage.classList.add("lastMessage");
-            let timel = document.createElement('div');
-            timel.classList.add('timer');
-           
-            if(chat.senders){
-                for(let i = chat.senders.length - 1; i >= 0; i--){
+        let lastMessage = document.createElement('div');
+        lastMessage.classList.add("lastMessage");
+        let timel = document.createElement('div');
+        timel.classList.add('timer');
+       
+        
+        if(chat.senders){
+            for(let i = chat.senders.length - 1; i >= 0; i--){
+                
+                if(!(chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>"))){
+
+                    let finalMessage;
+                    if(chat.messages[i].includes('<div class="replyMessage">')){
+                        let raw = chat.messages[i];
                     
-                    if(!(chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>"))){
-
-                        let finalMessage;
-                        if(chat.messages[i].includes('<div class="replyMessage">')){
-                            let raw = chat.messages[i];
-                       
-
-   
-                            const match = raw.match(/<\/[^>]+>([^<]+)(?:<|$)/);
-
-                            finalMessage = match ? match[1].trim() : '';
-                        }else{
-                            finalMessage = chat.messages[i];
-                        }
-
-                        
-                        
-                        if(chat.senders[i] == username){
-                            lastMessage.innerHTML = "You: " + finalMessage;
 
 
-                        }else{
-                            lastMessage.innerHTML = chat.senders[i] + ": " + finalMessage;
-                            
-                        }
-                        
+                        const match = raw.match(/<\/[^>]+>([^<]+)(?:<|$)/);
 
-                        timel.innerHTML = formatChatListTimestamp(chat.times[i]);
-
-                        break;
+                        finalMessage = match ? match[1].trim() : '';
+                    }else{
+                        finalMessage = chat.messages[i];
                     }
 
+                    
+                    
+                    if(chat.senders[i] == username){
+                        lastMessage.innerHTML = "You: " + finalMessage;
 
+
+                    }else{
+                        lastMessage.innerHTML = chat.senders[i] + ": " + finalMessage;
+                        
+                    }
+                    
+
+                    timel.innerHTML = formatChatListTimestamp(chat.times[i]);
+
+                    break;
                 }
 
 
             }
-            
 
-            let time = document.createElement('div');
-            time.classList.add('time');
-            texts.appendChild(uselr);
-            texts.appendChild(lastMessage);
-            person.appendChild(texts);
-            
-            tab.appendChild(person);
-            tab.addEventListener("click", () => openChat(chat.chat_id));
-            tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
-            time.appendChild(timel);
-            tab.appendChild(time);
-            chatList.appendChild(tab);
+
         }
         
+       
+
+        let time = document.createElement('div');
+        time.classList.add('time');
+        texts.appendChild(uselr);
+        texts.appendChild(lastMessage);
+        person.appendChild(texts);
+        tab.appendChild(person);
+        tab.addEventListener("click", () => openChat(chat.chat_id));
+        tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
+        time.appendChild(timel);
+        tab.appendChild(time);
+
+
+        if(chat == sortedChats[0]){
+            let replyBar = document.createElement("div");
+            replyBar.classList.add("replyBar");
+            let input = document.createElement("input");
+            input.type='text';
+            input.placeholder = `Send message to ${uselr.innerHTML}`
+            input.classList.add("replyInput");
+            replyBar.appendChild(input);
+            replyBar.addEventListener("click", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }, true); // Use capture phase
+            
+            replyBar.addEventListener("mousedown", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            replyBar.addEventListener("mouseup", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            input.addEventListener("focus", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }, true);
+            
+            input.addEventListener("click", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }, true);
+            
+            input.addEventListener("mousedown", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            input.addEventListener("mouseup", (e) => {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            // Block ALL events on the reply bar
+            ['touchstart', 'touchend', 'pointerdown', 'pointerup'].forEach(eventType => {
+                replyBar.addEventListener(eventType, (e) => {
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                    return false;
+                }, true);
+                
+                input.addEventListener(eventType, (e) => {
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                    return false;
+                }, true);
+            });
+            input.addEventListener("keydown", async function(event) {
+                event.stopPropagation;
+                if (event.key === "Enter") {
+                    const messageText = input.value.trim();
+                    if (!messageText) return; 
+
+                    const chatId = currentChat; 
+                    const sender = username; 
+                    const timestamp = new Date().toISOString();
+
+                    try {  
+                        
+                        
+                        const { data, error } = await db
+                            .from("Chats")
+                            .select("*")
+                            .eq("chat_id", chat.chat_id)
+                            .single();
+
+                        if (error || !data) {
+                            console.error("Failed to fetch chat:", error ?? "Chat not found");
+                            return;
+                        }
+
+                        const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
+                        const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
+                        const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
+                        
+                        
+                        let updatedRead = [];
+
+
+
+                        updatedRead = data.read.map(Number);
+
+                        if(Array.isArray(data.read)){
+                            if("" + userId + "" == data.host){
+                                for(let i = 0; i<data.members.length; i++){
+                                    if(data.members[i] != "" + username + ""){  
+                                        updatedRead[i]++;
+                                    }   
+                                }
+                            }else{
+                                for(let i = 0; i<data.members.length; i++){
+                                    if(data.members[i] != "" + username + ""){  
+                                        updatedRead[i]++;
+                                    }   
+                                }
+                                updatedRead[data.members.length]++;
+                            }
+                            
+                        }else{
+                            console.log("Errenous read");
+                        }
+
+
+
+                
+
+                        const { error: updateError } = await db
+                            .from("Chats")
+                            .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
+                            .eq("chat_id", chat.chat_id);
+
+                        if (updateError) {
+                            console.error("Error updating chat:", updateError);
+                            return;
+                        }
+
+                        
+                        input.value = ""; 
+
+                    } catch (err) {
+                        console.error("Unexpected error:", err);
+                    }
+                }
+            });
+            tab.appendChild(replyBar);
+
+            
+        }
+            
+
+        chatList.appendChild(tab);
         const existingBadge = tab.querySelector('.reader');
        
         if (readNum > 0) {
@@ -287,10 +440,14 @@ async function showChats() {
             currentElement.classList.add("currentTab");
         }
     }
-    openChat(sortedChats[0].chat_id);
+
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
+
+
+    
+
 }
 
 
@@ -790,14 +947,15 @@ let i = 0;
 
 
 db
-    .channel('realtime-changes')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, (payload) => {
+    .channel('realtime-changes')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, async (payload) => {
         
-        changeRow();
+        
         changeRowler();
+        await showChats();
 
     })
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, (payload) => {
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, async (payload) => {
        
         if (payload.new.chat_id === currentChat) {
             // If the update is for the currently open chat, re-open it with the new payload
@@ -807,9 +965,11 @@ db
             setTimeout(()=> {displayTypingBool = false}, 201);
         } else {
             // Otherwise, just refresh the chat list (to update unread counts or order)
-            changeRow();
             changeRowler();
         }
+
+        await showChats();
+
     })
     .subscribe();
 
@@ -1086,7 +1246,7 @@ async function showChatlers() {
             currentElement.classList.add("currentTab");
         }
     }
-    openChat(sortedChats[0].chat_id);
+ 
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
