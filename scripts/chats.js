@@ -1,6 +1,8 @@
 import {db} from '/scripts/createChat.js';
 import { showContextMenu } from '/scripts/chatContextMenu.js';
-import { setReplying, replying, reply } from '/scripts/messageMenu.js';
+
+
+
 
 let count = 0;
 let read = 10;
@@ -9,9 +11,11 @@ let totalRead = 0;
 let userId = window.localStorage.getItem("userIdentify");
 let lastSender = null;
 
+
 if(userId == null || userId == "null"){
     window.location.replace('/pages/signup.html');
 }
+
 
 let chatMess = document.getElementById("chat-messages");
 let chatList = document.getElementById("messagesBannerHolder");
@@ -32,10 +36,6 @@ let messages;
 let sendlers;
 let memblers;
 let timers;
-
-// Add a flag to track if we're currently updating to prevent recursive calls
-let isUpdating = false;
-
 async function fetchUser() {
   const { data, error } = await db
     .from('Users')
@@ -66,6 +66,7 @@ async function fetchName(username) {
     return data;
 }
 
+
 async function fetchUsers(id) {
     const { data, error } = await db
       .from('Users')
@@ -80,6 +81,7 @@ async function fetchUsers(id) {
     return data;
 }
 
+
 username = fetchUser();
 username.then(result =>{
     if(result[0] != undefined){
@@ -90,10 +92,9 @@ username.then(result =>{
     }
 });
 
+
 async function showChats() {
-    // Prevent recursive calls during updates
-    if (isUpdating) return;
-    
+
     totalRead = 0;
     const { data, error } = await db
         .from('Chats')
@@ -105,10 +106,12 @@ async function showChats() {
         return;
     }
     
+   
     const sortedChats = data.sort((a, b) => {
         let lastA;
         let lastB;
 
+       
         if (a.times && a.times.length > 0) {
             lastA = a.times.at(-1);
         } else {
@@ -121,6 +124,7 @@ async function showChats() {
             lastB = null;
         }
 
+       
         if (lastA === null && lastB === null) {
             return 0; 
         }
@@ -136,6 +140,7 @@ async function showChats() {
         return new Date(lastB) - new Date(lastA); 
     });
 
+    
     let prevOrder;
     if (rowSys && rowSys.length > 0) {
         prevOrder = rowSys.map(c => c.chat_id);
@@ -144,17 +149,19 @@ async function showChats() {
     }
     rowSys = sortedChats;
    
+  
     savedScrollPosition = chatMess.scrollTop;
     let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${sortedChats[0].chat_id}']`);
     if(tab){
         document.getElementById("messagesBannerHolder").innerHTML = "";
     }
-    
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
         
         let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
         let readNum = chat.read[userNum];
+        
+        
         
         tab = document.createElement("a");
         tab.classList.add("messagesBanner");
@@ -169,7 +176,10 @@ async function showChats() {
         person.appendChild(avatar);
         let uselr = document.createElement('div');
 
+      
         if (chat.groupchat) {
+
+
             uselr.innerHTML = chat.title;
         } else {
             if (chat.host === "" + userId) {
@@ -184,11 +194,13 @@ async function showChats() {
 
         uselr.classList.add("user");
 
+
         let lastMessage = document.createElement('div');
         lastMessage.classList.add("lastMessage");
         let timel = document.createElement('div');
         timel.classList.add('timer');
        
+        
         if(chat.senders){
             for(let i = chat.senders.length - 1; i >= 0; i--){
                 
@@ -197,23 +209,40 @@ async function showChats() {
                     let finalMessage;
                     if(chat.messages[i].includes('<div class="replyMessage">')){
                         let raw = chat.messages[i];
+                    
+
+
                         const match = raw.match(/<\/[^>]+>([^<]+)(?:<|$)/);
+
                         finalMessage = match ? match[1].trim() : '';
                     }else{
                         finalMessage = chat.messages[i];
                     }
+
+                    
                     
                     if(chat.senders[i] == username){
                         lastMessage.innerHTML = "You: " + finalMessage;
+
+
                     }else{
                         lastMessage.innerHTML = (await fetchName(chat.senders[i]))[0].name + ": " + finalMessage;
+                        
                     }
+                    
 
                     timel.innerHTML = formatChatListTimestamp(chat.times[i]);
+
                     break;
                 }
+
+
             }
+
+
         }
+        
+       
 
         let time = document.createElement('div');
         time.classList.add('time');
@@ -225,6 +254,7 @@ async function showChats() {
         tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
         time.appendChild(timel);
         tab.appendChild(time);
+
 
         if(chat == sortedChats[0]){
             let replyBar = document.createElement("div");
@@ -239,7 +269,7 @@ async function showChats() {
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
-            }, true);
+            }, true); // Use capture phase
             
             replyBar.addEventListener("mousedown", (e) => {
                 e.stopImmediatePropagation();
@@ -279,6 +309,7 @@ async function showChats() {
                 return false;
             }, true);
             
+            // Block ALL events on the reply bar
             ['touchstart', 'touchend', 'pointerdown', 'pointerup'].forEach(eventType => {
                 replyBar.addEventListener(eventType, (e) => {
                     e.stopImmediatePropagation();
@@ -292,7 +323,6 @@ async function showChats() {
                     return false;
                 }, true);
             });
-            
             input.addEventListener("keydown", async function(event) {
                 event.stopPropagation;
                 if (event.key === "Enter") {
@@ -304,6 +334,8 @@ async function showChats() {
                     const timestamp = new Date().toISOString();
 
                     try {  
+                        
+                        
                         const { data, error } = await db
                             .from("Chats")
                             .select("*")
@@ -319,7 +351,11 @@ async function showChats() {
                         const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
                         const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
                         
+                        
                         let updatedRead = [];
+
+
+
                         updatedRead = data.read.map(Number);
 
                         if(Array.isArray(data.read)){
@@ -337,9 +373,14 @@ async function showChats() {
                                 }
                                 updatedRead[data.members.length]++;
                             }
+                            
                         }else{
                             console.log("Errenous read");
                         }
+
+
+
+                
 
                         const { error: updateError } = await db
                             .from("Chats")
@@ -351,6 +392,7 @@ async function showChats() {
                             return;
                         }
 
+                        
                         input.value = ""; 
 
                     } catch (err) {
@@ -359,8 +401,11 @@ async function showChats() {
                 }
             });
             tab.appendChild(replyBar);
+
+            
         }
             
+
         chatList.appendChild(tab);
         const existingBadge = tab.querySelector('.reader');
        
@@ -371,6 +416,7 @@ async function showChats() {
                 let badger = document.createElement('div');
                 badger.classList.add('reader');
                 badger.innerHTML = readNum;
+
                 tab.querySelector('.time').appendChild(badger);
             }
             totalRead += readNum;
@@ -413,7 +459,16 @@ async function showChats() {
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
+
+
+    
+
 }
+
+
+
+
+
 
 async function fetchChat(id) {
     const { data, error } = await db
@@ -429,15 +484,12 @@ async function fetchChat(id) {
     return data;
 }
 
+
 const sendButton = document.querySelector(".fa-paper-plane");
 const messageInput = document.querySelector(".chat-input input");
 
 messageInput.addEventListener("keydown", async function(event) {
     if (event.key === "Enter") {
-        if(replying){
-            messageInput.value = reply + messageInput.value;
-            setReplying(false);
-        }
         const messageText = messageInput.value.trim();
         if (!messageText) return; 
 
@@ -446,6 +498,7 @@ messageInput.addEventListener("keydown", async function(event) {
         const timestamp = new Date().toISOString();
 
         try {
+
             const { data, error } = await db
                 .from("Chats")
                 .select("*")
@@ -461,7 +514,11 @@ messageInput.addEventListener("keydown", async function(event) {
             const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
             const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
             
+            
             let updatedRead = [];
+
+
+
             updatedRead = data.read.map(Number);
 
             if(Array.isArray(data.read)){
@@ -479,9 +536,14 @@ messageInput.addEventListener("keydown", async function(event) {
                     }
                     updatedRead[data.members.length]++;
                 }
+                
             }else{
                 console.log("Errenous read");
             }
+
+
+
+    
 
             const { error: updateError } = await db
                 .from("Chats")
@@ -493,6 +555,7 @@ messageInput.addEventListener("keydown", async function(event) {
                 return;
             }
 
+            
             messageInput.value = ""; 
 
         } catch (err) {
@@ -502,10 +565,6 @@ messageInput.addEventListener("keydown", async function(event) {
 });
 
 sendButton.addEventListener("click", async () => {
-    if(replying){
-        messageInput.value = reply + messageInput.value;
-        setReplying(false);
-    }
     const messageText = messageInput.value.trim();
     if (!messageText) return; 
 
@@ -514,6 +573,7 @@ sendButton.addEventListener("click", async () => {
     const timestamp = new Date().toISOString();
 
     try {
+
         const { data, error } = await db
             .from("Chats")
             .select("*")
@@ -529,7 +589,11 @@ sendButton.addEventListener("click", async () => {
         const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
         const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
         
+        
         let updatedRead = [];
+
+
+
         updatedRead = data.read.map(Number);
 
         if(Array.isArray(data.read)){
@@ -547,7 +611,12 @@ sendButton.addEventListener("click", async () => {
                 }
                 updatedRead[data.members.length]++;
             }
+            
         }
+
+
+
+   
 
         const { error: updateError } = await db
             .from("Chats")
@@ -559,17 +628,20 @@ sendButton.addEventListener("click", async () => {
             return;
         }
 
+        
         messageInput.value = ""; 
 
     } catch (err) {
         console.error("Unexpected error:", err);
     }
+
+    
 });
 
 function convertToLocalTime(centralTime) {
     let date = new Date(centralTime);
     let rn = new Date();
-    let daysApart = Math.floor((rn - date) / 86400000);
+    let daysApart = Math.floor((rn - date) / 86400000); // Direct ms-to-days conversion
 
     if (daysApart > 6) {
         return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -584,12 +656,16 @@ function convertToLocalTime(centralTime) {
            `${dayNames[date.getDay()]} at ${timeStr}`;
 }
 
+
 async function openChat(id, payload = null) {
+
+
     let home = document.querySelector('.home');
 
     if(!home.classList.contains('hide')){
         home.classList.add('hide');
     }
+
 
     currentChat = id;
 
@@ -603,6 +679,7 @@ async function openChat(id, payload = null) {
     if(payload != null && payload.host != undefined && payload.messages != undefined){
         chat = payload;
         chatsSys = chat;
+
     }else{
         chat = await fetchChat(id);
         chat = chat[0];
@@ -610,7 +687,12 @@ async function openChat(id, payload = null) {
     }
     
     const chatMess = document.querySelector(".chat-messages");
-    chatMess.innerHTML = ""; // Clear existing messages to prevent duplicates
+    chatMess.innerHTML = ""; 
+    
+
+    
+    
+
 
     let userNum;
 
@@ -625,18 +707,26 @@ async function openChat(id, payload = null) {
     }
     
     let readNum = chat.read[userNum];
+
     read = readNum;
         
+
     if(chat.groupchat){
         chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title;
         let btn = document.querySelector('.homeBtn');
 
+
         btn.addEventListener('click', ()=>{
+
             changeRow();
+          
             home.classList.remove('hide');
         })
         btn.children[0].addEventListener('click', ()=>{
+
             changeRow();
+            
+            
             home.classList.remove('hide');
         })
         chatInput.placeholder = "Message " + chat.title;
@@ -647,15 +737,21 @@ async function openChat(id, payload = null) {
 
             let btn = document.querySelector('.homeBtn');
 
+
             btn.addEventListener('click', ()=>{
                 changeRow();
+              
+
                 home.classList.remove('hide');
             })
             btn.children[0].addEventListener('click', ()=>{
                 changeRow();
+              
+
                 home.classList.remove('hide');
             })
         }else{
+            
             let hoster = fetchUsers(chat.host);
             hoster.then(async result =>{
                 if(result[0] != undefined){
@@ -669,41 +765,46 @@ async function openChat(id, payload = null) {
 
                     let btn = document.querySelector('.homeBtn');
 
+
                     btn.addEventListener('click', ()=>{
                         changeRow();
+                    
+
                         home.classList.remove('hide');
                     })
                     btn.children[0].addEventListener('click', ()=>{
                         changeRow();
+                    
+
                         home.classList.remove('hide');
                     })
                 }
             });
+
+            
+
         }
     }
     lastSender= null;
     
-    // Create a Set to track processed message indices to prevent duplicates
-    const processedMessages = new Set();
-    
     for (let i = chat.messages.length - 1; i >= 0; i--) {
-        // Skip if message already processed or is deleted
-        if(processedMessages.has(i) || chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
+
+        if(chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
             continue;
         }
+
         
-        // Mark this message as processed
-        processedMessages.add(i);
+
 
         const message = document.createElement("div");
         message.classList.add("message");
         message.setAttribute('data-message-id', i);
         message.id = i;
-        
         if(chat.senders[i]!=username){
             const avatar = document.createElement("div");
             avatar.classList.add("avatar");
             message.appendChild(avatar);
+
         }
         
         const content = document.createElement("div");
@@ -732,7 +833,10 @@ async function openChat(id, payload = null) {
         }
 
         message.appendChild(content);
+        
         content.appendChild(usernameElement);
+
+        
         content.appendChild(text);
         content.appendChild(time);
         content.appendChild(messId);
@@ -742,9 +846,18 @@ async function openChat(id, payload = null) {
             message.querySelector(".replyMessage").addEventListener('click', ()=> {
                 window.location.hash = message.querySelector('.ider').innerHTML;
             })
+            
         }
 
+
+        
+        
+
         chatMess.appendChild(message);
+
+
+        
+
     }
 
     let updatedRead = chat.read;
@@ -752,39 +865,67 @@ async function openChat(id, payload = null) {
     if(oldCurrent != currentChat){
         chatMess.scrollTop = chatMess.scrollHeight;
         oldCurrent = currentChat;
+        
+
+
     }else{
         chatMess.scrollTop = savedScrollPosition;
+    
     }
 
     chatMess.addEventListener("scroll", () => {
         window.location.hash = '';
-        const threshold = 100;
+        const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
         const atThreshold = chatMess.scrollTop >= -threshold;
 
         if (atThreshold) {
+  
+
+
+            
             updatedRead[userNum] = 0;
+            
             updateRead(updatedRead);
+
+
+
+            
+            
         }
+
     });
 
-    const threshold = 100;
+    const threshold = 100; // Adjust this value to control how close to the bottom is considered "read"
     const atThreshold = chatMess.scrollTop >= -threshold;
 
     if (atThreshold) {
-        if(updatedRead[userNum] != 0){
+        
+        if(updateRead[userNum] != 0){
             updatedRead[userNum] = 0;
+            
             updateRead(updatedRead);
         }
+        
+        
     }
+
+
 
     messages = chat.messages;
     sendlers = chat.senders;
     memblers = chat.members;
     timers = chat.times;
+
+
+    
+
 }
 
+
 async function updateRead(updatedRead){
+    
     let chat = await fetchChat(currentChat);
+    
     chat = chat[0];
     let userNum;
 
@@ -797,6 +938,7 @@ async function updateRead(updatedRead){
             }
         }
     }
+
 
     read = chat.read[userNum];
     if(read > 0){
@@ -813,52 +955,56 @@ async function updateRead(updatedRead){
 
     changeRow();
     changeRowler();
+    
 }
 
 let i = 0;
 
-// Modified real-time subscription to prevent duplicate handling
+
 db
-    .channel('realtime-changes')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, async (payload) => {
-        if (isUpdating) return; // Prevent recursive calls
-        isUpdating = true;
+    .channel('realtime-changes')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Chats' }, async (payload) => {
+        
         
         changeRowler();
         await showChats();
-        
-        isUpdating = false;
-    })
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, async (payload) => {
-        if (isUpdating) return; // Prevent recursive calls
-        isUpdating = true;
-        
-        if (payload.new.chat_id === currentChat) {
-            // Only re-open if there are actually new messages
-            if (JSON.stringify(payload.new.messages) !== JSON.stringify(chatsSys?.messages)) {
-                openChat(currentChat, payload.new);
-                displayTypingBool = true;
-                newpayload = payload.new;
-                setTimeout(()=> {displayTypingBool = false}, 201);
-            }
-        } else {
+
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, async (payload) => {
+       
+        if (payload.new.chat_id === currentChat) {
+            // If the update is for the currently open chat, re-open it with the new payload
+            openChat(currentChat, payload.new);
+            displayTypingBool = true;
+            newpayload = payload.new;
+            setTimeout(()=> {displayTypingBool = false}, 201);
+        } else {
+            // Otherwise, just refresh the chat list (to update unread counts or order)
             changeRowler();
-        }
+        }
 
         await showChats();
-        
-        isUpdating = false;
-    })
-    .subscribe();
+
+    })
+    .subscribe();
+
 
 async function changeChats(){
+    
+   
     let chat = await fetchChat(currentChat);
+
     chat = chat[0];
+    
 
     if(JSON.stringify(chat.messages) != JSON.stringify(chatsSys.messages)){
         openChat(currentChat);
         chatsSys = chat;
+
+
+        
     }
+    
 }
 
 

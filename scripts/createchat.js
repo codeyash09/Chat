@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 let newChat = document.getElementById("newChatBtn");
-let newChat2 = document.getElementById("newChatBtn2");
 let wall = document.getElementById("blurWall");
 let former = document.getElementById("form");
 const inputContainer = document.getElementById("inputs");
@@ -64,23 +63,6 @@ inputContainer.addEventListener("keydown", (event) => {
 
 
 newChat.addEventListener("click", ()=>{
-    wall.classList.toggle("hider");
-    former.classList.toggle("unslider");
-    wall.style.display = "flex";
-    former.style.display = "flex";
-    submit = false;
-    
-    q1.classList.remove("hidden");
-    q1.style.display = 'flex';
-    
-
-    
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
-
-});
-
-newChat2.addEventListener("click", ()=>{
     wall.classList.toggle("hider");
     former.classList.toggle("unslider");
     wall.style.display = "flex";
