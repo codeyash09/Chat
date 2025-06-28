@@ -499,7 +499,11 @@ messageInput.addEventListener("keydown", async function(event) {
         } catch (err) {
             console.error("Unexpected error:", err);
         }
+
+        openChat(currentChat);
+
     }
+
 });
 
 sendButton.addEventListener("click", async () => {
@@ -565,6 +569,9 @@ sendButton.addEventListener("click", async () => {
     } catch (err) {
         console.error("Unexpected error:", err);
     }
+
+    openChat(currentChat);
+
 });
 
 function convertToLocalTime(centralTime) {
