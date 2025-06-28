@@ -233,6 +233,7 @@ async function showChats() {
             input.type='text';
             input.placeholder = `Send message to ${uselr.innerHTML}`
             input.classList.add("replyInput");
+            input.enterKeyHint="send";
             replyBar.appendChild(input);
             replyBar.addEventListener("click", (e) => {
                 e.stopImmediatePropagation();
