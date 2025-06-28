@@ -32,8 +32,8 @@
         
         #button {
             background-color: #FFFFFF;
-            color: #FD5A23;
-            border: 2px solid #FD5A23;
+            color: #220952ff;
+            border: 2px solid #220952ff;
         }
         
         /* Add these styles to fix button hover animations */
@@ -41,27 +41,27 @@
         
         .sidebar a:hover {
             background-color: #FFF5F2 !important;
-            color: #FD5A23 !important;
+            color: #220952ff !important;
         }
         
         .sidebar a:hover i {
-            color: #FD5A23 !important;
+            color: #220952ff !important;
         }
         
         /* Fix button hover animation */
         @keyframes buttonHover {
             0% {
                 background-color: #FFFFFF;
-                color: #FD5A23;
+                color: #220952ff;
             }
             100% {
-                background-color: #FD5A23;
+                background-color: #220952ff;
                 color: #FFFFFF;
             }
         }
         
         #button:hover {
-            background-color: #FD5A23 !important;
+            background-color: #220952ff !important;
             color: #FFFFFF !important;
             box-shadow: 0 6px 12px rgba(253, 90, 35, 0.3) !important;
             transform: translateY(-2px);
@@ -72,13 +72,13 @@
         /* Fix folder header hover */
         .folder-header:hover {
             background-color: #FFF5F2 !important;
-            color: #FD5A23 !important;
+            color: #220952ff !important;
         }
         
         /* Fix collapse button hover */
         .collapse-btn:hover {
             background-color: #FFF5F2 !important;
-            color: #FD5A23 !important;
+            color: #220952ff !important;
         }
         
         .already {
@@ -86,7 +86,7 @@
         }
         
         .already a {
-            color: #FD5A23;
+            color: #220952ff;
         }
         
         .already a:hover {
@@ -155,7 +155,7 @@
         .welcome-text h1 {
             font-size: 42px;
             margin-bottom: 20px;
-            color: #FD5A23;
+            color: #220952ff;
             animation: dropIn 1.2s ease forwards;
             opacity: 0;
         }
@@ -222,11 +222,11 @@
         
         .cta-button:hover::before {
             opacity: 0.1;
-            background-color: #FD5A23;
+            background-color: #220952ff;
         }
         
         .primary-button {
-            background-color: #FD5A23;
+            background-color: #220952ff;
             color: white !important;
             border: none;
             /* Remove animation */
@@ -252,15 +252,15 @@
         }
         
         .primary-button:hover {
-            background-color: #FD5A23;
+            background-color: #220952ff;
             transform: translateY(-3px);
             animation: pulse-glow 1.5s infinite;
         }
         
         .secondary-button {
             background-color: white;
-            color: #FD5A23 !important;
-            border: 2px solid #FD5A23;
+            color: #220952ff !important;
+            border: 2px solid #220952ff;
             /* Remove animation */
             animation: none;
             position: relative;
@@ -313,165 +313,7 @@
 </head>
 <body>
     <!-- Loading screen will be created by the loading.js script -->
-    <div class="loader" style="position:fixed; z-index: 100000000;" id="loader">
-        <h1 style="position: absolute;" class="loading-text">
-
-
-            <h1 class="not-loading-text">Summit
-                <img id="lil-load">
-
-            </h1>
-            <div class="wall"></div>
-            <div class="wall2"></div>
-            
-        </h1>
-
-
-        <style>
-            #lil-load{
-                position: relative;
-                width: 5vw;
-                height: 5vw;
-                top: 5.5vw;
-                right: 12.75vw;
-            }
-
-
-            #loader{
-                animation: hider 5s linear;
-                opacity: 0;
-                display: flex;
-                overflow: hidden;
-            }
-
-            @keyframes hider {
-                0% {
-                    opacity: 1;
-                    display: flex;
-                    position: absolute;width: 100vw;height: 100vh;z-index: 500;background-color: #FD5A23;justify-content: center;align-items: center;
-
-                }
-
-                
-
-                95% {
-                    opacity: 1;
-                    display: flex;
-                    position: absolute;width: 100vw;height: 100vh;z-index: 500;background-color: #FD5A23;justify-content: center;align-items: center;
-
-                }
-                100%{
-                    opacity: 0;
-                    display: none;
-                    
-                    position: absolute;width: 100vw;height: 100vh;z-index: 500;background-color: #FD5A23;justify-content: center;align-items: center;
-
-                }
-            }
-
-
-
-
-            .loading-text{
-                animation: skip 2s linear;
-                font-size:20vw;
-                width: 100vw;
-                height: 100vh;
-                color: white;
-                background-color: #FD5A23;
-                top: 0;
-
-            }
-
-            .not-loading-text{
-                color:white;
-                font-size: 20vw;
-                text-align: center;
-                display: flex;
-                
-            }
-
-
-
-
-
-
-            .wall{
-                color:#FD5A23;
-                animation: color 1s linear;
-                width: 100%;
-                height: 0;
-                position: absolute;
-                top: -5vh;
-                display: flex;
-                justify-self: center;
-                align-self: center;
-         
-            }
-
-            .wall2{
-                color:#FD5A23;
-                animation: color 1s linear;
-                width: 100%;
-                height: 0;
-                position: absolute;
-                bottom: -5vh;
-                display: flex;
-
-                justify-self: center;
-                align-self: center;
-
-            }
-
-            @keyframes color {
-                0% {
-                    color: transparent;
-                    background-color: white;
-                    height: 55vh;
-                    width: 100vw;
-                    box-shadow: 2px 2px 2px #c241169d;
-
-                }
-
-                
-                30%{
-                    color: transparent;
-                    background-color: white;
-                    height: 55vh;
-                    width: 100vw;
-                    box-shadow: 2px 2px 2px #c241169d;
-
-                }
-
-
-                100%{
-                    background-color: #FD5A23;
-                    box-shadow: none;
-
-                    color: #FD5A23;
-                    height: 0;
-                    
-
-                }
-            }
-
-            
-
-            @keyframes skip {
-                0% {
-                    left: 0vw;
-                    font-size:50vw;
-                 
-                }
-                
-
-                100%{
-                    left: 0;
-                
-                }
-            }
-        </style>
-    </div>
+    
     
      <!-- <div class="sidebar" id="sidebar">
           Collapse Button 
@@ -564,9 +406,9 @@
         <div class="content">
             <div class="welcome-section">
                 <div class="welcome-text">
-                    <h1>Welcome to Summit</h1>
-                    <h2>Your all-in-one student sidekick</h2>
-                    <p>Take smart notes, stay on top of your schoolwork, and get the help you need to reach your academic peak. Summit is where focus meets simplicity.</p>
+                    <h1>Welcome to Qubit</h1>
+                    <h2>The AI-Powered Chat System</h2>
+                    <p>Connect with others and boost productivity and efficiency with AI.</p>
                     
                     <div class="cta-buttons">
                         <a href="/pages/signup.html" class="cta-button primary-button">Sign Up Now</a>
@@ -581,6 +423,6 @@
     <script src="/scripts/textanimation.js"></script>
     <script src="/scripts/sidebar.js"></script>
     <script type="module" src="/scripts/reader.js"></script>
-    <script src="/scripts/loading.js"></script>
+
 </body>
 </html>

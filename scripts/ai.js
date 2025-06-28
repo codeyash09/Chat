@@ -14,10 +14,13 @@ let responses = [];
 let prompts = [];
 let sortedChats;
 
+let aiLogo = document.getElementById("aiLogo");
 
 
-
-
+aiLogo.addEventListener("click", ()=>{
+  
+  input.focus();
+})
 
 
 let isWaiting = false;

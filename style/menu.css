@@ -51,7 +51,7 @@
 }
 
 #collapser i{
-    color:#ffffff;
+    color:#220952ff !important;
     font-size: 2vh;
     display: flex;
     align-items: center;
@@ -101,7 +101,7 @@
 }
 
 .links a i{
-    color: white;
+    color: #220952ff !important;
     font-size: 2vh;
     overflow: hidden;
     width: 100%;
@@ -129,13 +129,13 @@
     width: 5vh;
     
     background-color: white;
-    color: #220952ff;
+    color: white;
 }
 .links a i:hover{
 
     color: white;
     background-color: white;
-    color: #220952ff;
+    
 }
 
 .sirvo{
@@ -298,7 +298,7 @@
 }
 
 .linksmener i{
-    color: white;
+    color: #220952ff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -306,7 +306,7 @@
 }
 
 .linksmener i h1{
-    color: white;
+    color: #220952ff;
     font-size: 4vh;
     overflow: hidden;
     display: flex;
@@ -332,11 +332,11 @@
 }
 
 .linksmener a:hover {
-    border-bottom: white 5px solid;
+    border-bottom: #220952ff 5px solid;
     position: relative;
     left: 1vw;
     top: -1vh;
-    border-top: white 5px solid;
+    border-top: #220952ff 5px solid;
 }
 
 
@@ -358,11 +358,22 @@
     }
 }
 
-.links a:hover i,
-.links a i:hover,
-.mener,
-#closer {
+
+.mener {
     color: #a58ee6 !important;
     background-color: #a58ee6 !important;
     border-color: #a58ee6 !important;
+}
+
+.sidebar {
+    background-color: #f3eafd !important;
+    border-right: 1px solid #eee !important;
+}
+
+.sidebarmenu, .mener {
+    background-color: #f3eafd !important;
+}
+
+.linker, .links, .linksmener {
+    background-color: #f3eafd !important;
 }

@@ -1878,7 +1878,7 @@ form h1{
 
 
 #newChatBtn2{
-    background-color: rgb(0, 0, 0);
+    background-color: white;
     border: none;
     border-radius: 50px;
     font-size: 3vh;
@@ -1922,7 +1922,7 @@ form h1{
 }
 
 .backBtn{
-    color: white;
+    color: white !important;
     font-size: 2vh;
     position: fixed;
     top:6.5vh;
@@ -1953,11 +1953,11 @@ form h1{
 
 .btnHolderr i{
     border-radius: 50px;
-    background-color: black !important;
+    background-color: white !important;
     color: white;
     width: 2vh !important;
     text-align: center;
-    border: 5px solid #220952ff;
+   
     transition: all.25s linear;
 }
 
@@ -2117,18 +2117,7 @@ form h1{
   }
 }
 
-.sidebar {
-    background-color: #f3eafd !important;
-    border-right: 1px solid #eee !important;
-}
 
-.sidebarmenu {
-    background-color: #f3eafd !important;
-}
-
-.linker, .links, .linksmener {
-    background-color: #f3eafd !important;
-}
 
 .nav-items a, .bottom-nav a {
     color: #220952ff;
