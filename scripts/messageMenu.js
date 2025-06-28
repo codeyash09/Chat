@@ -452,11 +452,31 @@ async function UpdateMessageReact(messEl, updatedText){
     
 }
 
+let replying = false;
+let reply = null;
+let repUser = null;
+
+export const setReplying = (val) => {replying = val};
+
+async function fetchName(username) {
+    const { data, error } = await db
+      .from('Users')
+      .select('name')
+      .eq('username', username);
+  
+    if (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  
+    return data;
+}
+
 // Handle reply
-function handleReply(messageElement) {
+async function handleReply(messageElement) {
 
     
-    const sender = messageElement.querySelector('.username').textContent;
+    const sender = (await fetchName(messageElement.querySelector('.username').textContent))[0].name;
     let messageText = messageElement.querySelector('.text').innerHTML;
     const chatInput = document.getElementById('chatInput');
 
@@ -500,9 +520,10 @@ function handleReply(messageElement) {
     }
     
 
-
-
-    chatInput.value = `<div class="replyMessage"><div class="replyUser">${sender}</div><div class="replyContent">${messageText}</div><div style="display:none" class="ider">${messageElement.id}</div></div>`;
+    replying = true;
+    reply = `<div class="replyMessage"><div class="replyUser">${sender}</div><div class="replyContent">${messageText}</div><div style="display:none" class="ider">${messageElement.id}</div></div>`;
+    repUser = sender;
+   
     chatInput.focus();
 }
 
@@ -845,3 +866,25 @@ document.addEventListener('DOMContentLoaded', () => {
         mutationObserver.observe(chatMessages, { childList: true, subtree: true });
     }
 }); 
+
+
+setInterval(stat, 50);
+
+function stat(){
+    let status = document.getElementById("status");
+    status.addEventListener('click', ()=>{
+        if(status.innerHTML != ""){
+            reply = null;
+            replying = null;
+        }
+    })
+    if(replying){
+        status.innerHTML = `Replying to ${repUser} (Click Here to Cancel)`;
+        
+    }else{
+        status.innerHTML = "";
+    }
+}
+
+
+export {replying, reply};
