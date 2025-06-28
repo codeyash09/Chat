@@ -1,5 +1,5 @@
 import {db} from '/scripts/createChat.js';
-import {currentChat,username,userId, displayTypingBool, newpayload} from '/scripts/chats.js';
+import {currentChat,username,userId, displayTypingBool, newpayload,memblers} from '/scripts/chats.js';
 
 
 
@@ -173,16 +173,23 @@ async function displayTyping(payload){
         for(let i = 0; i< typing.length; i++){
             if(i != numId){
                 if(i == 0 && typing[i] == true){
-                    
-                    user = await fetchUser(payload.host);
-                    user = user[0].username;
-
-                    
-
                     let mess = document.createElement('div');
                     mess.classList.add("message");
                     mess.classList.add("typingMessage");
-                    mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>'
+                   
+                    if(memblers.length > 2){
+                        user = await fetchUser(payload.host);
+                        user = user[0].username;
+                        user = (await fetchName(user))[0].name;
+                        mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>';
+                    }else{
+                        mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="text"><img src="/images/typing.gif"></div></div>';
+
+                    }
+                    
+
+                    
+                    
                     chatMess.prepend(mess);
                 }
                 if(typing[i] == true && i != 0){
@@ -190,7 +197,16 @@ async function displayTyping(payload){
                     let mess = document.createElement('div');
                     mess.classList.add("message");
                     mess.classList.add("typingMessage");
-                    mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>'
+
+
+                    if(memblers.length > 2){
+                        user = (await fetchName(user))[0].name;
+                        mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>';
+                    }else{
+                        mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="text"><img src="/images/typing.gif"></div></div>';
+
+                    }
+                    
                     chatMess.prepend(mess);
                 }
             }
@@ -203,6 +219,22 @@ async function displayTyping(payload){
     }
 
 
+}
+
+
+
+async function fetchName(username) {
+    const { data, error } = await db
+      .from('Users')
+      .select('name')
+      .eq('username', username);
+  
+    if (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  
+    return data;
 }
 
 async function fetchUser(userIdentify) {

@@ -1343,11 +1343,11 @@ form h1{
 
 
 .typingMessage .content{
-    background-color: #f5f5f5 !important;
+    background-color: #b5b4b3ff !important;
 }
 
 .typingMessage img{
-    width: 2vw;
+    width: 2vh;
 }
 
 .replyMessage{
@@ -2297,7 +2297,7 @@ body,
 .selection-mode.active,
 .selection-actions .delete-all:hover,
 .selection-actions .cancel:hover {
-    background-color: #f3eafd !important;
+    background-color: transparent !important;
     color: #220952ff !important;
 }
 

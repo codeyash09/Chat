@@ -1245,17 +1245,7 @@
         }
 
         /* Force override for message content background - only for receiving messages */
-        .chat-messages .message:not(.own-message) .content {
-            background-color: #f0f0f0 !important;
-            color: black !important;
-        }
-        
-        /* Even more specific override - only for receiving messages */
-        .main-chat .chat-messages .message:not(.own-message) .content {
-            background-color: #f0f0f0 !important;
-            color: black !important;
-        }
-        
+    
         /* Ensure receiving message text is black and not highlighted */
         .message:not(.own-message) .content .text {
             background: transparent !important;
@@ -1279,7 +1269,7 @@
         }
 
         .chat-messages .message:not(.own-message) .content .text::selection {
-            background: #bdbdbd !important;
+            background: #bdbdbd ;
             color: black !important;
         }
 
@@ -1371,6 +1361,14 @@
                 color: #222 !important;
                 border: none !important;
             }
+
+            .typingMessage .content{
+                background-color: #b5b4b3ff !important;
+            }
+        }
+
+        .typingMessage .content{
+            background-color: #b5b4b3ff !important;
         }
     </style>
 </head>
