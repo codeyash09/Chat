@@ -60,10 +60,16 @@ function initMessageSelection() {
 
         if (timeDiff < DOUBLE_CLICK_DURATION && !isSelectionMode) {
             // Double click detected - enter selection mode
+            if (window.innerWidth <= 768 && window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(15);
+            }
             enterSelectionMode();
             selectMessage(message);
         } else if (isSelectionMode) {
             // Single click in selection mode - toggle selection
+            if (window.innerWidth <= 768 && window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
             e.preventDefault();
             e.stopPropagation();
             toggleMessageSelection(message);

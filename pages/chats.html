@@ -1589,14 +1589,35 @@
 
         <div class="home">
             <div id="sett" class="settingsPopup" style="width: 100vw;height: 100vh;position: absolute;z-index: 500000000000000000000000;display: none;justify-content: center;align-items: center;background-color: #00000098;transition: all .25s linear;top: 0;left: 0;">
-                <div class="container" style="width: 100vw;height: 100vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5);">
+                <div class="container" style="width: 100vw;height: 100vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px;">
                     <div id="clobtn" class="closeBtn" style="position: absolute; right: 0vw;width:4vh; height: 4vh; font-size: 20px;display: flex;justify-content: center;align-items: center;"><i id="cloBtn" class="fa-solid fa-circle-xmark"></i></div>
+                    <!-- Profile Section -->
+                    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 32px; margin-bottom: 32px;">
+                        <div style="width: 90px; height: 90px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #220952ff; margin-bottom: 12px;">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div style="font-size: 20px; font-weight: 600; color: #220952ff;">John Doe</div>
+                        <div style="font-size: 15px; color: #666; margin-top: 2px;">@johndoe</div>
+                        <div style="font-size: 14px; color: #999; margin-top: 2px;">DOB: 2000-01-01</div>
+                    </div>
+                    <!-- Settings List -->
+                    <div style="width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 12px;">
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-user-gear"></i> Account</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #fff5f2; color: #fd5a23; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-heart"></i> Donate</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-palette"></i> Theme</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-comments"></i> Chat Settings</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-bell"></i> Notification</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-user-shield"></i> Privacy</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-database"></i> Data</a>
+                        <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-circle-question"></i> Help</a>
+                    </div>
                 </div>
             </div>
 
 
             
-            <div id="bitsPopup" class="bitsPopup" style="display: none; justify-content: center; align-items: center; position: absolute;width: 10vw;height: 15vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5);z-index: 500000000000000000000000;right: 9vw;top:8vh;box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);">
+            <div id="bitsPopup" class="bitsPopup"
+                 style="display: none; position: fixed !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; width: 100vw; max-width: none; height: 100vh; min-height: 0; background-color: white; border-radius: 0; outline: none; z-index: 500000000000000000000000; box-shadow: none; justify-content: center; align-items: center;">
                 
             </div>
             <div id="nonPopup" class="nonPopup" style="display: none; justify-content: center; align-items: center; position: absolute;width: 10vw;height: 15vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5);z-index: 500000000000000000000000;right: 6vw;top:8vh;box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);">
@@ -1676,11 +1697,13 @@
                         
                     }
 
-
-
-
-
-
+                    // Add close functionality for Bits popup
+                    const closeBitsBtn = document.getElementById("closeBitsPopup");
+                    if (closeBitsBtn) {
+                        closeBitsBtn.onclick = function() {
+                            document.getElementById("bitsPopup").style.display = 'none';
+                        };
+                    }
 
                 </script>
             </div>

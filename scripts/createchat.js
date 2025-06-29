@@ -335,3 +335,18 @@ function validate(){
     correct = true;
     submit = false;
 }
+
+// Fetch full user profile (name, username, birthday) by userId
+export async function fetchUserProfile(userId) {
+  const { data, error } = await db
+    .from('Users')
+    .select('name, username, birthday')
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
+
+  return data && data[0] ? data[0] : null;
+}

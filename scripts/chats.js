@@ -1,6 +1,7 @@
 import {db} from '/scripts/createChat.js';
 import { showContextMenu } from '/scripts/chatContextMenu.js';
 import { setReplying, replying, reply } from '/scripts/messageMenu.js';
+import { fetchUserProfile } from '/scripts/createChat.js';
 
 let count = 0;
 let read = 10;
@@ -1250,3 +1251,29 @@ function formatChatListTimestamp(dateString) {
 }
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Settings popup profile population
+  const userId = window.localStorage.getItem('userIdentify');
+  if (!userId || userId === 'null') return;
+  const profile = await fetchUserProfile(userId);
+  if (profile) {
+    // Find the settings popup profile section
+    // These selectors match the order in the HTML edit
+    const container = document.querySelector('#sett .container');
+    if (container) {
+      const profileSection = container.querySelector('div[style*="flex-direction: column; align-items: center; margin-top: 32px"]');
+      if (profileSection) {
+        // Name
+        const nameDiv = profileSection.children[1];
+        if (nameDiv) nameDiv.textContent = profile.name || '';
+        // Username
+        const usernameDiv = profileSection.children[2];
+        if (usernameDiv) usernameDiv.textContent = '@' + (profile.username || '');
+        // DOB
+        const dobDiv = profileSection.children[3];
+        if (dobDiv) dobDiv.textContent = 'DOB: ' + (profile.birthday || '');
+      }
+    }
+  }
+});
