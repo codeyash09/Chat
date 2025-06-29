@@ -33,7 +33,7 @@ export async function fetchId(tableName, column, value) {
   return data;
 }
 
-export async function insertData(user, pass, nombre, bday, mail) {
+export async function insertData(user, pass, nombre, bday, mail, redirectToChats) {
   const { data, error } = await db.from('Users').insert([
     {
       username: user,
@@ -45,10 +45,13 @@ export async function insertData(user, pass, nombre, bday, mail) {
   ]);
 
   if (error) {
-    
     details = error.details;
-    errorMessage.textContent = details;
-    errorMessage.style.display = "block";
+    if (typeof errorMessage !== 'undefined' && errorMessage) {
+      errorMessage.textContent = details;
+      errorMessage.style.display = "block";
+    } else {
+      alert(details);
+    }
   }else{
     window.localStorage.setItem('loggedInStatus', true);
 
@@ -63,7 +66,11 @@ export async function insertData(user, pass, nombre, bday, mail) {
           window.localStorage.setItem('userIdentify', id);
 
     
-          window.location.replace("/pages/");
+          if (redirectToChats) {
+            window.location.replace("/pages/chats.html");
+          } else {
+            window.location.replace("/pages/");
+          }
         }
       });
     }

@@ -1,4 +1,3 @@
-
 import { fetchPassword, details, fetchId } from '/scripts/server.js';
 
 
@@ -21,73 +20,59 @@ form.addEventListener("submit", (event) => {
     const emailValue = emailInput.value.trim();
     const passwordValue = passwordInput.value.trim();
 
+    let passPromise;
     if(emailValue.includes("@") && emailValue.includes(".")){
-        pass = fetchPassword('Users', 'email', emailValue);
-
+        passPromise = fetchPassword('Users', 'email', emailValue);
     }else{
-        pass = fetchPassword('Users', 'username', emailValue);
-
+        passPromise = fetchPassword('Users', 'username', emailValue);
     }
-    if(pass == undefined){
+
+    if(!passPromise){
         errorMessage.textContent = "The given username/email does not exist. Please Sign Up.";
         errorMessage.style.display = "block";
-
-    }else{
-
-        pass.then(result => {
-
-            if(result[0] != undefined){
-
-                code = result[0].password;
-                
-                if(code != passwordValue){
-                    errorMessage.textContent = "Incorrect Password Or Username/Email";
-                    errorMessage.style.display = "block";
-                }else{
-
-                    window.localStorage.setItem('loggedInStatus', true);
-                    
-                    let id;
-                    if(emailValue.includes("@") && emailValue.includes(".")){
-                        id = fetchId('Users', 'email', emailValue);
-
-                
-                    }else{
-                        id = fetchId('Users', 'username', emailValue);
-
-                
-                    }
-
-                    
-                    if(id != undefined){
-                        id.then(result =>{
-                            if(result[0] != undefined){
-                                id = result[0].id;
-
-                                window.localStorage.setItem('userIdentify', id);
-
-                                window.location.replace("/pages/");
-                            }
-                        });
-                    }
-                    
-                    
-                   
-
-                    
-                    
-                }
-            }else{
-                errorMessage.textContent = "The given username/email does not exist. Please Sign Up.";
-                errorMessage.style.display = "block";
-            }
-        });
-
-        
+        return;
     }
-    
 
-    
-
+    passPromise.then(result => {
+        if(!result || !Array.isArray(result) || result.length === 0 || !result[0]){
+            errorMessage.textContent = "The given username/email does not exist. Please Sign Up.";
+            errorMessage.style.display = "block";
+            return;
+        }
+        code = result[0].password;
+        if(code != passwordValue){
+            errorMessage.textContent = "Incorrect Password Or Username/Email";
+            errorMessage.style.display = "block";
+            return;
+        }
+        window.localStorage.setItem('loggedInStatus', true);
+        let idPromise;
+        if(emailValue.includes("@") && emailValue.includes(".")){
+            idPromise = fetchId('Users', 'email', emailValue);
+        }else{
+            idPromise = fetchId('Users', 'username', emailValue);
+        }
+        if(!idPromise){
+            errorMessage.textContent = "Could not fetch user ID. Please try again.";
+            errorMessage.style.display = "block";
+            return;
+        }
+        idPromise.then(idResult => {
+            if(!idResult || !Array.isArray(idResult) || idResult.length === 0 || !idResult[0]){
+                errorMessage.textContent = "Could not fetch user ID. Please try again.";
+                errorMessage.style.display = "block";
+                return;
+            }
+            const id = idResult[0].id;
+            window.localStorage.setItem('userIdentify', id);
+            window.location.replace("/pages/chats.html");
+        }).catch(() => {
+            errorMessage.textContent = "Could not fetch user ID. Please try again.";
+            errorMessage.style.display = "block";
+        });
+    }).catch(() => {
+        errorMessage.textContent = "An error occurred. Please try again.";
+        errorMessage.style.display = "block";
+    });
 });
 

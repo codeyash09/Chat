@@ -377,3 +377,10 @@
 .linker, .links, .linksmener {
     background-color: #f3eafd !important;
 }
+
+@media (max-width: 768px) {
+  #meny,
+  .sidebarmenu {
+    display: none !important;
+  }
+}
