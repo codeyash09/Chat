@@ -97,172 +97,94 @@
         
         /* Add this to fix sidebar background */
         .sidebar {
-            background-color: #FFFFFF !important;
-            border-right: 1px solid #eee !important;
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <!-- <div class="sidebar" id="sidebar">
-         Collapse Button 
-        <button class="collapse-btn" id="collapseBtn">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-    
-         Profile Section 
-        <div class="profile-section">
-            <img id="realProfile" src="/images/image copy.png" alt="Profile Picture">
-        </div>
-        
-         Main Navigation 
-        <div class="nav-items">
-
-            <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i> <span class="nav-text">Inbox</span></a>
-            <a href="/pages/notes.html"><i class="fa-solid fa-note-sticky"></i> <span class="nav-text">Notes</span></a>
-        </div>
-    
-         Pages Section 
-        <div class="pages-section">
-            <div class="section-header">
-                <span class="nav-text">Pages</span>
-                <button class="add-page-btn">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-            </div>
-             Removed pages-list div and its contents 
-        </div>
-        
-        Bottom Navigation 
-        <div class="bottom-nav">
-             Settings and Trash links removed 
-        </div>
-    </div> -->
-
+    <!-- Sidebar removed for mobile optimization -->
     <div id="meny">
-
         <div class="sidebarmenu">
             <a class="collapser" id="collapser">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
-    
             <div class="linker">
                 <div class="links">
                     <a href="/pages/"><i class="fa-solid fa-search"></i></a>
                     <a href="/pages/"><i class="fa-solid fa-robot"></i></a>
                     <a href="/pages/"><i class="fa-solid fa-home"></i></a>
-
                     <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i></a>
-            
                 </div>
             </div>
             <div class="cover" id="coverscreen121"></div>
             <div class="sirvo" id="sirvo">
-
-
-
-
                 <div class="mener">
                     <a id="closer"><i class="fa-solid fa-xmark"></i></a>
                     <div class="linksmener" id="linksmener">
-                        
-
                         <a><i class="fa-solid fa-search"> <h1>Search</h1></i> </a>
                         <a><i class="fa-solid fa-robot"> <h1>Summit AI</h1></i></a>
                         <a href="/pages/"><i class="fa-solid fa-home"> <h1>Home</h1></i></a>
-
                         <a href="/pages/chats.html"><i class="fa-solid fa-inbox"> <h1>Inbox</h1></i></a>
-                
                     </div>
-                    
-
                 </div>
                 <img src="/images/shadow.png" id="splash2">
-
                 <img src="/images/splasher.png" id="splash">
-
             </div>
         </div>
     </div>
-
     <link rel="stylesheet" href="/style/menu.css">
-        
     <script src="/scripts/menu.js"></script>
-
-
     <div class="main-container" id="mainContainer">
         <!-- Pages Divider -->
         <div class="pages-divider">
             <div class="pages-header">
-                <h2>Sign Up</h2>
             </div>
             <div class="divider"></div>
         </div>
-        
         <div class="content" id="content">
-            <form novalidate id="myForm">
-                <h1>Sign Up</h1>
-                
-                <div class="form-group">
-                    <h3 class="emailer">Email</h3>
-                    <input type="email" id="emailAddress" minlength="8" required>
-                </div>
-
-                <div id="emailErrorMessage" class="error"></div>
-
-                <div class="form-group">
-                    <h3 class="passworder">Password</h3>
-                    <input type="password" id="password" minlength="8" required>
-                </div>
-
-                <div class="form-group">
-                    <h3 class="namer">Name</h3>
-                    <input type="text" id="name" required>
-                </div>
-
-                <div class="form-group">
-                    <h3 class="bdayer">Birthday</h3>
-                    <input type="date" id="birthday" required>
-                </div>
-
-                <div class="form-group">
-                    <h3 class="usernamer">Username</h3>
-                    <input type="text" id="username" required>
-                </div>
-
-                <input id="button" type="submit" value='Sign Up'>
-            </form>
+            <div class="wrapper">
+                <div class="title">Sign Up</div>
+                <form id="myForm" novalidate>
+                    <div class="field">
+                        <input type="text" id="name" required>
+                        <label>Name</label>
+                    </div>
+                    <div class="field">
+                        <input type="email" id="emailAddress" required>
+                        <label>Email Address</label>
+                    </div>
+                    <div class="field">
+                        <input type="password" id="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="field">
+                        <input type="date" id="birthday" required>
+                        <label>Birthday</label>
+                    </div>
+                    <div class="field">
+                        <input type="text" id="username" required>
+                        <label>Username</label>
+                    </div>
+                    <div id="emailErrorMessage" class="error"></div>
+                    <div class="field">
+                        <input type="submit" value="Sign Up">
+                    </div>
+                    <div class="signup-link">
+                        Already a member? <a href="/pages/login.html" id="loginLink">Log In</a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <h3 class="already">Already a member: <a href="/pages/login.html">Log In</a></h3>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="/scripts/server.js"></script>
     <script type="module" src="/scripts/signup.js"></script>
     <script src="/scripts/animations.js"></script>
     <script>
-        // Add sidebar collapse functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContainer = document.getElementById('mainContainer');
-            const collapseBtn = document.getElementById('collapseBtn');
-            
-            // Check localStorage for saved state when page loads
-            if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                sidebar.classList.add('collapsed');
-                mainContainer.classList.add('expanded');
-                collapseBtn.classList.add('rotated');
-            }
-            
-            collapseBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContainer.classList.toggle('expanded');
-                collapseBtn.classList.toggle('rotated');
-                
-                // Save state to localStorage
-                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-            });
-        });
+      // Set flag for confetti when going to login
+      document.getElementById('loginLink').addEventListener('click', function() {
+        localStorage.setItem('fromSignup', '1');
+      });
     </script>
 </body>
 </html>

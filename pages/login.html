@@ -6,7 +6,7 @@
     <title>Login | Summit</title>
 
     <link rel="stylesheet" href="/style/style.css">
-    <link rel="stylesheet" href="/style/login.css">
+    <link rel="stylesheet" href="/style/signup.css">
     <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
     <style>
         /* White and orange theme override */
@@ -165,8 +165,8 @@
     
             <div class="linker">
                 <div class="links">
-                    <a><i class="fa-solid fa-search"></i></a>
-                    <a><i class="fa-solid fa-robot"></i></a>
+                    <a href="/pages/"><i class="fa-solid fa-search"></i></a>
+                    <a href="/pages/"><i class="fa-solid fa-robot"></i></a>
                     <a href="/pages/"><i class="fa-solid fa-home"></i></a>
 
                     <a href="/pages/chats.html"><i class="fa-solid fa-inbox"></i></a>
@@ -209,32 +209,33 @@
         <!-- Pages Divider -->
         <div class="pages-divider">
             <div class="pages-header">
-                <h2>Login</h2>
             </div>
             <div class="divider"></div>
         </div>
         
         <div class="content" id="content">
-            <form novalidate id="myForm">
-                <h1>Login</h1>
-                
-                <div class="form-group">
-                    <h3 class="emailer">Email/Username</h3>
-                    <input type="text" id="emailAddress" required>
-                </div>
-
-                <div id="emailErrorMessage" class="error"></div>
-
-                <div class="form-group">
-                    <h3 class="passworder">Password</h3>
-                    <input type="password" id="password" required>
-                </div>
-
-                <input id="button" type="submit" value='Login'>
-            </form>
+            <div class="wrapper">
+                <div class="title">Login</div>
+                <form id="myForm" novalidate>
+                    <div class="field">
+                        <input type="text" id="emailAddress" required>
+                        <label>Email/Username</label>
+                    </div>
+                    <div class="field">
+                        <input type="password" id="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Login">
+                    </div>
+                    <div class="signup-link">
+                        Not already a member? <a href="/pages/signup.html">Sign Up</a>
+                    </div>
+                </form>
+                <div style="width:100%;text-align:center;margin-top:8px;font-size:20px;font-family:'RF Dewi',sans-serif;font-weight:700;background: linear-gradient(90deg, #ff7a4d 0%, #220952ff 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">Welcome Back !</div>
+                <div id="emailErrorMessage" class="error" style="margin-top:400px;font-size:12px;padding:4px;"></div>
+            </div>
         </div>
-
-        <h3 class="already">Not already a member: <a href="/pages/signup.html">Sign Up</a></h3>
 
     </div>
 
@@ -243,6 +244,18 @@
     <script type="module" src="/scripts/login.js"></script>
     <script src="/scripts/animations.js"></script>
     <script src="/scripts/sidebar.js"></script>
-    <!-- Remove the duplicate sidebar collapse code -->
+    <!-- Confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+      // If user comes from signup, trigger confetti
+      if (localStorage.getItem('fromSignup')) {
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.1 },
+        });
+        localStorage.removeItem('fromSignup');
+      }
+    </script>
 </body>
 </html>

@@ -102,7 +102,6 @@ form.addEventListener("submit", (event) => {
 
 
     if(corrects == 5){
-        insertData(usernameValue, passwordValue, nameValue, birthdayValue, emailValue);
-        
+        insertData(usernameValue, passwordValue, nameValue, birthdayValue, emailValue, true);
     }
 });
