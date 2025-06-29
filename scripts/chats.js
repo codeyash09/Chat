@@ -3,6 +3,7 @@ import { showContextMenu } from '/scripts/chatContextMenu.js';
 import { setReplying, replying, reply } from '/scripts/messageMenu.js';
 import { fetchUserProfile } from '/scripts/createChat.js';
 
+
 let count = 0;
 let read = 10;
 let totalRead = 0;
@@ -174,7 +175,12 @@ async function showChats() {
             uselr.innerHTML = chat.title;
         } else {
             if (chat.host === "" + userId) {
-                uselr.innerHTML = (await fetchName(chat.members[0]))[0].name;
+                if(chat.members.length != 0){
+                    uselr.innerHTML = (await fetchName(chat.members[0]))[0].name;
+
+                }else{
+                    uselr.innerHTML = username  + " (You)";
+                }
             } else {
                 let hoster = await fetchUsers(chat.host);
                 if (hoster[0]) {
@@ -594,6 +600,8 @@ function convertToLocalTime(centralTime) {
 }
 
 async function openChat(id, payload = null) {
+
+    let confirmation = false;
     let home = document.querySelector('.home');
 
     if(!home.classList.contains('hide')){
@@ -651,8 +659,15 @@ async function openChat(id, payload = null) {
         chatInput.placeholder = "Message " + chat.title;
     }else{
         if(chat.host == "" + userId + ""){
-            chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name;
-            chatInput.placeholder = "Message " + (await fetchName(chat.members[0]))[0].name;
+            if(chat.members.length != 0){
+                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name;
+                chatInput.placeholder = "Message " + (await fetchName(chat.members[0]))[0].name;
+
+
+            }else{
+                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + username + " (You)";
+                chatInput.placeholder = "Message " + username + " (yourself)";
+            }
 
             let btn = document.querySelector('.homeBtn');
 
@@ -694,102 +709,196 @@ async function openChat(id, payload = null) {
     
     // Create a Set to track processed message indices to prevent duplicates
     const processedMessages = new Set();
-    
-    for (let i = chat.messages.length - 1; i >= 0; i--) {
-        // Skip if message already processed or is deleted
-        if(processedMessages.has(i) || chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
-            continue;
-        }
-        
-        // Mark this message as processed
-        processedMessages.add(i);
 
-        const message = document.createElement("div");
-        message.classList.add("message");
-        message.setAttribute('data-message-id', i);
-        message.id = i;
-        
-        if(chat.senders[i]!=username){
-            const avatar = document.createElement("div");
-            avatar.classList.add("avatar");
-            message.appendChild(avatar);
-        }
-        
-        const content = document.createElement("div");
-        content.classList.add("content");
-        let usernameElement;
-        usernameElement = document.createElement("div");
-        usernameElement.classList.add("username");
-        usernameElement.innerHTML = chat.senders?.[i] || "Unknown User";
-        if(!chat.groupchat){
-            usernameElement.style.display = 'none';
-        }
-        
-        const text = document.createElement("div");
-        text.classList.add("text");
-        text.innerHTML = chat.messages?.[i] || "No message";
-        const time = document.createElement("div");
-        time.classList.add("timestamp");
-        time.innerHTML = convertToLocalTime(chat.times[i]);
-        const messId = document.createElement("div");
-        messId.classList.add("messId");
-        messId.innerHTML = i;
-        messId.style.display = 'none';
 
-        if (chat.senders[i] === username) {
-            message.classList.add("own-message");
+    if(chat.members.includes(username)){
+        if(chat.accepted[chat.members.indexOf(username)] == 0 || chat.accepted[chat.members.indexOf(username)] == "0"){
+            confirmation = true;
         }
-
-        message.appendChild(content);
-        content.appendChild(usernameElement);
-        content.appendChild(text);
-        content.appendChild(time);
-        content.appendChild(messId);
-
-        if(chat.messages[i].includes('<div class="replyMessage">')){
-            message.style.setProperty('margin-top', '50px', 'important');
-            message.querySelector(".replyMessage").addEventListener('click', ()=> {
-                window.location.hash = message.querySelector('.ider').innerHTML;
-            })
-        }
-
-        chatMess.appendChild(message);
     }
 
-    let updatedRead = chat.read;
+    if(!confirmation){
+        for (let i = chat.messages.length - 1; i >= 0; i--) {
+            // Skip if message already processed or is deleted
+            if(processedMessages.has(i) || chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
+                continue;
+            }
+            
+            // Mark this message as processed
+            processedMessages.add(i);
 
-    if(oldCurrent != currentChat){
-        chatMess.scrollTop = chatMess.scrollHeight;
-        oldCurrent = currentChat;
-    }else{
-        chatMess.scrollTop = savedScrollPosition;
-    }
+            const message = document.createElement("div");
+            message.classList.add("message");
+            message.setAttribute('data-message-id', i);
+            message.id = i;
+            
+            if(chat.senders[i]!=username){
+                const avatar = document.createElement("div");
+                avatar.classList.add("avatar");
+                message.appendChild(avatar);
+            }
+            
+            const content = document.createElement("div");
+            content.classList.add("content");
+            let usernameElement;
+            usernameElement = document.createElement("div");
+            usernameElement.classList.add("username");
+            usernameElement.innerHTML = chat.senders?.[i] || "Unknown User";
+            if(!chat.groupchat){
+                usernameElement.style.display = 'none';
+            }
+            
+            const text = document.createElement("div");
+            text.classList.add("text");
+            text.innerHTML = chat.messages?.[i] || "No message";
+            const time = document.createElement("div");
+            time.classList.add("timestamp");
+            time.innerHTML = convertToLocalTime(chat.times[i]);
+            const messId = document.createElement("div");
+            messId.classList.add("messId");
+            messId.innerHTML = i;
+            messId.style.display = 'none';
 
-    chatMess.addEventListener("scroll", () => {
-        window.location.hash = '';
+            if (chat.senders[i] === username) {
+                message.classList.add("own-message");
+            }
+
+            message.appendChild(content);
+            content.appendChild(usernameElement);
+            content.appendChild(text);
+            content.appendChild(time);
+            content.appendChild(messId);
+
+            if(chat.messages[i].includes('<div class="replyMessage">')){
+                message.style.setProperty('margin-top', '50px', 'important');
+                message.querySelector(".replyMessage").addEventListener('click', ()=> {
+                    window.location.hash = message.querySelector('.ider').innerHTML;
+                })
+            }
+
+            chatMess.appendChild(message);
+        }
+        let updatedRead = chat.read;
+
+        if(oldCurrent != currentChat){
+            chatMess.scrollTop = chatMess.scrollHeight;
+            oldCurrent = currentChat;
+        }else{
+            chatMess.scrollTop = savedScrollPosition;
+        }
+
+        chatMess.addEventListener("scroll", () => {
+            window.location.hash = '';
+            const threshold = 100;
+            const atThreshold = chatMess.scrollTop >= -threshold;
+
+            if (atThreshold) {
+                updatedRead[userNum] = 0;
+                updateRead(updatedRead);
+            }
+        });
+
         const threshold = 100;
         const atThreshold = chatMess.scrollTop >= -threshold;
 
         if (atThreshold) {
-            updatedRead[userNum] = 0;
-            updateRead(updatedRead);
+            if(updatedRead[userNum] != 0){
+                updatedRead[userNum] = 0;
+                updateRead(updatedRead);
+            }
         }
-    });
 
-    const threshold = 100;
-    const atThreshold = chatMess.scrollTop >= -threshold;
+        messages = chat.messages;
+        sendlers = chat.senders;
+        memblers = chat.members;
+        timers = chat.times;
 
-    if (atThreshold) {
-        if(updatedRead[userNum] != 0){
-            updatedRead[userNum] = 0;
-            updateRead(updatedRead);
-        }
+    }else{
+        let confirmer = document.createElement("div");
+        confirmer.classList.add("confirm");
+        let rUSure = document.createElement("div");
+        rUSure.classList.add("uSure");
+        let adminer = (await fetchUsers(chat.host))[0].username;
+        let admin = (await fetchName(adminer))[0].name;
+
+        rUSure.innerHTML = `${admin} (${adminer}) is inviting you to chat`;
+        let yes = document.createElement("button");
+        yes.addEventListener("click", async ()=>{
+
+            let updatedAccept = chat.accepted;
+
+            updatedAccept[chat.members.indexOf(username)] = "1";
+    
+
+
+            const { error: updateError } = await db
+                .from("Chats")
+                .update({ accepted: updatedAccept })
+                .eq("chat_id", currentChat);
+
+            if (updateError) {
+                console.error("Error updating chat:", updateError);
+                return;
+            }
+
+            openChat(currentChat);
+        });
+        yes.innerHTML = "Accept";
+        yes.classList.add("yesBtn");
+        
+
+        let no = document.createElement("button");
+        no.addEventListener("click", async ()=>{
+
+            let updatedAccept = chat.accepted;
+
+            updatedAccept.splice(chat.members.indexOf(username),1);
+    
+            let updatedMembers = chat.members;
+
+            updatedMembers.splice(chat.members.indexOf(username),1);
+
+            let updatedRead = chat.read;
+
+            updatedRead.splice(chat.members.indexOf(username),1);
+
+            let updatedTyping = chat.typing;
+
+            updatedTyping.splice(chat.members.indexOf(username) + 1,1);
+
+            const { error: updateError } = await db
+                .from("Chats")
+                .update({ accepted: updatedAccept, members: updatedMembers, read: updatedRead, typing: updatedTyping })
+                .eq("chat_id", currentChat);
+
+            if (updateError) {
+                console.error("Error updating chat:", updateError);
+                return;
+            }
+
+            openChat(currentChat);
+            
+
+        });
+        no.innerText = "Decline";
+        no.classList.add("noBtn");
+
+        let btns = document.createElement("div");
+        btns.classList.add("conBtns");
+
+
+        btns.appendChild(yes);
+        btns.appendChild(no);
+        confirmer.appendChild(rUSure);
+        confirmer.appendChild(btns);
+        chatMess.appendChild(confirmer);
+
+
     }
+    
+    
 
-    messages = chat.messages;
-    sendlers = chat.senders;
-    memblers = chat.members;
-    timers = chat.times;
+    
 }
 
 async function updateRead(updatedRead){
@@ -1071,7 +1180,13 @@ async function showChatlers() {
                 tab.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
+                    if(chat.members.length != 0){
+                        tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
+
+                    }else{
+                        tab.innerHTML = username + " (You)";
+                    }
+                   
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {
@@ -1172,7 +1287,12 @@ async function changeRowler() {
                 tab.innerHTML = chat.title;
             } else {
                 if (chat.host === "" + userId) {
-                    tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
+                    if(chat.members.length != 0){
+                        tab.innerHTML = (await fetchName(chat.members[0]))[0].name;
+
+                    }else{
+                        tab.innerHTML = username + " (You)";
+                    }
                 } else {
                     let hoster = await fetchUsers(chat.host);
                     if (hoster[0]) {

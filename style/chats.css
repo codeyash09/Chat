@@ -2462,3 +2462,49 @@ body,
 i{
     overflow: visible !important;
 }
+
+.confirm{
+    background-color: #f1f1f1;
+    width: fit-content;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    margin-left: 3vh;
+    margin-bottom: 3vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 10vh;
+    align-items: center;
+}
+
+.conBtns{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 50%;
+    align-items: center;
+}
+
+.conBtns button{
+    padding: 5px;
+    border-radius: 8px;
+    color: #220952ff !important;
+    border: 2px solid #220952ff !important;
+    width: 30%;
+    height: 100%;
+    background-color: white !important;
+    transition: all .25s linear;
+}
+
+.yesBtn:hover{
+    color: white !important;
+    border-color: #220952ff !important;
+    background-color: #220952ff !important;
+}
+
+.noBtn:hover{
+    color: white !important;
+    border-color: rgb(211, 98, 98) !important;
+    background-color: rgb(211, 98, 98) !important;
+}
