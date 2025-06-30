@@ -240,7 +240,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     background-color: transparent;
     
     margin: 0;
-    font-size: 2vh;
+    font-size: 1.5vh;
     cursor: pointer;
     padding: 0;
     width: max-content;
@@ -2507,4 +2507,188 @@ i{
     color: white !important;
     border-color: rgb(211, 98, 98) !important;
     background-color: rgb(211, 98, 98) !important;
+}
+
+#chatSettings{
+    overflow: hidden;
+    width: 100vw;height: 100vh;position: absolute;z-index: 500000000000000000000000;display: none;justify-content: center;align-items: center;background-color: #00000098;transition: all .25s linear;top: 0;left: 0;
+}
+
+#chatSettings .container{
+    width: 67vw;height: 80vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px;
+}
+
+#chatSettings .container #closerbtn{
+    position: absolute; right: 0vw;width:4vh;top:0; height: 4vh; font-size: 20px;display: flex;justify-content: center;align-items: center;
+}
+
+.chatTitle{
+    font-family: 'RF Dewi';text-align: left;width: 93%;font-size: 2vh;font-weight: bold;
+    padding: 5px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    outline: none;
+    transition: background-color .25s linear, border .25s linear;
+}
+.chatTitle:focus{
+    background-color: #f1f1f1;
+    border: 2px solid rgba(0, 0, 0, 0.24);
+
+}
+
+.membersText{
+    font-family: 'RF Dewi';text-align: left;width: 90%;font-size: 1.25vh;font-weight: bold;margin-top: 5vh;color: #272727;
+}
+
+.members{
+    font-family: 'RF Dewi';text-align: left;width: 80%;font-size: 1.25vh;font-weight: bold;margin-top: 1vh;color: #272727; background-color: #f1f1f1;height: fit-content;padding-left: 5%;padding-right: 5%;padding-top: 2.5%;padding-bottom: 2.5%;border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    max-height: 20vh;
+    overflow-y: scroll;
+}
+
+.member{
+    display: flex;width: 100%; justify-content: space-between; align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5vh;
+    margin-top: 1.5vh;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 50px;
+    background-color: white;
+}
+
+.member .actions{
+    display: flex;justify-content: space-around;align-items: center;width: fit-content;gap: 15px;
+}
+
+.actBtn{
+    border: none;outline: none;background-color: transparent !important;padding: 5px;border-radius: 8px;border: 2px solid rgba(0, 0, 0, 0.212);
+    transition: background .25s linear;
+}
+
+#hostBtn h2{
+    color: black !important;font-size: 1.5vh;
+    transition: color .25s linear;
+
+}
+
+#deleteBtn i{
+    color: black !important;font-size: 1.5vh;
+    transition: color .25s linear;
+
+}
+
+
+#hostBtn:hover{
+    color:white !important;
+    background-color: #220952ff !important;
+    border: 2px solid #220952ff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+
+}
+
+
+#hostBtn:hover h2{
+    color:white !important;
+    
+}
+
+#deleteBtn:hover{
+    color:white !important;
+    background-color: rgb(184, 102, 102) !important;
+    border: 2px solid rgb(184, 102, 102);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+
+}
+
+
+#deleteBtn:hover i{
+    color: white !important;
+    
+}
+
+.select{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.select > *{
+    position: relative;
+    padding-right: 10px;
+    
+}
+
+.choice{
+    width: 16%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+   
+    height: 5vh;
+    
+}
+
+.select > *:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: 0;
+  width: 1.5px;
+  height: 80%;
+  background: #0000001c;
+  border-radius: 50px;
+}
+
+.choice:hover{
+    background-color: transparent !important;
+    color: rgb(20, 45, 155) !important;
+}
+
+
+.current{
+    text-decoration: underline 3px rgba(35, 9, 82, 0.219) !important;
+    
+}
+
+
+#saveBtn{
+    border: none;outline: none;background-color: transparent !important;padding: 5px;border-radius: 8px;border: 2px solid rgba(0, 0, 0, 0.212);
+    transition: background .25s linear;
+    margin-top: 5vh;   
+}
+
+#saveBtn:hover{
+    color:white !important;
+    background-color: #220952ff !important;
+    border: 2px solid #220952ff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+
+}
+
+.warningText{
+    color: rgb(184, 102, 102);
+    border: 2px rgb(184, 102, 102) solid;
+    border-radius: 8px;
+    margin-top: 3vh;
+    padding: 5px;
+}
+
+#newUserBtn{
+    text-align: center;
+    display: flex;
+    justify-self: center;
+    margin-top: 2vh;
+}
+
+#newUserBtn:hover{
+    color:white !important;
+    background-color: #220952ff !important;
+    border: 2px solid #220952ff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+#newUserBtn:hover i{
+    color: white !important;
 }

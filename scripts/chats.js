@@ -1370,7 +1370,7 @@ function formatChatListTimestamp(dateString) {
     }
 }
 
-export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers};
+export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers, fetchChat};
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Settings popup profile population
