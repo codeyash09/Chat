@@ -10,469 +10,286 @@ let db = supabase.createClient(
 );
 
 export {db};
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const addInputButton = document.getElementById("addInput");
-    const submitButton = document.getElementById("submit");
-    const submitButton2 = document.getElementById("submit2");
-
-    // Ensure only one listener is attached
-    if (!addInputButton.dataset.listenerAttached) {
-        addInputButton.addEventListener("click", inputHandleFunction);
-        addInputButton.dataset.listenerAttached = true;
-    }
-
-    if (!submitButton.dataset.listenerAttached) {
-        submitButton.addEventListener("click", handleSubmit);
-        submitButton.dataset.listenerAttached = true;
-    }
-
-    if (!submitButton2.dataset.listenerAttached) {
-        submitButton2.addEventListener("click", handleSubmit2);
-        submitButton2.dataset.listenerAttached = true;
-    }
-});
-
-
-let newChat = document.getElementById("newChatBtn");
-let newChat2 = document.getElementById("newChatBtn2");
-let wall = document.getElementById("blurWall");
-let former = document.getElementById("form");
-const inputContainer = document.getElementById("inputs");
 let correct = true;
-let submit = false;
-const errorMessage = document.getElementById("emailErrorMessage");
-let q1 = document.getElementById("q1");
-let q2 = document.getElementById("q2");
-let users = document.getElementById("users");
-let gcName = document.getElementById("gcname");
-let usernames;
-let clicked = false;
-let created = false;
 
-// Chat type selection elements
-let friendBtn = document.getElementById("friendBtn");
-let groupBtn = document.getElementById("groupBtn");
+let userId = window.localStorage.getItem("userIdentify");
+document.getElementById("emailErrorMessage").style.display = 'none';
 
-// Add event listeners for chat type selection
-friendBtn.addEventListener("click", () => {
-    friendBtn.classList.add("selected");
-    groupBtn.classList.remove("selected");
-    
-    // Expand modal first
-    expandModal();
-    
-    // Show users section for direct message
-    q1.style.display = 'none';
-    q1.classList.add("hidden");
-    users.style.display = 'flex';
-    users.classList.remove("hidden");
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
-});
 
-groupBtn.addEventListener("click", () => {
-    groupBtn.classList.add("selected");
-    friendBtn.classList.remove("selected");
-    
-    // Expand modal first
-    expandModal();
-    
-    // Show group creation section
-    q1.style.display = 'none';
-    q1.classList.add("hidden");
-    users.style.display = 'none';
-    users.classList.add("hidden");
-    q2.style.display = 'flex';
-    q2.classList.remove("hidden");
-});
+if(userId == null || userId == "null"){
+    window.location.replace('/pages/signup.html');
+}
+async function fetchUser() {
+  const { data, error } = await db
+    .from('Users')
+    .select('username')
+    .eq('id', userId);
 
-// Back button functionality
-let backToTypes = document.getElementById("backToTypes");
-let backToTypes2 = document.getElementById("backToTypes2");
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
 
-// Swipe functionality
-let handle = document.getElementById("handle");
-let modal = document.getElementById("form");
-let isExpanded = false;
+  return data;
+}
+let username = (await fetchUser())[0].username;
 
-// Touch/swipe functionality
-let startY = 0;
-let currentY = 0;
-let isDragging = false;
+async function fetchName(myUsername) {
+  const { data, error } = await db
+    .from('Users')
+    .select('name')
+    .eq('username', myUsername);
 
-handle.addEventListener("mousedown", startDrag);
-handle.addEventListener("touchstart", startDrag);
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
 
-document.addEventListener("mousemove", drag);
-document.addEventListener("touchmove", drag);
+  return data;
+}
+async function fetchNames(iden) {
+  const { data, error } = await db
+    .from('Users')
+    .select('name')
+    .eq('id', iden);
 
-document.addEventListener("mouseup", endDrag);
-document.addEventListener("touchend", endDrag);
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
 
-function startDrag(e) {
-    isDragging = true;
-    startY = e.type === "mousedown" ? e.clientY : e.touches[0].clientY;
-    currentY = startY;
-    e.preventDefault();
+  return data;
 }
 
-function drag(e) {
-    if (!isDragging) return;
-    
-    currentY = e.type === "mousemove" ? e.clientY : e.touches[0].clientY;
-    const deltaY = startY - currentY;
-    
-    if (deltaY > 30 && !isExpanded) {
-        // Swipe up - expand
-        expandModal();
-    } else if (deltaY < -30 && isExpanded) {
-        // Swipe down - collapse
-        collapseModal();
-    }
+async function fetchUsers(iden) {
+  const { data, error } = await db
+    .from('Users')
+    .select('username')
+    .eq('id', iden);
+
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+
+  return data;
 }
+let createBtn = document.getElementById('newChatBtn');
+createBtn.addEventListener("click", await newChat);
+let createBtn2 = document.getElementById('newChatBtn2');
+createBtn2.addEventListener("click", await newChat);
 
-function endDrag() {
-    isDragging = false;
-}
+async function newChat(){
 
-function expandModal() {
-    modal.classList.add("expanded");
-    isExpanded = true;
-}
+    let set = document.getElementById("blurWall");
+    set.style.display = "flex";
 
-function collapseModal() {
-    modal.classList.remove("expanded");
-    isExpanded = false;
-}
+    let updatedMembers = [];
+    let menu = set.querySelector(".members");
+    menu.innerHTML = "";
+    let length = updatedMembers.filter(str => str.trim() !== '').length;
 
-// Click handle to expand
-handle.addEventListener("click", () => {
-    if (!isExpanded) {
-        expandModal();
-    }
-});
+    length = updatedMembers.filter(str => str.trim() !== '').length;
 
-backToTypes.addEventListener("click", () => {
-    // Collapse modal first
-    collapseModal();
+
+
+    let newUser = document.createElement("button");
+    newUser.classList.add("actBtn");
+    newUser.id = "newUserBtn";
+    newUser.innerHTML = "<i class='fa-solid fa-plus'></i>";
+
+    newUser.addEventListener("click", ()=>{
+
+        let member = document.createElement("div");
+        member.classList.add("member");
+        let name = document.createElement("input");
+        name.classList.add("name");
+        name.placeholder = "Enter username here...";
+
+
+        let actions = document.createElement("div");
+        actions.classList.add("actions");
+
+        // let hostBtn = document.createElement("button");
+        // hostBtn.classList.add("actBtn");
+        // hostBtn.id = "hostBtn";
+        // hostBtn.innerHTML = "<h2>Host</h2>";
+        let deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("actBtn");
+        deleteBtn.id = "deleteBtn";
+        deleteBtn.innerHTML = "<i class='fa-solid fa-trash'></i>";
+        updatedMembers.push(name.value);
     
-    // Go back to chat type selection
-    q1.style.display = 'flex';
-    q1.classList.remove("hidden");
-    users.style.display = 'none';
-    users.classList.add("hidden");
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
-    
-    // Clear inputs
-    const inputs = document.querySelectorAll("input[name='username']");
-    inputs.forEach(input => input.value = '');
-    
-    // Remove extra input groups (keep only the first one)
-    const inputGroups = inputContainer.querySelectorAll(".input-group");
-    for (let i = 1; i < inputGroups.length; i++) {
-        inputContainer.removeChild(inputGroups[i]);
-    }
-});
-
-backToTypes2.addEventListener("click", () => {
-    // Collapse modal first
-    collapseModal();
-    
-    // Go back to chat type selection
-    q1.style.display = 'flex';
-    q1.classList.remove("hidden");
-    users.style.display = 'none';
-    users.classList.add("hidden");
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
-    
-    // Clear group name
-    if (gcName) gcName.value = '';
-});
+        let i = updatedMembers.length - 1;
+        console.log(updatedMembers);
 
 
-inputContainer.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Stops the form from refreshing
-        submitButton.click(); // Triggers the submit button's event
-    }
-});
+        deleteBtn.addEventListener("click", async(e)=>{
+
+            updatedMembers.splice(i, 1);
+            console.log(updatedMembers);
+
+            length = updatedMembers.filter(str => str.trim() !== '').length;
+        
+            
+            deleteBtn.parentElement.parentElement.remove();
+
+            if(length >= 2){
+                document.getElementById("chatTile").readOnly = false;
+
+            }else if(length == 0){
+                document.getElementById("chatTile").value = "@" + username;
+            }else{
+                document.getElementById("chatTile").value = "@" + updatedMembers.filter(str => str.trim() !== '')[0];
 
 
-
-newChat.addEventListener("click", ()=>{
-    wall.style.display = "flex";
-    former.style.display = "flex";
-    submit = false;
-    
-    // Ensure modal starts in collapsed state
-    collapseModal();
-    
-    // Ensure chat type selector is visible
-    if (q1) {
-        q1.style.display = 'flex';
-        q1.classList.remove("hidden");
-        q1.style.visibility = 'visible';
-    }
-    
-    // Hide other sections
-    if (users) {
-        users.style.display = 'none';
-        users.classList.add("hidden");
-    }
-    if (q2) {
-        q2.style.display = 'none';
-        q2.classList.add("hidden");
-    }
-
-    // Reset selections
-    if (friendBtn) friendBtn.classList.remove("selected");
-    if (groupBtn) groupBtn.classList.remove("selected");
-});
-
-newChat2.addEventListener("click", ()=>{
-    wall.style.display = "flex";
-    former.style.display = "flex";
-    submit = false;
-    
-    // Ensure modal starts in collapsed state
-    collapseModal();
-    
-    // Ensure chat type selector is visible
-    if (q1) {
-        q1.style.display = 'flex';
-        q1.classList.remove("hidden");
-        q1.style.visibility = 'visible';
-    }
-    
-    // Hide other sections
-    if (users) {
-        users.style.display = 'none';
-        users.classList.add("hidden");
-    }
-    if (q2) {
-        q2.style.display = 'none';
-        q2.classList.add("hidden");
-    }
-
-    // Reset selections
-    if (friendBtn) friendBtn.classList.remove("selected");
-    groupBtn.classList.remove("selected");
-});
-
-let close = document.getElementById("close");
-
-close.addEventListener("click", ()=> {
-    submit = false;
-    disappear();
-});
-
-function disappear(){
-    wall.style.display = "none";
-    former.style.display = "none";
-    
-    // Reset modal state
-    collapseModal();
-    
-    // Reset all sections
-    q1.style.display = 'none';
-    q1.classList.add("hidden");
-    users.style.display = 'none';
-    users.classList.add("hidden");
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
-    
-    // Clear inputs
-    const inputs = document.querySelectorAll("input[name='username']");
-    inputs.forEach(input => input.value = '');
-    if (gcName) gcName.value = '';
-    
-    // Remove extra input groups (keep only the first one)
-    const inputGroups = inputContainer.querySelectorAll(".input-group");
-    for (let i = 1; i < inputGroups.length; i++) {
-        inputContainer.removeChild(inputGroups[i]);
-    }
-    
-    // Reset selections
-    friendBtn.classList.remove("selected");
-    groupBtn.classList.remove("selected");
-    
-    // Hide error message
-    errorMessage.classList.remove("show");
-}
-
-
-
-
-
-
-function inputHandleFunction(){
-
-    const newInputGroup = document.createElement("div");
-    newInputGroup.className = "input-group";
-    newInputGroup.innerHTML = `
-        <input type="text" name="username" placeholder="Enter username or phone number">
-        <button type="button" class="deleteInput">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    `;
-    inputContainer.appendChild(newInputGroup);
-
-    const deleteButton = newInputGroup.querySelector(".deleteInput");
-    deleteButton.addEventListener("click", () => {
-        inputContainer.removeChild(newInputGroup);
-    });
-    submit = false;
-}
-
-
-
-
-function handleSubmit(){
-
-    if(!clicked){
-        const inputs = document.querySelectorAll("input[name='username']");
-        const values = Array.from(inputs).map(input => input.value);
-        submit = true;
-
-        for(let i =0; i<values.length; i++){
-            if(values[i] == ""){
-                values.splice(i, 1);
             }
-        }
-        usernames = values;
+        })
+        name.addEventListener("input", async()=>{
+            
+            length = updatedMembers.filter(str => str.trim() !== '').length;
+            correct = true;
+            updatedMembers[i] = name.value;
+            
+            
+            if(length >= 2){
+                document.getElementById("chatTile").readOnly = false;
 
-        for(let i = 0; i<values.length;i++){
-            checkUserNames(values[i]);
-        }
+            }else if(length == 0){
+                document.getElementById("chatTile").value = "@" + username;
+            }else{
+                
 
-        clicked = true;
-    }
-    
-}
+                document.getElementById("chatTile").value = "@" + updatedMembers.filter(str => str.trim() !== '')[0];
 
 
-function handleSubmit2(){
-    if(!clicked){
-        if(gcName.value != ""){
-
-            if(!created){
-                createChat();
-    
             }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+            
+        })
+
+        member.appendChild(name);
+        member.appendChild(actions);
+        // actions.appendChild(hostBtn);
+        actions.appendChild(deleteBtn);
+        menu.insertBefore(member,menu.lastElementChild);
+    })
+
+
+    menu.appendChild(newUser);
+
+    let currentChoice = set.querySelector(`#casualc`);
+    currentChoice.classList.add("current");
+
+    let current = 'casual';
+    for(let i = 0; i < set.querySelectorAll('.choice').length; i++){
+        set.querySelectorAll('.choice')[i].addEventListener("click", ()=>{
+        
+            set.querySelector('.current').classList.remove('current');
+            set.querySelectorAll('.choice')[i].classList.add('current');
+            current = set.querySelectorAll('.choice')[i].id.slice(0,-1);
+        })
+    }
+    console.log(length);
+
+    if(length >= 2){
+        document.getElementById("chatTile").readOnly = false;
+        
+        
+
+
+    }else if(length == 0){
+        document.getElementById("chatTile").value = "@" + username;
+    }
+    else{
+        document.getElementById("chatTile").value = "@" + updatedMembers.filter(str => str.trim() !== '')[0];
+
+        
+
+    }
+
+
+
+    let saveBtn = document.getElementById("createBtn");
+    saveBtn.addEventListener("click", async()=>{
+        let finalMembers = updatedMembers.filter(str => str.trim() !== '');
+        for(let i = 0; i<finalMembers.length; i++){
+            await checkUserNames(finalMembers[i]);
         }
 
-        clicked = true;
-    }
+        if(correct){
+            let updatedRead = [];
+            let updatedTyping = [];
+            let updatedAccepted = [];
+            for(let i = 0; i< finalMembers.length; i++){
+                updatedRead.push(0);
+                updatedTyping.push(false);
+                updatedAccepted.push(0);
+            }
+            
+            updatedRead.push(0);
+            updatedTyping.push(false);
+
+
+            if(finalMembers.length >= 2){
+                const { data, error } = await db.from('Chats').insert([
+                {
+                    'members': finalMembers,
+                    'groupchat': true,
+                    'title': document.getElementById("chatTile").value,
+                    'host': window.localStorage.getItem("userIdentify"),
+                    'accepted': updatedAccepted,
+                    'read': updatedRead,
+                    'typing': updatedTyping,
+                    'chatType': current,
+                }
+                ]);
+
+                
+
+                
+            }else{
+            const { data, error } = await db.from('Chats').insert([
+                {
+                    'members': finalMembers,
+                    'groupchat': false,
+                
+                    'host': window.localStorage.getItem("userIdentify"),
+                    'accepted': updatedAccepted,
+                    'read': updatedRead,
+                    'typing': updatedTyping,
+                    'chatType': current,
+                }
+                ]);
+            }
+            
+            set.style.display = 'none';
+
+        }else{
+            document.getElementById("emailErrorMessage").style.display = 'flex';
+
+            document.getElementById("emailErrorMessage").innerHTML = 'Error: Not All Users Exist';
+        }
+    })
+
 }
 
 
 
 
+// Fetch full user profile (name, username, birthday) by userId
+export async function fetchUserProfile(userId) {
+  const { data, error } = await db
+    .from('Users')
+    .select('name, username, birthday')
+    .eq('id', userId);
 
-async function createChat(){
-    let acceptedArr = [];
-    let readArr = [];
-    let typingArr = [];
+  if (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
 
-    for(let i = 0; i < usernames.length; i++){
-        acceptedArr.push(0);
-        readArr.push(0);
-        typingArr.push(false);
-    }
-    typingArr.push(false);
-   
-    readArr.push(0);
-
-
-    const { data, error } = await db.from('Chats').insert([
-    {
-        members: usernames,
-        groupchat: true,
-        title: gcName.value,
-        host: window.localStorage.getItem("userIdentify"),
-        accepted: acceptedArr,
-        read: readArr,
-        typing: typingArr,
-    }
-    
-    ]);
-
-    if (error) {
-    
-        details = error.details;
-        errorMessage.textContent = details;
-        errorMessage.style.display = "block";
-
-
-
-    }else{
-        wall.classList.toggle("hider");
-        former.classList.toggle("unslider");
-        submit = false;
-
-        setTimeout(disappear, 600);
-    }
-
-    created = true;
-    clicked = false;
-
+  return data && data[0] ? data[0] : null;
 }
-
-
-async function createMessage(){
-    
-    
-   
-
-
-
-    const { data, error } = await db.from('Chats').insert([
-    {
-        members: usernames,
-        groupchat: false,
-       
-        host: window.localStorage.getItem("userIdentify"),
-        accepted: [0],
-        read: [0, 0],
-        typing: [false, false],
-    }
-    ]);
-
-    if (error) {
-    
-        details = error.details;
-        errorMessage.textContent = details;
-        errorMessage.style.display = "block";
-
-
-
-    }else{
-        wall.classList.toggle("hider");
-        former.classList.toggle("unslider");
-        submit = false;
-
-        setTimeout(disappear, 600);
-    }
-}
-
 
 async function checkUserNames(value){
     const { data, error } = await db
@@ -490,62 +307,7 @@ async function checkUserNames(value){
         correct= false;
     }
    
-    if(submit){
-        setTimeout(validate, 50);
-        submit = false;
-    }
+    
 
 
-}
-
-
-function validate(){
-    if(correct){
-
-        let inputs = document.querySelectorAll("[name='username']");
-
-
-        for(let i = 0; i< inputs.length; i++){
-            inputs[i].value = '';
-
-        }
-        errorMessage.textContent = "";
-        errorMessage.style.display = "none";
-        q1.classList.add("hidden");
-        q1.style.display = 'none';   
-        if(usernames.length > 1){
-            q2.classList.remove("hidden");
-            q2.style.display = 'flex';
-            clicked=false;
-        }else{
-            if(!created){
-                createMessage();
-                created = true;
-                clicked = false;
-            }
-           
-        }       
-    }else{
-        errorMessage.textContent = "Invalid Username";
-        errorMessage.style.display = "block";
-    }
-
-
-    correct = true;
-    submit = false;
-}
-
-// Fetch full user profile (name, username, birthday) by userId
-export async function fetchUserProfile(userId) {
-  const { data, error } = await db
-    .from('Users')
-    .select('name, username, birthday')
-    .eq('id', userId);
-
-  if (error) {
-    console.error('Error fetching user profile:', error);
-    return null;
-  }
-
-  return data && data[0] ? data[0] : null;
 }

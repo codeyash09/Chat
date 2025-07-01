@@ -704,17 +704,17 @@
         }
 
         .chat-messages::-webkit-scrollbar-track {
-            background: black;
+            background: white;
             border-radius: 10px;
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: #220952ff;
+            background: #f1f1f1;
             border-radius: 10px;
         }
 
         .chat-messages::-webkit-scrollbar-thumb:hover {
-            background: rgb(44, 13, 104);
+            background: #cecece;
         }
 
         /* Mobile-friendly styles */
@@ -2066,90 +2066,44 @@
         
     <script src="/scripts/menu.js"></script> 
     
+    <div id="blurWall" class="chatSettingsPopup">
+        <div class="container" id="form">
+            <div id="close" class="closeBtn"><i id="closiBtn" class="fa-solid fa-xmark"></i></div>
+            <input class="chatTitle" id="chatTile" placeholder="Group Chat Name">
+            <h4 class="warningText" id="emailErrorMessage"></h4>
 
-    <div class="createGroupChat hider" id="blurWall">
-        <div class="signal-modal" id="form">
-            <div class="modal-header">
-                <div class="handle" id="handle"></div>
-                <h1>New Conversation</h1>
-                <button id="close" class="close-btn">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
             
-            <div id="emailErrorMessage" class="error"></div>
+            
+            
+            <h4 class="membersText">Members:</h4>
+            <div class="members">
+                
 
-            <div class="modal-content">
-                <div class="chat-options" id="q1">
-                    <div class="option-item" id="friendBtn">
-                        <div class="option-icon">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="option-details">
-                            <h3>Create Direct Chat</h3>
-                        </div>
-                        <i class="fa-solid fa-chevron-right arrow"></i>
-                    </div>
-                    
-                    <div class="option-item" id="groupBtn">
-                        <div class="option-icon">
-                            <i class="fa-solid fa-user-group"></i>
-                        </div>
-                        <div class="option-details">
-                            <h3>Create Group Chat</h3>
-                        </div>
-                        <i class="fa-solid fa-chevron-right arrow"></i>
-                    </div>
-                </div>
-
-                <div id="users" class="hidden">
-                    <div class="back-section">
-                        <button class="back-btn" id="backToTypes">
-                            <i class="fa-solid fa-arrow-left"></i>
-                            Back
-                        </button>
-                    </div>
-                    <div class="input-section">
-                        <div id="inputs">
-                            <div class="input-group">
-                                <input type="text" name="username" placeholder="Enter username or phone number">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="button" id="submit" class="primary-btn">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            Start Conversation
-                        </button>
-                    </div>
-                </div>
-
-                <div id="q2" class="hidden">
-                    <div class="back-section">
-                        <button class="back-btn" id="backToTypes2">
-                            <i class="fa-solid fa-arrow-left"></i>
-                            Back
-                        </button>
-                    </div>
-                    <div class="input-section">
-                        <h3>Group Name:</h3>
-                        <div id="inputs">
-                            <div class="input-group">
-                                <input type="text" id="gcname" name="groupName" placeholder="Enter group name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="button" id="submit2" class="primary-btn">
-                            <i class="fa-solid fa-users"></i>
-                            Create Group
-                        </button>
-                    </div>
-                </div>
+                
             </div>
-        </div>
-    </div>
 
+            <h4 class="membersText">Chat Mode:</h4>
+
+
+            <div class="select">
+                <button id="clubc" class="choice">Club</button>
+                <button id="workoutc" class="choice">Workout</button>
+                <button id="schoolc" class="choice">School</button>
+                <button id="gamingc" class="choice">Gaming</button>
+                <button id="casualc" class="choice">Casual</button>
+                <button id="focusc" class="choice">Focus</button>
+            </div>
+
+            <button class="saveBtn" id="createBtn">Create Chat</button>
+
+        </div>  
+        </div>
+
+
+
+
+
+    
 
 
 
@@ -2161,7 +2115,7 @@
         <div class="home">
             <div id="sett" class="settingsPopup" style="width: 100vw;height: 100vh;position: absolute;z-index: 500000000000000000000000;display: none;justify-content: center;align-items: center;background-color: #00000098;transition: all .25s linear;top: 0;left: 0;">
                 <div class="container" style="width: 100vw;height: 100vh;background-color: white;border-radius: 16px;outline: 2px solid rgba(0, 0, 0, 0.5); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px;">
-                    <div id="clobtn" class="closeBtn" style="position: absolute; right: 0vw;width:4vh; height: 4vh; font-size: 20px;display: flex;justify-content: center;align-items: center;"><i id="cloBtn" class="fa-solid fa-circle-xmark"></i></div>
+                    <div id="clobtn" class="closeBtn" style="position: absolute; right: 0vw;width:4vh; height: 4vh; font-size: 20px;display: flex;justify-content: center;align-items: center;"><i id="cloBtn" class="fa-solid fa-xmark"></i></div>
                     <!-- Profile Section -->
                     <div style="display: flex; flex-direction: column; align-items: center; margin-top: 32px; margin-bottom: 32px;">
                         <div style="width: 90px; height: 90px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #220952ff; margin-bottom: 12px;">
@@ -2187,7 +2141,7 @@
 
             <div id="chatSettings" class="chatSettingsPopup">
                 <div class="container">
-                    <div id="closerbtn" class="closeBtn"><i id="cloBtn" class="fa-solid fa-circle-xmark"></i></div>
+                    <div id="closerbtn" class="closeBtn"><i id="cloBtn" class="fa-solid fa-xmark"></i></div>
                     <input class="chatTitle" id="chatTitle" placeholder="Group Chat Name">
                     <h4 class="warningText" id="error">Only Chat Host May Edit Chat Settings</h4>
 
@@ -2225,7 +2179,7 @@
                     <h4 class="membersText">Chat Mode:</h4>
 
     
-                    <div class="select" style="width: 80%; margin-top: 1.5vh;border-radius: 50px; background-color: #f1f1f1;box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div class="select">
                         <button id="club" class="choice">Club</button>
                         <button id="workout" class="choice">Workout</button>
                         <button id="school" class="choice">School</button>
@@ -2266,6 +2220,7 @@
                 <script>
                     let pfp = document.getElementById("pfpGen");
                     let popup = document.getElementById("sett");
+                    let popup2 = document.getElementById("blurWall");
 
                     pfp.addEventListener("click", ()=>{
                         popup.style.display = 'flex';
@@ -2273,6 +2228,14 @@
 
                     document.getElementById("clobtn").addEventListener("click", ()=>{
                         popup.style.display='none';
+                    });
+
+                    document.getElementById("close").addEventListener("click", ()=>{
+                        popup2.style.display='none';
+                    });
+
+                    document.getElementById("close").addEventListener("click", ()=>{
+                        popup2.style.display='none';
                     });
 
                     document.getElementById("cloBtn").addEventListener("click", ()=>{
