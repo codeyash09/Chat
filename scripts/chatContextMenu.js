@@ -191,13 +191,13 @@ document.getElementById("closerbtn").addEventListener("click", ()=>{
     let set = document.getElementById("chatSettings");
     set.style.display = "none";
 })
+let correct = true;
 
 async function handleContextMenuAction(action) {
     const chatId = contextMenu.dataset.chatId;
     
     switch (action) {
         case 'settings':
-            let correct = true;
             let deletedMembers = [];
             let newMembers = [];
             let updatedMembers = [];
@@ -221,10 +221,10 @@ async function handleContextMenuAction(action) {
                 let actions = document.createElement("div");
                 actions.classList.add("actions");
 
-                let hostBtn = document.createElement("button");
-                hostBtn.classList.add("actBtn");
-                hostBtn.id = "hostBtn";
-                hostBtn.innerHTML = "<h2>Host</h2>";
+                // let hostBtn = document.createElement("button");
+                // hostBtn.classList.add("actBtn");
+                // hostBtn.id = "hostBtn";
+                // hostBtn.innerHTML = "<h2>Host</h2>";
                 let deleteBtn = document.createElement("button");
                 deleteBtn.classList.add("actBtn");
                 deleteBtn.id = "deleteBtn";
@@ -262,7 +262,7 @@ async function handleContextMenuAction(action) {
 
                 member.appendChild(name);
                 member.appendChild(actions);
-                actions.appendChild(hostBtn);
+                // actions.appendChild(hostBtn);
                 actions.appendChild(deleteBtn);
                 menu.appendChild(member);
             }
@@ -288,10 +288,10 @@ async function handleContextMenuAction(action) {
                 let actions = document.createElement("div");
                 actions.classList.add("actions");
 
-                let hostBtn = document.createElement("button");
-                hostBtn.classList.add("actBtn");
-                hostBtn.id = "hostBtn";
-                hostBtn.innerHTML = "<h2>Host</h2>";
+                // let hostBtn = document.createElement("button");
+                // hostBtn.classList.add("actBtn");
+                // hostBtn.id = "hostBtn";
+                // hostBtn.innerHTML = "<h2>Host</h2>";
                 let deleteBtn = document.createElement("button");
                 deleteBtn.classList.add("actBtn");
                 deleteBtn.id = "deleteBtn";
@@ -364,7 +364,7 @@ async function handleContextMenuAction(action) {
 
                 member.appendChild(name);
                 member.appendChild(actions);
-                actions.appendChild(hostBtn);
+                // actions.appendChild(hostBtn);
                 actions.appendChild(deleteBtn);
                 menu.insertBefore(member,menu.lastElementChild);
             })
@@ -386,7 +386,7 @@ async function handleContextMenuAction(action) {
         
             if(length >= 2){
                 document.getElementById("chatTitle").readOnly = false;
-                document.getElementById("chatTitle").innerHTML = chats.title;
+                document.getElementById("chatTitle").value = chats.title;
                 
 
 
@@ -414,7 +414,7 @@ async function handleContextMenuAction(action) {
             saveBtn.addEventListener("click", async()=>{
                 let finalMembers = updatedMembers.filter(str => str.trim() !== '');
                 for(let i = 0; i<finalMembers.length; i++){
-                    checkUserNames(finalMembers[i]);
+                    await checkUserNames(finalMembers[i]);
                 }
 
                 if(correct){

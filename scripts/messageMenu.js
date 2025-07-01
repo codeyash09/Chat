@@ -937,39 +937,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 swiping = true;
                 currentContent.style.transition = 'none';
                 currentContent.style.transform = `translateX(${visualDx}px)`;
-                if (!replyIcon) {
-                    replyIcon = document.createElement('div');
-                    replyIcon.className = 'swipe-reply-icon';
-                    replyIcon.innerHTML = '<i class="fa-solid fa-reply"></i>';
-                    replyIcon.style.position = 'absolute';
-                    replyIcon.style.top = '50%';
-                    replyIcon.style.transform = 'translateY(-50%) scale(0.9)';
-                    replyIcon.style.background = 'transparent';
-                    replyIcon.style.color = '#bbb';
-                    replyIcon.style.width = '32px';
-                    replyIcon.style.height = '32px';
-                    replyIcon.style.display = 'flex';
-                    replyIcon.style.alignItems = 'center';
-                    replyIcon.style.justifyContent = 'center';
-                    replyIcon.style.fontSize = '18px';
-                    replyIcon.style.zIndex = '9999';
-                    replyIcon.style.boxShadow = 'none';
-                    replyIcon.style.opacity = '0';
-                    replyIcon.style.transition = 'color 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s cubic-bezier(0.22,0.61,0.36,1), transform 0.18s cubic-bezier(0.22,0.61,0.36,1)';
-                    replyIcon.style.overflow = 'visible';
-                    replyIcon.addEventListener('click', (ev) => {
-                        ev.stopPropagation();
-                        handleReply(currentContent.parentElement);
-                        if (replyIcon) replyIcon.remove();
-                        replyIcon = null;
-                    });
-                    if (isOwn) {
-                        replyIcon.style.left = '-80px';
-                        replyIcon.style.right = '';
-                    } else {
-                        replyIcon.style.right = '-80px';
-                        replyIcon.style.left = '';
-                    }
+                if (replyIcon) {
+                    replyIcon.remove();
+                }
+                replyIcon = document.createElement('div');
+                replyIcon.className = 'swipe-reply-icon';
+                replyIcon.innerHTML = '<i class="fa-solid fa-reply"></i>';
+                replyIcon.style.position = 'absolute';
+                replyIcon.style.top = '50%';
+                replyIcon.style.transform = 'translateY(-50%) scale(0.9)';
+                replyIcon.style.background = 'transparent';
+                replyIcon.style.color = '#bbb';
+                replyIcon.style.width = '32px';
+                replyIcon.style.height = '32px';
+                replyIcon.style.display = 'flex';
+                replyIcon.style.alignItems = 'center';
+                replyIcon.style.justifyContent = 'center';
+                replyIcon.style.fontSize = '18px';
+                replyIcon.style.zIndex = '9999';
+                replyIcon.style.boxShadow = 'none';
+                replyIcon.style.opacity = '0';
+                replyIcon.style.color = 'black';
+                replyIcon.style.transition = 'color 2.5s cubic-bezier(0.22,0.61,0.36,1), opacity 2.5s cubic-bezier(0.22,0.61,0.36,1), transform 2s cubic-bezier(0.22,0.61,0.36,1)';
+                replyIcon.style.overflow = 'visible';
+                replyIcon.addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    handleReply(currentContent.parentElement);
+                    if (replyIcon) replyIcon.remove();
+                    replyIcon = null;
+                });
+                if (isOwn) {
+                    replyIcon.style.left = '100%';
+                    replyIcon.style.right = '';
+                } else {
+                    replyIcon.style.right = '100%';
+                    replyIcon.style.left = '';
                 }
                 const percent = Math.min(Math.abs(dx) / threshold, 1);
                 replyIcon.style.opacity = percent;
@@ -995,6 +997,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     popped = false;
                     vibrated = false;
                 }
+
+                currentContent.appendChild(replyIcon);
             }
         }, {passive: true});
         chatMessages.addEventListener('touchend', (e) => {

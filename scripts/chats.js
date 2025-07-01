@@ -418,6 +418,8 @@ async function showChats() {
         }
     }
 
+    
+
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
@@ -897,7 +899,9 @@ async function openChat(id, payload = null) {
     }
     
     
-
+    if(document.querySelectorAll('.message').length != chat.messages.length){
+        openChat(currentChat, payload);
+    }
     
 }
 
