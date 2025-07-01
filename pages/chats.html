@@ -1370,6 +1370,544 @@
         .typingMessage .content{
             background-color: #b5b4b3ff !important;
         }
+
+        /* Signal-style Create Chat Modal */
+        .createGroupChat {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .signal-modal {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -12px 40px rgba(34, 9, 82, 0.22), 0 -2px 8px rgba(0,0,0,0.12);
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            max-height: 300px;
+            overflow: hidden;
+            animation: slideUpSmall 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            transition: height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            margin-bottom: 80px;
+        }
+        @media screen and (max-width: 768px) {
+            .signal-modal {
+                width: 95%;
+                max-height: 85vh;
+                border-radius: 16px;
+                margin-bottom: 60px;
+            }
+
+            .signal-modal:not(.expanded) {
+                height: 260px;
+                max-height: 260px;
+            }
+        }
+
+        .signal-modal.expanded {
+            height: 85vh;
+            max-height: 85vh;
+        }
+
+        @keyframes slideUpSmall {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            padding-top: 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .handle {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+            z-index: 3;
+        }
+        .modal-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #220952ff;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            white-space: nowrap;
+            z-index: 2;
+            max-width: calc(100% - 80px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            z-index: 2;
+            margin-left: auto;
+        }
+
+        .modal-content {
+            padding: 0;
+            max-height: calc(85vh - 80px);
+            overflow-y: auto;
+        }
+
+        /* Hide content when not expanded */
+        .signal-modal:not(.expanded) .modal-content > *:not(.chat-options) {
+            display: none;
+        }
+
+        /* Ensure chat options are always visible in collapsed state */
+        .signal-modal:not(.expanded) .chat-options {
+            padding: 0 20px;
+            padding: 10px 20px;
+        }
+
+        /* Adjust spacing for collapsed state */
+        .signal-modal:not(.expanded) .option-item {
+            padding: 18px 16px;
+            min-height: 56px;
+        }
+
+        .signal-modal:not(.expanded) .option-icon {
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .signal-modal:not(.expanded) .option-details p {
+            font-size: 12px;
+        }
+
+        .chat-options {
+            padding: 20px;
+            display: flex !important;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Ensure chat options are visible by default */
+        #q1 {
+            display: flex !important;
+        }
+
+        /* Override any conflicting styles */
+        .chat-options#q1 {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        /* Ensure option items are visible */
+        .option-item {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 14px;
+            border: none;
+            border-radius: 999px;
+            background: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 18px;
+            box-shadow: 0 2px 8px rgba(34, 9, 82, 0.1);
+            text-align: center;
+        }
+        .option-item:hover {
+            background: #e0e0e0;
+        }
+        .option-item:active {
+            background: #d6d6d6;
+            transform: translateY(0);
+        }
+        .option-icon {
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            filter: grayscale(1) contrast(1.2);
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+        .option-details {
+            flex: 1;
+        }
+        .option-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #220952ff;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .option-details p {
+            font-size: 13px;
+            color: #666;
+            margin: 4px 0 0 0;
+            line-height: 1.3;
+        }
+        .arrow {
+            color: #220952ff;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        .back-section {
+            padding: 16px 20px 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: #007AFF;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .back-btn:hover {
+            opacity: 0.8;
+        }
+        .back-btn i {
+            font-size: 14px;
+        }
+        .input-section {
+            padding: 20px;
+        }
+        .input-section h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin: 0 0 12px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            background: white;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-sizing: border-box;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+        }
+        .input-group input::placeholder {
+            color: #999;
+        }
+        .action-buttons {
+            padding: 0 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .primary-btn, .secondary-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 48px;
+        }
+        .primary-btn {
+            background: #007AFF;
+            color: white;
+        }
+        .primary-btn:hover {
+            background: #0056CC;
+        }
+        .primary-btn:active {
+            background: #004499;
+        }
+        .secondary-btn {
+            background: #f8f9fa;
+            color: #007AFF;
+            border: 1px solid #e0e0e0;
+        }
+        .secondary-btn:hover {
+            background: #f0f0f0;
+        }
+        .secondary-btn:active {
+            background: #e8e8e8;
+        }
+        .error {
+            background: #FFE5E5;
+            color: #D70015;
+            padding: 12px 20px;
+            margin: 0 20px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .error.show {
+            display: block;
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        /* Delete button styles */
+        .deleteInput {
+            background: #FFE5E5;
+            color: #D70015;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            min-height: 36px;
+            font-size: 14px;
+        }
+        .deleteInput:hover {
+            background: #FFCCCC;
+        }
+        /* Mobile Optimizations */
+        @media screen and (max-width: 768px) {
+            .signal-modal {
+                width: 95%;
+                max-height: 85vh;
+                border-radius: 16px;
+                margin-bottom: 60px;
+            }
+            .signal-modal:not(.expanded) {
+                height: 260px;
+                max-height: 260px;
+            }
+            .modal-content {
+                max-height: calc(85vh - 80px);
+            }
+            .option-item {
+                padding: 18px 20px;
+                min-height: 72px;
+            }
+            .signal-modal:not(.expanded) .option-item {
+                padding: 14px 16px;
+                min-height: 50px;
+            }
+            .option-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+            .signal-modal:not(.expanded) .option-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            .input-group input {
+                padding: 18px;
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+            .primary-btn, .secondary-btn {
+                padding: 18px 24px;
+                font-size: 16px;
+                min-height: 52px;
+            }
+            .close-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .option-item {
+                min-height: 76px;
+            }
+            .primary-btn, .secondary-btn {
+                min-height: 56px;
+            }
+            .close-btn {
+                min-width: 48px;
+                min-height: 48px;
+            }
+            .deleteInput {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+        .signal-modal {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            overflow: hidden;
+        }
+        .modal-header {
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            position: relative;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            padding-top: 28px;
+            border-bottom: 1px solid #f0f0f0;
+            overflow: hidden !important;
+        }
+        .modal-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            overflow-y: auto;
+        }
+        .chat-options {
+            width: 100%;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch;
+        }
+        .option-item {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        @media screen and (max-width: 768px) {
+            .signal-modal {
+                min-width: 0;
+                max-width: 100vw;
+            }
+            .modal-header, .modal-content, .chat-options, .option-item {
+                width: 100%;
+                min-width: 0;
+                max-width: 100vw;
+            }
+        }
+        .signal-modal, .modal-header, .modal-content, .chat-options, .option-item {
+            box-sizing: border-box;
+            width: 100%;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+        @media screen and (max-width: 768px) {
+            .signal-modal {
+                width: 100%;
+                max-width: 100vw;
+                min-width: 0;
+            }
+            .modal-header, .modal-content, .chat-options, .option-item {
+                width: 100%;
+                max-width: 100vw;
+                min-width: 0;
+            }
+        }
+        .signal-modal.expanded .option-item {
+            padding: 8px 10px !important;
+            min-height: 36px !important;
+        }
+        .signal-modal.expanded .option-icon {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            min-height: 28px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .signal-modal.expanded .option-icon i {
+            font-size: 20px;
+        }
+        .createGroupChat {
+            display: none;
+        }
+        .createGroupChat.active {
+            display: flex;
+        }
+        #users .input-group {
+            display: flex;
+            justify-content: center;
+        }
+        #users .input-group input {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            border: 1.5px solid #e0e0e0;
+            padding: 20px 18px;
+            font-size: 20px;
+            height: 56px;
+            background: #f8f8fa;
+            margin-bottom: 10px;
+            transition: border 0.2s;
+        }
     </style>
 </head>
 <body>
@@ -1530,53 +2068,86 @@
     
 
     <div class="createGroupChat hider" id="blurWall">
-
-        <form id="form">
-            
-            <div id="close"><i class="fa-solid fa-xmark"></i></div>
-            <div id="emailErrorMessage" class="error"></div>
-
-            <h1>New Chat</h1>
-            
-            <div class="choices" id="q1">
-                
-                <!-- <div id="groupBtn" class="btn"><i class="fa-solid fa-user-group"></i><br>New Group</div>
-                <div class="line"></div>
-                <div id="friendBtn" class="btn"><i class="fa-solid fa-user"></i><br>New Friend</div> -->
-
-                <div id="users" class="hidden">
-                    <div id="inputs">
-                        <div class="input-group">
-                        
-                            <input type="text" name="username" style="width: 92%; margin-left: 8.5%;" placeholder="Enter username">
-                            
-                        </div>
-                    </div>
-                    <div class="btns">
-                        <button type="button" id="addInput">Add Additional Name</button>
-                        <button type="button" id="submit">Submit</button>
-                    </div>
-                </div>  
-
-
-                <div id="q2" class="hidden">
-                    <div id="inputs">
-                        <div class="input-group">
-                        
-                            <input type="text" id="gcname" name="groupName" style="width: 92%; margin-left: 8.5%;" placeholder="Enter group name">
-                            
-                        </div>
-                    </div>
-                    <div class="btns">
-                        
-                        <button type="button" id="submit2">Submit</button>
-                    </div>
-                </div>  
-                
+        <div class="signal-modal" id="form">
+            <div class="modal-header">
+                <div class="handle" id="handle"></div>
+                <h1>New Conversation</h1>
+                <button id="close" class="close-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
             
-            
-        </form>
+            <div id="emailErrorMessage" class="error"></div>
+
+            <div class="modal-content">
+                <div class="chat-options" id="q1">
+                    <div class="option-item" id="friendBtn">
+                        <div class="option-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="option-details">
+                            <h3>Create Direct Chat</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-right arrow"></i>
+                    </div>
+                    
+                    <div class="option-item" id="groupBtn">
+                        <div class="option-icon">
+                            <i class="fa-solid fa-user-group"></i>
+                        </div>
+                        <div class="option-details">
+                            <h3>Create Group Chat</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-right arrow"></i>
+                    </div>
+                </div>
+
+                <div id="users" class="hidden">
+                    <div class="back-section">
+                        <button class="back-btn" id="backToTypes">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Back
+                        </button>
+                    </div>
+                    <div class="input-section">
+                        <div id="inputs">
+                            <div class="input-group">
+                                <input type="text" name="username" placeholder="Enter username or phone number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="button" id="submit" class="primary-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Start Conversation
+                        </button>
+                    </div>
+                </div>
+
+                <div id="q2" class="hidden">
+                    <div class="back-section">
+                        <button class="back-btn" id="backToTypes2">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Back
+                        </button>
+                    </div>
+                    <div class="input-section">
+                        <h3>Group Name:</h3>
+                        <div id="inputs">
+                            <div class="input-group">
+                                <input type="text" id="gcname" name="groupName" placeholder="Enter group name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="button" id="submit2" class="primary-btn">
+                            <i class="fa-solid fa-users"></i>
+                            Create Group
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -1831,6 +2402,22 @@
     <script type="module" src="/scripts/ai.js"></script>
     <script type="module" src="/scripts/magic.js"></script>
     
-    
+    <script>
+        // Show popup when plus button is clicked
+        document.getElementById('newChatBtn').addEventListener('click', function() {
+            document.getElementById('blurWall').classList.add('active');
+        });
+        // Also support the floating plus button if present
+        var newChatBtn2 = document.getElementById('newChatBtn2');
+        if (newChatBtn2) {
+            newChatBtn2.addEventListener('click', function() {
+                document.getElementById('blurWall').classList.add('active');
+            });
+        }
+        // Hide popup when close button is clicked
+        document.getElementById('close').addEventListener('click', function() {
+            document.getElementById('blurWall').classList.remove('active');
+        });
+    </script>
 </body>
 </html>

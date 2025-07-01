@@ -45,13 +45,155 @@ const inputContainer = document.getElementById("inputs");
 let correct = true;
 let submit = false;
 const errorMessage = document.getElementById("emailErrorMessage");
-let q1 = document.getElementById("users");
+let q1 = document.getElementById("q1");
 let q2 = document.getElementById("q2");
+let users = document.getElementById("users");
 let gcName = document.getElementById("gcname");
 let usernames;
 let clicked = false;
-
 let created = false;
+
+// Chat type selection elements
+let friendBtn = document.getElementById("friendBtn");
+let groupBtn = document.getElementById("groupBtn");
+
+// Add event listeners for chat type selection
+friendBtn.addEventListener("click", () => {
+    friendBtn.classList.add("selected");
+    groupBtn.classList.remove("selected");
+    
+    // Expand modal first
+    expandModal();
+    
+    // Show users section for direct message
+    q1.style.display = 'none';
+    q1.classList.add("hidden");
+    users.style.display = 'flex';
+    users.classList.remove("hidden");
+    q2.style.display = 'none';
+    q2.classList.add("hidden");
+});
+
+groupBtn.addEventListener("click", () => {
+    groupBtn.classList.add("selected");
+    friendBtn.classList.remove("selected");
+    
+    // Expand modal first
+    expandModal();
+    
+    // Show group creation section
+    q1.style.display = 'none';
+    q1.classList.add("hidden");
+    users.style.display = 'none';
+    users.classList.add("hidden");
+    q2.style.display = 'flex';
+    q2.classList.remove("hidden");
+});
+
+// Back button functionality
+let backToTypes = document.getElementById("backToTypes");
+let backToTypes2 = document.getElementById("backToTypes2");
+
+// Swipe functionality
+let handle = document.getElementById("handle");
+let modal = document.getElementById("form");
+let isExpanded = false;
+
+// Touch/swipe functionality
+let startY = 0;
+let currentY = 0;
+let isDragging = false;
+
+handle.addEventListener("mousedown", startDrag);
+handle.addEventListener("touchstart", startDrag);
+
+document.addEventListener("mousemove", drag);
+document.addEventListener("touchmove", drag);
+
+document.addEventListener("mouseup", endDrag);
+document.addEventListener("touchend", endDrag);
+
+function startDrag(e) {
+    isDragging = true;
+    startY = e.type === "mousedown" ? e.clientY : e.touches[0].clientY;
+    currentY = startY;
+    e.preventDefault();
+}
+
+function drag(e) {
+    if (!isDragging) return;
+    
+    currentY = e.type === "mousemove" ? e.clientY : e.touches[0].clientY;
+    const deltaY = startY - currentY;
+    
+    if (deltaY > 30 && !isExpanded) {
+        // Swipe up - expand
+        expandModal();
+    } else if (deltaY < -30 && isExpanded) {
+        // Swipe down - collapse
+        collapseModal();
+    }
+}
+
+function endDrag() {
+    isDragging = false;
+}
+
+function expandModal() {
+    modal.classList.add("expanded");
+    isExpanded = true;
+}
+
+function collapseModal() {
+    modal.classList.remove("expanded");
+    isExpanded = false;
+}
+
+// Click handle to expand
+handle.addEventListener("click", () => {
+    if (!isExpanded) {
+        expandModal();
+    }
+});
+
+backToTypes.addEventListener("click", () => {
+    // Collapse modal first
+    collapseModal();
+    
+    // Go back to chat type selection
+    q1.style.display = 'flex';
+    q1.classList.remove("hidden");
+    users.style.display = 'none';
+    users.classList.add("hidden");
+    q2.style.display = 'none';
+    q2.classList.add("hidden");
+    
+    // Clear inputs
+    const inputs = document.querySelectorAll("input[name='username']");
+    inputs.forEach(input => input.value = '');
+    
+    // Remove extra input groups (keep only the first one)
+    const inputGroups = inputContainer.querySelectorAll(".input-group");
+    for (let i = 1; i < inputGroups.length; i++) {
+        inputContainer.removeChild(inputGroups[i]);
+    }
+});
+
+backToTypes2.addEventListener("click", () => {
+    // Collapse modal first
+    collapseModal();
+    
+    // Go back to chat type selection
+    q1.style.display = 'flex';
+    q1.classList.remove("hidden");
+    users.style.display = 'none';
+    users.classList.add("hidden");
+    q2.style.display = 'none';
+    q2.classList.add("hidden");
+    
+    // Clear group name
+    if (gcName) gcName.value = '';
+});
 
 
 inputContainer.addEventListener("keydown", (event) => {
@@ -64,52 +206,104 @@ inputContainer.addEventListener("keydown", (event) => {
 
 
 newChat.addEventListener("click", ()=>{
-    wall.classList.toggle("hider");
-    former.classList.toggle("unslider");
     wall.style.display = "flex";
     former.style.display = "flex";
     submit = false;
     
-    q1.classList.remove("hidden");
-    q1.style.display = 'flex';
+    // Ensure modal starts in collapsed state
+    collapseModal();
     
-
+    // Ensure chat type selector is visible
+    if (q1) {
+        q1.style.display = 'flex';
+        q1.classList.remove("hidden");
+        q1.style.visibility = 'visible';
+    }
     
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
+    // Hide other sections
+    if (users) {
+        users.style.display = 'none';
+        users.classList.add("hidden");
+    }
+    if (q2) {
+        q2.style.display = 'none';
+        q2.classList.add("hidden");
+    }
 
+    // Reset selections
+    if (friendBtn) friendBtn.classList.remove("selected");
+    if (groupBtn) groupBtn.classList.remove("selected");
 });
 
 newChat2.addEventListener("click", ()=>{
-    wall.classList.toggle("hider");
-    former.classList.toggle("unslider");
     wall.style.display = "flex";
     former.style.display = "flex";
     submit = false;
     
-    q1.classList.remove("hidden");
-    q1.style.display = 'flex';
+    // Ensure modal starts in collapsed state
+    collapseModal();
     
-
+    // Ensure chat type selector is visible
+    if (q1) {
+        q1.style.display = 'flex';
+        q1.classList.remove("hidden");
+        q1.style.visibility = 'visible';
+    }
     
-    q2.style.display = 'none';
-    q2.classList.add("hidden");
+    // Hide other sections
+    if (users) {
+        users.style.display = 'none';
+        users.classList.add("hidden");
+    }
+    if (q2) {
+        q2.style.display = 'none';
+        q2.classList.add("hidden");
+    }
 
+    // Reset selections
+    if (friendBtn) friendBtn.classList.remove("selected");
+    groupBtn.classList.remove("selected");
 });
 
 let close = document.getElementById("close");
 
 close.addEventListener("click", ()=> {
-    wall.classList.toggle("hider");
-    former.classList.toggle("unslider");
     submit = false;
-
-    setTimeout(disappear, 600);
+    disappear();
 });
 
 function disappear(){
     wall.style.display = "none";
     former.style.display = "none";
+    
+    // Reset modal state
+    collapseModal();
+    
+    // Reset all sections
+    q1.style.display = 'none';
+    q1.classList.add("hidden");
+    users.style.display = 'none';
+    users.classList.add("hidden");
+    q2.style.display = 'none';
+    q2.classList.add("hidden");
+    
+    // Clear inputs
+    const inputs = document.querySelectorAll("input[name='username']");
+    inputs.forEach(input => input.value = '');
+    if (gcName) gcName.value = '';
+    
+    // Remove extra input groups (keep only the first one)
+    const inputGroups = inputContainer.querySelectorAll(".input-group");
+    for (let i = 1; i < inputGroups.length; i++) {
+        inputContainer.removeChild(inputGroups[i]);
+    }
+    
+    // Reset selections
+    friendBtn.classList.remove("selected");
+    groupBtn.classList.remove("selected");
+    
+    // Hide error message
+    errorMessage.classList.remove("show");
 }
 
 
@@ -121,7 +315,12 @@ function inputHandleFunction(){
 
     const newInputGroup = document.createElement("div");
     newInputGroup.className = "input-group";
-    newInputGroup.innerHTML = `<input type="text" name="username" placeholder="Enter username"><button type="button" class="deleteInput"><i class="fa-solid fa-trash"></i></button>`;
+    newInputGroup.innerHTML = `
+        <input type="text" name="username" placeholder="Enter username or phone number">
+        <button type="button" class="deleteInput">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    `;
     inputContainer.appendChild(newInputGroup);
 
     const deleteButton = newInputGroup.querySelector(".deleteInput");
