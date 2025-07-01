@@ -4,7 +4,6 @@ import {db} from '/scripts/createChat.js';
 
 let userId = window.localStorage.getItem("userIdentify");
 let username = fetchUser();
-
 async function fetchUser() {
   const { data, error } = await db
     .from('Users')
@@ -781,264 +780,267 @@ async function DeleteMessage(messEl){
     .eq('chat_id', currentChat); 
 }
 
+
+
 // Add right-click handlers to all messages
-document.addEventListener('DOMContentLoaded', () => {
+
+const chatMessages = document.getElementById('chat-messages');
+console.log("hi");
+
+// Use event delegation for dynamically added messages
+chatMessages.addEventListener('contextmenu', (e) => {
+    e.preventDefault(); // Prevent default context menu
+    const message = e.target.closest('.message');
+    if (message) {
+        // Add squish animation
+        message.classList.add('squish');
+        // Vibration for hold/long-press on mobile
+        if (window.innerWidth <= 768 && window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate(20);
+        }
+        // Remove the class after animation completes
+        setTimeout(() => {
+            message.classList.remove('squish');
+        }, 300);
+        
+        const isOwnMessage = message.classList.contains('own-message');
+        createMessageMenu(message, isOwnMessage);
+    }
+});
+
+// MOBILE: Tap handler for push-up effect
+chatMessages.addEventListener('click', (e) => {
+    if (window.innerWidth > 768) return; // Only on mobile
+    if (window.isSelectionMode && window.isSelectionMode()) return;
+    const message = e.target.closest('.message');
+    if (!message) return;
+
+    // Vibration for tap on message (mobile only)
+    if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(8);
+    }
+
+    // Always remove previous push-up classes before applying new ones
+    document.querySelectorAll('.message.push-up-above').forEach(m => m.classList.remove('push-up-above'));
+
+    // Find all next siblings (above, due to column-reverse)
+    let next = message.nextElementSibling;
+    while (next) {
+        if (next.classList.contains('message')) {
+            next.classList.add('push-up-above');
+        }
+        next = next.nextElementSibling;
+    }
+});
+
+// GLOBAL: Remove push-up effect if clicking outside messages or popups (mobile only)
+document.addEventListener('click', (e) => {
+    if (window.innerWidth > 768) return;
+    const isMessage = e.target.closest('.message');
+    const isPopup = e.target.closest('.message-popup');
+    if (!isMessage && !isPopup) {
+        const pushedMessages = document.querySelectorAll('.message.push-up-above');
+        pushedMessages.forEach(m => m.offsetHeight); // Force reflow
+        pushedMessages.forEach(m => m.classList.remove('push-up-above'));
+    }
+});
+
+// MOBILE: Scroll-in animation for messages (dynamic)
+if (window.innerWidth <= 768) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.intersectionRatio > 0.3) {
+                entry.target.classList.add('visible');
+            } else if (entry.intersectionRatio === 0) {
+                entry.target.classList.remove('visible');
+            }
+        });
+    }, {
+        threshold: [0, 0.3]
+    });
+
+    function observeMessages() {
+        document.querySelectorAll('.message').forEach(msg => {
+            if (!msg.classList.contains('message-scroll-animate')) {
+                msg.classList.add('message-scroll-animate');
+                observer.observe(msg);
+            }
+        });
+    }
+    observeMessages();
+
+    // MutationObserver to handle dynamically added messages
     const chatMessages = document.getElementById('chat-messages');
-    
-    // Use event delegation for dynamically added messages
-    chatMessages.addEventListener('contextmenu', (e) => {
-        e.preventDefault(); // Prevent default context menu
-        const message = e.target.closest('.message');
-        if (message) {
-            // Add squish animation
-            message.classList.add('squish');
-            // Vibration for hold/long-press on mobile
-            if (window.innerWidth <= 768 && window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(20);
-            }
-            // Remove the class after animation completes
-            setTimeout(() => {
-                message.classList.remove('squish');
-            }, 300);
-            
-            const isOwnMessage = message.classList.contains('own-message');
-            createMessageMenu(message, isOwnMessage);
-        }
-    });
-
-    // MOBILE: Tap handler for push-up effect
-    chatMessages.addEventListener('click', (e) => {
-        if (window.innerWidth > 768) return; // Only on mobile
-        if (window.isSelectionMode && window.isSelectionMode()) return;
-        const message = e.target.closest('.message');
-        if (!message) return;
-
-        // Vibration for tap on message (mobile only)
-        if (window.navigator && window.navigator.vibrate) {
-            window.navigator.vibrate(8);
-        }
-
-        // Always remove previous push-up classes before applying new ones
-        document.querySelectorAll('.message.push-up-above').forEach(m => m.classList.remove('push-up-above'));
-
-        // Find all next siblings (above, due to column-reverse)
-        let next = message.nextElementSibling;
-        while (next) {
-            if (next.classList.contains('message')) {
-                next.classList.add('push-up-above');
-            }
-            next = next.nextElementSibling;
-        }
-    });
-
-    // GLOBAL: Remove push-up effect if clicking outside messages or popups (mobile only)
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth > 768) return;
-        const isMessage = e.target.closest('.message');
-        const isPopup = e.target.closest('.message-popup');
-        if (!isMessage && !isPopup) {
-            const pushedMessages = document.querySelectorAll('.message.push-up-above');
-            pushedMessages.forEach(m => m.offsetHeight); // Force reflow
-            pushedMessages.forEach(m => m.classList.remove('push-up-above'));
-        }
-    });
-
-    // MOBILE: Scroll-in animation for messages (dynamic)
-    if (window.innerWidth <= 768) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.intersectionRatio > 0.3) {
-                    entry.target.classList.add('visible');
-                } else if (entry.intersectionRatio === 0) {
-                    entry.target.classList.remove('visible');
-                }
-            });
-        }, {
-            threshold: [0, 0.3]
-        });
-
-        function observeMessages() {
-            document.querySelectorAll('.message').forEach(msg => {
-                if (!msg.classList.contains('message-scroll-animate')) {
-                    msg.classList.add('message-scroll-animate');
-                    observer.observe(msg);
-                }
-            });
-        }
+    const mutationObserver = new MutationObserver(() => {
         observeMessages();
+    });
+    mutationObserver.observe(chatMessages, { childList: true, subtree: true });
+}
 
-        // MutationObserver to handle dynamically added messages
-        const chatMessages = document.getElementById('chat-messages');
-        const mutationObserver = new MutationObserver(() => {
-            observeMessages();
-        });
-        mutationObserver.observe(chatMessages, { childList: true, subtree: true });
-    }
-
-    // --- SWIPE TO REPLY (MOBILE, ANIMATED) ---
-    if (window.innerWidth <= 768) {
-        let startX = null;
-        let startY = null;
-        let currentContent = null;
-        let threshold = 1; // px to trigger reply (any swipe)
-        let maxSwipe = 40; // px for max visual swipe distance (never looks ugly)
-        let swiping = false;
-        let replyIcon = null;
-        let vibrated = false;
-        let popped = false;
-        chatMessages.addEventListener('touchstart', (e) => {
-            const content = e.target.closest('.message .content');
-            if (!content || e.target.closest('.avatar')) return;
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            currentContent = content;
-            swiping = false;
-            vibrated = false;
-            popped = false;
-            currentContent.style.transition = '';
+// --- SWIPE TO REPLY (MOBILE, ANIMATED) ---
+if (window.innerWidth <= 768) {
+    let startX = null;
+    let startY = null;
+    let currentContent = null;
+    let threshold = 1; // px to trigger reply (any swipe)
+    let maxSwipe = 40; // px for max visual swipe distance (never looks ugly)
+    let swiping = false;
+    let replyIcon = null;
+    let vibrated = false;
+    let popped = false;
+    chatMessages.addEventListener('touchstart', (e) => {
+        const content = e.target.closest('.message .content');
+        if (!content || e.target.closest('.avatar')) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        currentContent = content;
+        swiping = false;
+        vibrated = false;
+        popped = false;
+        currentContent.style.transition = '';
+        if (replyIcon) {
+            replyIcon.remove();
+            replyIcon = null;
+        }
+    }, {passive: true});
+    chatMessages.addEventListener('touchmove', (e) => {
+        if (!currentContent || startX === null) return;
+        const touchX = e.touches[0].clientX;
+        const messageEl = currentContent.parentElement;
+        let dx = touchX - startX;
+        const dy = Math.abs(e.touches[0].clientY - startY);
+        const isOwn = messageEl.classList.contains('own-message');
+        let trigger = false;
+        let visualDx = dx;
+        if (isOwn) {
+            dx = startX - touchX;
+            if (dx > 0 && dy < 30) {
+                visualDx = -Math.min(dx, maxSwipe);
+                trigger = true;
+                // Always ensure icon is visible for own messages
+                const msgEl = currentContent.parentElement;
+                msgEl.style.overflow = 'visible';
+                msgEl.style.position = 'relative';
+            } else {
+                visualDx = 0;
+                trigger = false;
+            }
+        } else {
+            dx = touchX - startX;
+            if (dx > 0 && dy < 30) {
+                visualDx = Math.min(dx, maxSwipe);
+                trigger = true;
+            } else {
+                visualDx = 0;
+                trigger = false;
+            }
+        }
+        if (trigger) {
+            swiping = true;
+            currentContent.style.transition = 'none';
+            currentContent.style.transform = `translateX(${visualDx}px)`;
             if (replyIcon) {
                 replyIcon.remove();
+            }
+            replyIcon = document.createElement('div');
+            replyIcon.className = 'swipe-reply-icon';
+            replyIcon.innerHTML = '<i class="fa-solid fa-reply"></i>';
+            replyIcon.style.position = 'absolute';
+            replyIcon.style.top = '50%';
+            replyIcon.style.transform = 'translateY(-50%) scale(0.9)';
+            replyIcon.style.background = 'transparent';
+            replyIcon.style.color = '#bbb';
+            replyIcon.style.width = '32px';
+            replyIcon.style.height = '32px';
+            replyIcon.style.display = 'flex';
+            replyIcon.style.alignItems = 'center';
+            replyIcon.style.justifyContent = 'center';
+            replyIcon.style.fontSize = '18px';
+            replyIcon.style.zIndex = '9999';
+            replyIcon.style.boxShadow = 'none';
+            replyIcon.style.opacity = '0';
+            replyIcon.style.color = 'black';
+            replyIcon.style.transition = 'color 2.5s cubic-bezier(0.22,0.61,0.36,1), opacity 2.5s cubic-bezier(0.22,0.61,0.36,1), transform 2s cubic-bezier(0.22,0.61,0.36,1)';
+            replyIcon.style.overflow = 'visible';
+            replyIcon.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                handleReply(currentContent.parentElement);
+                if (replyIcon) replyIcon.remove();
                 replyIcon = null;
-            }
-        }, {passive: true});
-        chatMessages.addEventListener('touchmove', (e) => {
-            if (!currentContent || startX === null) return;
-            const touchX = e.touches[0].clientX;
-            const messageEl = currentContent.parentElement;
-            let dx = touchX - startX;
-            const dy = Math.abs(e.touches[0].clientY - startY);
-            const isOwn = messageEl.classList.contains('own-message');
-            let trigger = false;
-            let visualDx = dx;
+            });
             if (isOwn) {
-                dx = startX - touchX;
-                if (dx > 0 && dy < 30) {
-                    visualDx = -Math.min(dx, maxSwipe);
-                    trigger = true;
-                    // Always ensure icon is visible for own messages
-                    const msgEl = currentContent.parentElement;
-                    msgEl.style.overflow = 'visible';
-                    msgEl.style.position = 'relative';
-                } else {
-                    visualDx = 0;
-                    trigger = false;
-                }
+                replyIcon.style.left = '100%';
+                replyIcon.style.right = '';
             } else {
-                dx = touchX - startX;
-                if (dx > 0 && dy < 30) {
-                    visualDx = Math.min(dx, maxSwipe);
-                    trigger = true;
-                } else {
-                    visualDx = 0;
-                    trigger = false;
-                }
+                replyIcon.style.right = '100%';
+                replyIcon.style.left = '';
             }
-            if (trigger) {
-                swiping = true;
-                currentContent.style.transition = 'none';
-                currentContent.style.transform = `translateX(${visualDx}px)`;
-                if (replyIcon) {
-                    replyIcon.remove();
-                }
-                replyIcon = document.createElement('div');
-                replyIcon.className = 'swipe-reply-icon';
-                replyIcon.innerHTML = '<i class="fa-solid fa-reply"></i>';
-                replyIcon.style.position = 'absolute';
-                replyIcon.style.top = '50%';
-                replyIcon.style.transform = 'translateY(-50%) scale(0.9)';
-                replyIcon.style.background = 'transparent';
-                replyIcon.style.color = '#bbb';
-                replyIcon.style.width = '32px';
-                replyIcon.style.height = '32px';
-                replyIcon.style.display = 'flex';
-                replyIcon.style.alignItems = 'center';
-                replyIcon.style.justifyContent = 'center';
-                replyIcon.style.fontSize = '18px';
-                replyIcon.style.zIndex = '9999';
-                replyIcon.style.boxShadow = 'none';
-                replyIcon.style.opacity = '0';
-                replyIcon.style.color = 'black';
-                replyIcon.style.transition = 'color 2.5s cubic-bezier(0.22,0.61,0.36,1), opacity 2.5s cubic-bezier(0.22,0.61,0.36,1), transform 2s cubic-bezier(0.22,0.61,0.36,1)';
-                replyIcon.style.overflow = 'visible';
-                replyIcon.addEventListener('click', (ev) => {
-                    ev.stopPropagation();
-                    handleReply(currentContent.parentElement);
-                    if (replyIcon) replyIcon.remove();
-                    replyIcon = null;
-                });
-                if (isOwn) {
-                    replyIcon.style.left = '100%';
-                    replyIcon.style.right = '';
-                } else {
-                    replyIcon.style.right = '100%';
-                    replyIcon.style.left = '';
-                }
-                const percent = Math.min(Math.abs(dx) / threshold, 1);
-                replyIcon.style.opacity = percent;
-                replyIcon.style.color = '#bbb';
-                let scale = 0.9 + 0.2 * percent;
-                if (percent === 1 && !popped) {
-                    replyIcon.style.transition = 'transform 0.18s cubic-bezier(0.22,0.61,0.36,1)';
-                    replyIcon.style.transform = 'translateY(-50%) scale(1.25)';
-                    setTimeout(() => {
-                        if (replyIcon) {
-                            replyIcon.style.transition = 'transform 0.3s cubic-bezier(0.22,0.61,0.36,1)';
-                            replyIcon.style.transform = 'translateY(-50%) scale(1)';
-                        }
-                    }, 180);
-                    if (window.navigator && window.navigator.vibrate && !vibrated) {
-                        window.navigator.vibrate(12);
-                        vibrated = true;
+            const percent = Math.min(Math.abs(dx) / threshold, 1);
+            replyIcon.style.opacity = percent;
+            replyIcon.style.color = '#bbb';
+            let scale = 0.9 + 0.2 * percent;
+            if (percent === 1 && !popped) {
+                replyIcon.style.transition = 'transform 0.18s cubic-bezier(0.22,0.61,0.36,1)';
+                replyIcon.style.transform = 'translateY(-50%) scale(1.25)';
+                setTimeout(() => {
+                    if (replyIcon) {
+                        replyIcon.style.transition = 'transform 0.3s cubic-bezier(0.22,0.61,0.36,1)';
+                        replyIcon.style.transform = 'translateY(-50%) scale(1)';
                     }
-                    popped = true;
-                } else if (percent < 1) {
-                    replyIcon.style.transform = `translateY(-50%) scale(${scale})`;
-                    replyIcon.style.color = '#bbb';
-                    popped = false;
-                    vibrated = false;
+                }, 180);
+                if (window.navigator && window.navigator.vibrate && !vibrated) {
+                    window.navigator.vibrate(12);
+                    vibrated = true;
                 }
+                popped = true;
+            } else if (percent < 1) {
+                replyIcon.style.transform = `translateY(-50%) scale(${scale})`;
+                replyIcon.style.color = '#bbb';
+                popped = false;
+                vibrated = false;
+            }
 
-                currentContent.appendChild(replyIcon);
+            currentContent.appendChild(replyIcon);
+        }
+    }, {passive: true});
+    chatMessages.addEventListener('touchend', (e) => {
+        if (!currentContent || startX === null) return;
+        const touch = e.changedTouches[0];
+        const messageEl = currentContent.parentElement;
+        const isOwn = messageEl.classList.contains('own-message');
+        let dx = isOwn ? (startX - touch.clientX) : (touch.clientX - startX);
+        const dy = Math.abs(touch.clientY - startY);
+        if (swiping) {
+            currentContent.style.transition = 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
+            currentContent.style.transform = '';
+            if (!isOwn) {
+                messageEl.style.overflow = '';
+                messageEl.style.position = '';
             }
-        }, {passive: true});
-        chatMessages.addEventListener('touchend', (e) => {
-            if (!currentContent || startX === null) return;
-            const touch = e.changedTouches[0];
-            const messageEl = currentContent.parentElement;
-            const isOwn = messageEl.classList.contains('own-message');
-            let dx = isOwn ? (startX - touch.clientX) : (touch.clientX - startX);
-            const dy = Math.abs(touch.clientY - startY);
-            if (swiping) {
-                currentContent.style.transition = 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
-                currentContent.style.transform = '';
-                if (!isOwn) {
-                    messageEl.style.overflow = '';
-                    messageEl.style.position = '';
-                }
+        }
+        if (isOwn) {
+            if (dx > 0 && dy < 30) {
+                handleReply(currentContent.parentElement);
             }
-            if (isOwn) {
-                if (dx > 0 && dy < 30) {
-                    handleReply(currentContent.parentElement);
-                }
-            } else {
-                if (dx > 0 && dy < 30) {
-                    handleReply(currentContent.parentElement);
-                }
+        } else {
+            if (dx > 0 && dy < 30) {
+                handleReply(currentContent.parentElement);
             }
-            if (replyIcon) {
-                replyIcon.remove();
-                replyIcon = null;
-            }
-            startX = null;
-            startY = null;
-            currentContent = null;
-            swiping = false;
-            vibrated = false;
-            popped = false;
-        }, {passive: true});
-    }
-    // --- END SWIPE TO REPLY ---
-}); 
+        }
+        if (replyIcon) {
+            replyIcon.remove();
+            replyIcon = null;
+        }
+        startX = null;
+        startY = null;
+        currentContent = null;
+        swiping = false;
+        vibrated = false;
+        popped = false;
+    }, {passive: true});
+}
+// --- END SWIPE TO REPLY ---
+
 
 
 setInterval(stat, 50);

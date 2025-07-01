@@ -413,9 +413,8 @@ async function handleContextMenuAction(action) {
             let saveBtn = document.getElementById("saveBtn");
             saveBtn.addEventListener("click", async()=>{
                 let finalMembers = updatedMembers.filter(str => str.trim() !== '');
-                for(let i = 0; i<finalMembers.length; i++){
-                    await checkUserNames(finalMembers[i]);
-                }
+                let correct = true;
+                await Promise.all(finalMembers.map(username => checkUserNames(username)));
 
                 if(correct){
                     let updatedRead = [];

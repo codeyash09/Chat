@@ -210,13 +210,15 @@ async function newChat(){
 
 
     let saveBtn = document.getElementById("createBtn");
+    
     saveBtn.addEventListener("click", async()=>{
         let finalMembers = updatedMembers.filter(str => str.trim() !== '');
-        for(let i = 0; i<finalMembers.length; i++){
-            await checkUserNames(finalMembers[i]);
-        }
+        console.log(finalMembers);
+        
+        let results = await Promise.all(finalMembers.map(checkUserNames));
+        let allExist = results.every(Boolean);
 
-        if(correct){
+        if(allExist){
             let updatedRead = [];
             let updatedTyping = [];
             let updatedAccepted = [];
@@ -291,23 +293,16 @@ export async function fetchUserProfile(userId) {
   return data && data[0] ? data[0] : null;
 }
 
-async function checkUserNames(value){
-    const { data, error } = await db
-        .from('Users')
-        .select('username')
-        .eq('username', value);
+async function checkUserNames(value) {
+  const { data, error } = await db
+    .from('Users')
+    .select('username')
+    .eq('username', value);
 
-    if (error) {
-        console.error('Error fetching data:', error);
-        return null;
-    }
-   
-    
-    if(data.length == 0){
-        correct= false;
-    }
-   
-    
+  if (error) {
+    console.error('Error fetching data:', error);
+    return false;
+  }
 
-
+  return data.length > 0;
 }
