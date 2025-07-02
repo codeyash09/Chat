@@ -41,9 +41,11 @@ let isSelectionMode = false;
 let selectedMessages = new Set();
 let lastClickTime = 0;
 const DOUBLE_CLICK_DURATION = 300; // 300ms for double click
-
+initMessageSelection();
 // Initialize selection mode functionality
 function initMessageSelection() {
+    console.log("hi");
+
     const chatMessages = document.getElementById('chat-messages');
     const selectionMode = document.getElementById('selectionMode');
     const selectedCount = document.getElementById('selectedCount');
@@ -209,7 +211,6 @@ function updateSelectionCount() {
 }
 
 // Initialize when the DOM is loaded
-document.addEventListener('DOMContentLoaded', initMessageSelection);
 
 export { initMessageSelection };
 

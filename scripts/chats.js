@@ -509,7 +509,7 @@ messageInput.addEventListener("keydown", async function(event) {
             console.error("Unexpected error:", err);
         }
 
-        openChat(currentChat);
+        
 
     }
 
