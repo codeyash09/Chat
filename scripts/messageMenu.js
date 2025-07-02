@@ -1,4 +1,4 @@
-import {currentChat, messages, sendlers, timers } from "/scripts/chats.js";
+import {currentChat, messages, sendlers, timers, openChat } from "/scripts/chats.js";
 import {db} from '/scripts/createChat.js';
 
 
@@ -751,6 +751,8 @@ async function UnsendMessage(messEl){
       .from('Chats') 
       .update({messages: newMess, senders: newSend, times: newTime}) 
       .eq('chat_id', currentChat); 
+
+    openChat(currentChat);
 }
 
 
@@ -778,6 +780,8 @@ async function DeleteMessage(messEl){
     .from('Chats') 
     .update({messages: newMess}) 
     .eq('chat_id', currentChat); 
+
+    openChat(currentChat);
 }
 
 
