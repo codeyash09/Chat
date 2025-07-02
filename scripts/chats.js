@@ -38,11 +38,6 @@ let timers;
 // Add a flag to track if we're currently updating to prevent recursive calls
 let isUpdating = false;
 
-// Helper to detect mobile
-function isMobile() {
-    return (typeof window !== 'undefined') && window.innerWidth <= 768;
-}
-
 async function fetchUser() {
   const { data, error } = await db
     .from('Users')
@@ -588,46 +583,22 @@ sendButton.addEventListener("click", async () => {
 
 });
 
-function formatChatListTimestamp(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    if (isMobile()) {
-        // Mobile logic
-        const isToday = date.getFullYear() === now.getFullYear() &&
-                        date.getMonth() === now.getMonth() &&
-                        date.getDate() === now.getDate();
-        const yesterday = new Date(now);
-        yesterday.setDate(now.getDate() - 1);
-        const isYesterday = date.getFullYear() === yesterday.getFullYear() &&
-                            date.getMonth() === yesterday.getMonth() &&
-                            date.getDate() === yesterday.getDate();
-        if (isToday) {
-            // Today: show only time
-            return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-        } else if (isYesterday) {
-            // Yesterday: show only 'Yesterday'
-            return `Yesterday`;
-        } else if (date.getFullYear() === now.getFullYear()) {
-            // This year: show month and day only
-            return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-        } else {
-            // Different year: show full date
-            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-    } else {
-        // Desktop: keep current behavior
-        if (
-            date.getFullYear() === now.getFullYear() &&
-            date.getMonth() === now.getMonth() &&
-            date.getDate() === now.getDate()
-        ) {
-            // Today: show only time
-            return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-        } else {
-            // Not today: show only date
-            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-        }
+function convertToLocalTime(centralTime) {
+    let date = new Date(centralTime);
+    let rn = new Date();
+    let daysApart = Math.floor((rn - date) / 86400000);
+
+    if (daysApart > 6) {
+        return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
+
+    let timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    let dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let dayDiff = rn.getDay() - date.getDay();
+
+    return dayDiff === 0 ? `Today at ${timeStr}` :
+           dayDiff === 1 || (rn.getDay() === 0 && date.getDay() === 6) ? `Yesterday at ${timeStr}` :
+           `${dayNames[date.getDay()]} at ${timeStr}`;
 }
 
 async function openChat(id, payload = null) {
@@ -784,7 +755,7 @@ async function openChat(id, payload = null) {
             text.innerHTML = chat.messages?.[i] || "No message";
             const time = document.createElement("div");
             time.classList.add("timestamp");
-            time.innerHTML = formatChatListTimestamp(chat.times[i]);
+            time.innerHTML = convertToLocalTime(chat.times[i]);
             const messId = document.createElement("div");
             messId.classList.add("messId");
             messId.innerHTML = i;
@@ -1384,6 +1355,23 @@ async function changeRowler() {
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
+}
+
+// Helper to format chat list timestamp
+function formatChatListTimestamp(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    if (
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth() &&
+        date.getDate() === now.getDate()
+    ) {
+        // Today: show only time
+        return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    } else {
+        // Not today: show only date
+        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
 }
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers, fetchChat};
