@@ -97,7 +97,7 @@ async function chatWithAi(prompt, retryCount) {
   mess.push({role: "system", content: "You are a helpful assistant named Qubit AI. Please try to use a tone comfortable for the user and try to mimic how they talk to make them more comfortable."});
   mess.push({role: "system", content: "The user goes by the username: " + username});
 
-  mess.push({role: "system", content: "You will use this information to help users with questions about chats the users have with each other, you are not a part of said chats: " + JSON.stringify(sortedChats)});
+  mess.push({role: "system", content: "You will use this information to help users with questions about chats the users have with each other, you are not a part of said chats: " + JSON.stringify(sortedChats) + "BTW time is in UTC but answer in PDT just subtract seven hours from the time to get PDT and adjust the day as it may be one day ahead"});
   
   for (let i = 0; i < prompts.length; i++) {
     mess.push({ role: "user", content: prompts[i] });
