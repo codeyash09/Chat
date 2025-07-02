@@ -763,6 +763,39 @@ async function openChat(id, payload = null) {
 
             if (chat.senders[i] === username) {
                 message.classList.add("own-message");
+                if(i == chat.messages.length - 1){
+                    
+
+                    let readed = false;
+                    if(chat.host == "" + userId){
+                        for(let i = 0; i<chat.members.length;i++){
+                            if(chat.read[i] == 0 || chat.read[i] == "0"){
+                                readed = true;
+                            }
+                        }
+                    }else{
+                        for(let i = 0; i< chat.members.length + 1; i++){
+                            if(i == chat.members.indexOf(username)){
+                                continue;
+                            }
+                             if(chat.read[i] == 0 || chat.read[i] == "0"){
+                                readed = true;
+                            }
+                        }
+                    }
+
+                    if(readed){
+                        document.getElementById("statuss").innerHTML = "Seen";
+
+                    }else{
+                        document.getElementById("statuss").innerHTML = "Sent";
+
+                    }
+                }
+            }
+
+            if(chat.senders[chat.messages.length - 1] != username){
+                document.getElementById("statuss").innerHTML = "";
             }
 
             message.appendChild(content);
@@ -780,6 +813,8 @@ async function openChat(id, payload = null) {
 
             chatMess.appendChild(message);
         }
+
+        
         let updatedRead = chat.read;
 
         if(oldCurrent != currentChat){
@@ -899,7 +934,7 @@ async function openChat(id, payload = null) {
     }
     
     
-    if(document.querySelectorAll('.message').length != chat.messages.length){
+    if(!(document.querySelector('.confirm'))&&(document.querySelectorAll('.message').length != chat.messages.length)){
         openChat(currentChat, payload);
     }
     
@@ -947,7 +982,7 @@ db
         isUpdating = true;
         
         changeRowler();
-        await showChats();
+        showChats();
         
         isUpdating = false;
     })
@@ -957,7 +992,7 @@ db
         
         if (payload.new.chat_id === currentChat) {
             // Only re-open if there are actually new messages
-            if (JSON.stringify(payload.new.messages) !== JSON.stringify(chatsSys?.messages)) {
+            if ((JSON.stringify(payload.new.messages) !== JSON.stringify(chatsSys?.messages))||(JSON.stringify(payload.new.read) !== JSON.stringify(chatsSys?.read))) {
                 openChat(currentChat, payload.new);
                 displayTypingBool = true;
                 newpayload = payload.new;
@@ -1358,20 +1393,23 @@ async function changeRowler() {
 }
 
 // Helper to format chat list timestamp
-function formatChatListTimestamp(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    if (
-        date.getFullYear() === now.getFullYear() &&
-        date.getMonth() === now.getMonth() &&
-        date.getDate() === now.getDate()
-    ) {
-        // Today: show only time
-        return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-    } else {
-        // Not today: show only date
-        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+function formatChatListTimestamp(centralTime) {
+    let date = new Date(centralTime);
+    let rn = new Date();
+    let daysApart = Math.floor((rn - date) / 86400000);
+
+    if (daysApart > 6) {
+        return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
+
+    let timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    let dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let dayDiff = rn.getDay() - date.getDay();
+
+    return dayDiff === 0 ? `${timeStr}` :
+           dayDiff === 1 || (rn.getDay() === 0 && date.getDay() === 6) ? `Yesterday` :
+           `${dayNames[date.getDay()]} at ${timeStr}`;
+
 }
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers, fetchChat};
@@ -1401,3 +1439,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 });
+
