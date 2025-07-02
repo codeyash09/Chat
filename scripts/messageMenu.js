@@ -962,12 +962,7 @@ if (window.innerWidth <= 768) {
             replyIcon.style.color = 'black';
             replyIcon.style.transition = 'color 2.5s cubic-bezier(0.22,0.61,0.36,1), opacity 2.5s cubic-bezier(0.22,0.61,0.36,1), transform 2s cubic-bezier(0.22,0.61,0.36,1)';
             replyIcon.style.overflow = 'visible';
-            replyIcon.addEventListener('click', (ev) => {
-                ev.stopPropagation();
-                handleReply(currentContent.parentElement);
-                if (replyIcon) replyIcon.remove();
-                replyIcon = null;
-            });
+           
             if (isOwn) {
                 replyIcon.style.left = '100%';
                 replyIcon.style.right = '';
