@@ -4,6 +4,12 @@ import { setReplying, replying, reply } from '/scripts/messageMenu.js';
 import { fetchUserProfile } from '/scripts/createChat.js';
 
 
+import {aing } from "/scripts/ai.js";
+
+
+
+
+
 let count = 0;
 let read = 10;
 let totalRead = 0;
@@ -602,7 +608,12 @@ function convertToLocalTime(centralTime) {
 }
 
 async function openChat(id, payload = null) {
+    if(payload != null && payload.messages != null){
 
+        console.log(payload);
+        newMessages(payload);
+
+    }
     let confirmation = false;
     let home = document.querySelector('.home');
 
@@ -849,6 +860,7 @@ async function openChat(id, payload = null) {
         sendlers = chat.senders;
         memblers = chat.members;
         timers = chat.times;
+        check();
 
     }else{
         let confirmer = document.createElement("div");
@@ -934,9 +946,6 @@ async function openChat(id, payload = null) {
     }
     
     
-    if(!(document.querySelector('.confirm'))&&(document.querySelectorAll('.message').length != chat.messages.length)){
-        openChat(currentChat, payload);
-    }
     
 }
 
@@ -993,7 +1002,8 @@ db
         if (payload.new.chat_id === currentChat) {
             // Only re-open if there are actually new messages
             if ((JSON.stringify(payload.new.messages) !== JSON.stringify(chatsSys?.messages))||(JSON.stringify(payload.new.read) !== JSON.stringify(chatsSys?.read))) {
-                openChat(currentChat, payload.new);
+                
+                newMessages(payload.new);
                 displayTypingBool = true;
                 newpayload = payload.new;
                 setTimeout(()=> {displayTypingBool = false}, 201);
@@ -1414,18 +1424,16 @@ function formatChatListTimestamp(centralTime) {
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers, fetchChat};
 
-document.addEventListener('DOMContentLoaded', async () => {
-  // Settings popup profile population
-  const userId = window.localStorage.getItem('userIdentify');
-  if (!userId || userId === 'null') return;
-  const profile = await fetchUserProfile(userId);
-  if (profile) {
+const userIds = window.localStorage.getItem('userIdentify');
+    if (userIds && userIds != 'null'){
+    const profile = await fetchUserProfile(userIds);
+    if (profile) {
     // Find the settings popup profile section
     // These selectors match the order in the HTML edit
     const container = document.querySelector('#sett .container');
     if (container) {
-      const profileSection = container.querySelector('div[style*="flex-direction: column; align-items: center; margin-top: 32px"]');
-      if (profileSection) {
+        const profileSection = container.querySelector('div[style*="flex-direction: column; align-items: center; margin-top: 32px"]');
+        if (profileSection) {
         // Name
         const nameDiv = profileSection.children[1];
         if (nameDiv) nameDiv.textContent = profile.name || '';
@@ -1435,8 +1443,240 @@ document.addEventListener('DOMContentLoaded', async () => {
         // DOB
         const dobDiv = profileSection.children[3];
         if (dobDiv) dobDiv.textContent = 'DOB: ' + (profile.birthday || '');
-      }
+        }
     }
-  }
-});
+    }
+}
 
+function stacker(){
+    lastSender = null;
+    if(sendlers){
+        for(let x = sendlers.length - 1; x >= 0; x--){
+            if(messages[x].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
+                sendlers.splice(x,1);
+                messages.splice(x,1);
+            }
+        }
+    
+    }
+  
+    let contents = document.querySelectorAll('.content');
+   
+    for(let i = contents.length - 1; i >= 0; i--){
+        
+        
+        let content = contents[i];
+
+        if(lastSender == sendlers[sendlers.length - 1 - i]){
+
+            if(sendlers[sendlers.length - i]){
+
+                if(sendlers[sendlers.length - 1 -i] == sendlers[sendlers.length - i]){
+                    
+                    content.style.borderRadius = "5px";
+
+                    if(sendlers[sendlers.length - 1 - i] == username){
+                        content.style.borderTopLeftRadius = "18px";
+                        content.style.borderBottomLeftRadius = "18px";
+                       
+
+                    }else{
+                        content.style.borderTopRightRadius = "18px";
+                        content.style.borderBottomRightRadius = "18px";
+                        
+                        content.parentElement.children[0].style.opacity = "0";
+                        
+                    }
+
+                    
+                }else{
+                    content.style.borderRadius = "5px";
+
+                    if(sendlers[sendlers.length - 1 - i] == username){
+                        content.style.borderTopLeftRadius = "18px";
+                        
+                    }else{
+                        content.style.borderTopRightRadius = "18px";
+                        
+                    }
+                    content.style.borderBottomLeftRadius = "18px";
+                    content.style.borderBottomRightRadius = "18px";
+
+                    content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
+
+
+                }
+            }else{
+                content.style.borderRadius = "5px";
+
+                if(sendlers[sendlers.length - 1 - i] == username){
+                    content.style.borderTopLeftRadius = "18px";
+                    
+                }else{
+                    content.style.borderTopRightRadius = "18px";
+                    
+                }
+                content.style.borderBottomLeftRadius = "18px";
+                content.style.borderBottomRightRadius = "18px";
+            }
+            
+            
+            
+        }else{
+            
+            content.style.borderRadius = "5px";
+
+            if(sendlers[sendlers.length - 1 - i] == username){
+                content.style.borderBottomLeftRadius = "18px";
+                content.style.borderTopLeftRadius = "18px";
+                content.style.borderTopRightRadius = "18px";
+                
+            }else{
+                content.style.borderTopLeftRadius = "18px";
+                content.parentElement.children[0].style.opacity = "0";
+                if(i == 0){
+                    content.parentElement.children[0].style.opacity = "1";
+                    
+                }
+                content.style.borderBottomRightRadius = "18px";
+                content.style.borderTopRightRadius = "18px";
+                
+            }
+
+            if(sendlers[sendlers.length - i]){
+                if(sendlers[sendlers.length - 1 - i] != sendlers[sendlers.length - i]){
+                    content.style.borderRadius = "18px";
+
+                    if(sendlers[sendlers.length - 1 - i] != username){
+                        content.parentElement.children[0].style.opacity = "1";
+                        
+                    }
+
+                    content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
+                }
+
+
+            }
+            
+        }
+
+
+
+
+        lastSender = sendlers[sendlers.length - 1 - i];
+    }
+
+
+
+
+    
+}
+
+function check(){
+    if(!aing){
+        
+        stacker();
+    }
+}
+
+function newMessages(payload){
+    if(!document.querySelector('.confirm')){
+        let dif = payload.messages.length - document.querySelectorAll(".message").length;
+        
+        if(dif != 0){
+
+            for(let i = 0; i<dif;i++){
+                let num = document.querySelectorAll(".message")[0].id;
+                num = parseInt(num)+1;
+                const message = document.createElement("div");
+                message.classList.add("message");
+                message.setAttribute('data-message-id', num);
+                message.id = num;
+                
+                if(payload.senders[i]!=username){
+                    const avatar = document.createElement("div");
+                    avatar.classList.add("avatar");
+                    message.appendChild(avatar);
+                }
+                
+                const content = document.createElement("div");
+                content.classList.add("content");
+                let usernameElement;
+                usernameElement = document.createElement("div");
+                usernameElement.classList.add("username");
+                usernameElement.innerHTML = payload.senders?.[num] || "Unknown User";
+                if(!payload.groupchat){
+                    usernameElement.style.display = 'none';
+                }
+                
+                const text = document.createElement("div");
+                text.classList.add("text");
+                text.innerHTML = payload.messages?.[num] || "No message";
+                const time = document.createElement("div");
+                time.classList.add("timestamp");
+                time.innerHTML = convertToLocalTime(payload.times[num]);
+                const messId = document.createElement("div");
+                messId.classList.add("messId");
+                messId.innerHTML = num;
+                messId.style.display = 'none';
+
+                if (payload.senders[num] === username) {
+                    message.classList.add("own-message");
+                    if(num == payload.messages.length - 1){
+                        
+
+                        let readed = false;
+                        if(payload.host == "" + userId){
+                            for(let i = 0; i<payload.members.length;i++){
+                                if(payload.read[i] == 0 || payload.read[i] == "0"){
+                                    readed = true;
+                                }
+                            }
+                        }else{
+                            for(let i = 0; i< payload.members.length + 1; i++){
+                                if(i == payload.members.indexOf(username)){
+                                    continue;
+                                }
+                                if(payload.read[i] == 0 || payload.read[i] == "0"){
+                                    readed = true;
+                                }
+                            }
+                        }
+
+                        if(readed){
+                            document.getElementById("statuss").innerHTML = "Seen";
+
+                        }else{
+                            document.getElementById("statuss").innerHTML = "Sent";
+
+                        }
+                    }
+                }
+
+                if(payload.senders[payload.messages.length - 1] != username){
+                    document.getElementById("statuss").innerHTML = "";
+                }
+
+                message.appendChild(content);
+                content.appendChild(usernameElement);
+                content.appendChild(text);
+                content.appendChild(time);
+                content.appendChild(messId);
+
+                if(payload.messages[num].includes('<div class="replyMessage">')){
+                    message.style.setProperty('margin-top', '50px', 'important');
+                    message.querySelector(".replyMessage").addEventListener('click', ()=> {
+                        window.location.hash = message.querySelector('.ider').innerHTML;
+                    })
+                }
+
+                chatMess.prepend(message);
+            
+
+                
+            }
+           
+            
+        }
+    }
+}
