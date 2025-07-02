@@ -10,6 +10,7 @@ import {aing } from "/scripts/ai.js";
 
 
 
+
 let count = 0;
 let read = 10;
 let totalRead = 0;
@@ -39,6 +40,7 @@ let username;
 let messages;
 let sendlers;
 let memblers;
+let isDispalying = false;
 let timers;
 
 // Add a flag to track if we're currently updating to prevent recursive calls
@@ -100,8 +102,8 @@ username.then(result =>{
 
 async function showChats() {
     // Prevent recursive calls during updates
-    if (isUpdating) return;
-    
+    if(isDispalying){return};
+    isDispalying = true;
     totalRead = 0;
     const { data, error } = await db
         .from('Chats')
@@ -429,6 +431,8 @@ async function showChats() {
     setTimeout(() => {
         chatMess.scrollTop = savedScrollPosition;
     }, 0);
+
+    isDispalying = false;
 }
 
 async function fetchChat(id) {
@@ -614,7 +618,7 @@ function convertToLocalTime(centralTime) {
 async function openChat(id, payload = null) {
     if(payload != null && payload.messages != null){
 
-        console.log(payload);
+      
         newMessages(payload);
 
     }
@@ -996,6 +1000,7 @@ db
         
         changeRowler();
         showChats();
+ 
         
         isUpdating = false;
     })
@@ -1017,10 +1022,16 @@ db
         }
 
         await showChats();
+
         
         isUpdating = false;
     })
-   
+    .on('postgres_changes', {event: '*', schema: 'public', table: 'Chats'}, async (payload) =>{
+        
+        
+        await showChats();
+
+    })
     .subscribe();
 
 async function changeChats(){

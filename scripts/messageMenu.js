@@ -270,8 +270,6 @@ function createMessageMenu(messageElement, isOwnMessage) {
 
     }
 
-    console.log(rect.bottom);
-    console.log(popupHeight);
 
     if (!overflowsBottom) {
         // Position below the message
@@ -447,7 +445,7 @@ async function UpdateMessageReact(messEl, updatedText){
       .from('Chats') 
       .update({messages: newMess}) 
       .eq('chat_id', currentChat); 
-    console.log("Menu " + counter++);
+
     
 }
 
@@ -539,13 +537,13 @@ function handleCopy(messageElement) {
     }
 
     const messageText = textElement.textContent;
-    console.log('Attempting to copy text:', messageText); // Debug log
+
 
     // Use a fallback method if clipboard API fails
     const copyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(messageText);
-            console.log('Successfully copied to clipboard');
+         s
         } catch (err) {
             console.error('Clipboard API failed, trying fallback method:', err);
             // Fallback method
@@ -560,7 +558,7 @@ function handleCopy(messageElement) {
             
             try {
                 document.execCommand('copy');
-                console.log('Successfully copied using fallback method');
+
             } catch (err) {
                 console.error('Fallback copy method failed:', err);
                 return;
@@ -789,7 +787,6 @@ async function DeleteMessage(messEl){
 // Add right-click handlers to all messages
 
 const chatMessages = document.getElementById('chat-messages');
-console.log("hi");
 
 // Use event delegation for dynamically added messages
 chatMessages.addEventListener('contextmenu', (e) => {
@@ -1008,6 +1005,8 @@ if (window.innerWidth <= 768) {
         const messageEl = currentContent.parentElement;
         const isOwn = messageEl.classList.contains('own-message');
         let dx = isOwn ? (startX - touch.clientX) : (touch.clientX - startX);
+   
+
         const dy = Math.abs(touch.clientY - startY);
         if (swiping) {
             currentContent.style.transition = 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
@@ -1018,11 +1017,11 @@ if (window.innerWidth <= 768) {
             }
         }
         if (isOwn) {
-            if (dx > 0 && dy < 30) {
+            if (dx > 30) {
                 handleReply(currentContent.parentElement);
             }
         } else {
-            if (dx > 0 && dy < 30) {
+            if (dx > 30) {
                 handleReply(currentContent.parentElement);
             }
         }
