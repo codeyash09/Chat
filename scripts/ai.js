@@ -38,7 +38,7 @@ function delay(ms) {
 async function fetcher(){
   const { data, error } = await db
       .from('Chats')
-      .select('senders, messages, members')
+      .select('senders, messages, members, times')
       .or(`members.cs.{"${username}"},host.eq."${userId}"`);
 
   if (error || !data || data.length === 0) {
