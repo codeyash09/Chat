@@ -1572,12 +1572,6 @@ form h1{
     color: #220952ff;
 }
 
-.lastMessage{
-    font-family: 'RF Dewi', sans-serif;
-    font-weight: 400;
-    font-size: 1.5vh;
-    color: #888;
-}
 
 .person{
     display: flex;
@@ -1625,13 +1619,7 @@ form h1{
 }
 
 
-.messagesBanner .timer{
-    font-family: 'RF Dewi', sans-serif;
-    font-size: 1.7vh;
-    font-weight: 600;
-    padding-right: 2vh;
-    color: #888;
-}
+
 
 .messagesBanner .reader{
     font-family: 'RF Dewi', sans-serif;
@@ -2747,4 +2735,18 @@ i{
     outline: none;
     font-size: 1vh;
     width: 50%;
+}
+
+.lastMessage{
+    font-family: 'RF Dewi', sans-serif;
+    font-weight: 400;
+    font-size: 1vh;
+    color: #727272 !important;
+}
+.messagesBanner .timer{
+    font-family: 'RF Dewi', sans-serif;
+    font-size: 1vh;
+    font-weight: 600;
+    padding-right: 2vh;
+    color: #888;
 }

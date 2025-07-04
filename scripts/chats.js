@@ -42,6 +42,7 @@ let sendlers;
 let memblers;
 let isDispalying = false;
 let timers;
+let isNewing = false;
 
 // Add a flag to track if we're currently updating to prevent recursive calls
 let isUpdating = false;
@@ -210,6 +211,7 @@ async function showChats() {
                 if(!(chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>"))){
 
                     let finalMessage;
+
                     if(chat.messages[i].includes('<div class="replyMessage">')){
                         let raw = chat.messages[i];
                         const match = raw.match(/<\/[^>]+>([^<]+)(?:<|$)/);
@@ -217,6 +219,13 @@ async function showChats() {
                     }else{
                         finalMessage = chat.messages[i];
                     }
+                    if (finalMessage.length > 25) {
+                        finalMessage = finalMessage.slice(0, 22) + '...';
+                    }
+
+
+                    finalMessage = finalMessage.replace(/<div class="message-reactions">[\s\S]*?<\/div>/g, '');
+                    
                     
                     if(chat.senders[i] == username){
                         lastMessage.innerHTML = "You: " + finalMessage;
@@ -616,17 +625,19 @@ function convertToLocalTime(centralTime) {
 }
 
 async function openChat(id, payload = null) {
-    if(payload != null && payload.messages != null){
+    if(payload != null && payload.messages != null && payload.messages.length > 0){
 
       
         newMessages(payload);
-
+        return;
     }
     let confirmation = false;
     let home = document.querySelector('.home');
-
+    let crBtn = document.querySelector('#newChatBtn2');
     if(!home.classList.contains('hide')){
         home.classList.add('hide');
+        crBtn.style.display = 'none';
+
     }
 
     currentChat = id;
@@ -638,7 +649,7 @@ async function openChat(id, payload = null) {
     document.querySelector('a[data-chat-id="' + id + '"]').classList.add("currentTab");
     
     let chat;
-    if(payload != null && payload.host != undefined && payload.messages != undefined){
+    if(payload != null && payload.host != undefined && payload.messages != undefined && payload.times != null && payload.times.length > 0){
         chat = payload;
         chatsSys = chat;
     }else{
@@ -670,10 +681,13 @@ async function openChat(id, payload = null) {
         let btn = document.querySelector('.homeBtn');
 
         btn.addEventListener('click', ()=>{
+            document.getElementById('newChatBtn2').style.display = 'flex';
             changeRow();
             home.classList.remove('hide');
         })
         btn.children[0].addEventListener('click', ()=>{
+            document.getElementById('newChatBtn2').style.display = 'flex';
+
             changeRow();
             home.classList.remove('hide');
         })
@@ -693,10 +707,14 @@ async function openChat(id, payload = null) {
             let btn = document.querySelector('.homeBtn');
 
             btn.addEventListener('click', ()=>{
+                document.getElementById('newChatBtn2').style.display = 'flex';
+
                 changeRow();
                 home.classList.remove('hide');
             })
             btn.children[0].addEventListener('click', ()=>{
+                document.getElementById('newChatBtn2').style.display = 'flex';
+
                 changeRow();
                 home.classList.remove('hide');
             })
@@ -715,10 +733,14 @@ async function openChat(id, payload = null) {
                     let btn = document.querySelector('.homeBtn');
 
                     btn.addEventListener('click', ()=>{
+                        document.getElementById('newChatBtn2').style.display = 'flex';
+
                         changeRow();
                         home.classList.remove('hide');
                     })
                     btn.children[0].addEventListener('click', ()=>{
+                        document.getElementById('newChatBtn2').style.display = 'flex';
+
                         changeRow();
                         home.classList.remove('hide');
                     })
@@ -1005,25 +1027,29 @@ db
         isUpdating = false;
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, async (payload) => {
-        if (isUpdating) return; // Prevent recursive calls
-        isUpdating = true;
         
         if (payload.new.chat_id === currentChat) {
-            // Only re-open if there are actually new messages
-            if ((JSON.stringify(payload.new.messages) !== JSON.stringify(chatsSys?.messages))||(JSON.stringify(payload.new.read) !== JSON.stringify(chatsSys?.read))) {
-                
-                newMessages(payload.new);
+            let updated = payload.new;
+
+            const newMsgs = updated.messages;
+            const oldMsgs = chatsSys?.messages;
+            
+            if ((newMsgs.length !== oldMsgs?.length ||JSON.stringify(updated.read) !== JSON.stringify(chatsSys?.read)) && (payload.new.times && payload.new.times.length >= 1)) {
+                newMessages(updated);
                 displayTypingBool = true;
-                newpayload = payload.new;
-                setTimeout(()=> {displayTypingBool = false}, 201);
+                newpayload = updated;
+                setTimeout(() => { displayTypingBool = false }, 201);
+            } else if (JSON.stringify(newMsgs) !== JSON.stringify(oldMsgs)) {
+                openChat(currentChat, updated);
+                displayTypingBool = true;
+                newpayload = updated;
+                setTimeout(() => { displayTypingBool = false }, 201);
             }
         } else {
             changeRowler();
         }
 
         await showChats();
-
-        
         isUpdating = false;
     })
     .on('postgres_changes', {event: '*', schema: 'public', table: 'Chats'}, async (payload) =>{
@@ -1477,6 +1503,7 @@ function stacker(){
     }
   
     let contents = document.querySelectorAll('.content');
+  
    
     for(let i = contents.length - 1; i >= 0; i--){
         
@@ -1486,8 +1513,27 @@ function stacker(){
         if(lastSender == sendlers[sendlers.length - 1 - i]){
 
             if(sendlers[sendlers.length - i]){
+                let current = sendlers[sendlers.length - 1 - i];
+                let next = sendlers[sendlers.length - i];
 
-                if(sendlers[sendlers.length - 1 -i] == sendlers[sendlers.length - i]){
+                if (next && current !== next) {
+                    
+                    
+
+                    content.style.borderRadius = "5px";
+
+                    if(sendlers[sendlers.length - 1 - i] == username){
+                        content.style.borderTopLeftRadius = "18px";
+                        
+                    }else{
+                        content.style.borderTopRightRadius = "18px";
+                        
+                    }
+                    content.style.borderBottomLeftRadius = "18px";
+                    content.style.borderBottomRightRadius = "18px";
+
+                  
+                }else{
                     
                     content.style.borderRadius = "5px";
 
@@ -1503,23 +1549,6 @@ function stacker(){
                         content.parentElement.children[0].style.opacity = "0";
                         
                     }
-
-                    
-                }else{
-                    content.style.borderRadius = "5px";
-
-                    if(sendlers[sendlers.length - 1 - i] == username){
-                        content.style.borderTopLeftRadius = "18px";
-                        
-                    }else{
-                        content.style.borderTopRightRadius = "18px";
-                        
-                    }
-                    content.style.borderBottomLeftRadius = "18px";
-                    content.style.borderBottomRightRadius = "18px";
-
-                    content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
-
 
                 }
             }else{
@@ -1568,7 +1597,7 @@ function stacker(){
                         
                     }
 
-                    content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
+                    
                 }
 
 
@@ -1595,92 +1624,106 @@ function check(){
     }
 }
 
-function newMessages(payload){
+async function newMessages(payload){
+    if(isNewing) return;
+    isNewing = true;
+    if(!(payload.messages.length > 0 && payload.times && payload.times.length > 0)){
+        payload = await fetchChat(currentChat);
+        payload = payload[0];
+        payload = payload;
+    }
+
+
+
+
+
     if(!document.querySelector('.confirm')){
-        let dif = payload.messages.length - document.querySelectorAll(".message").length;
-        
+        let dif = payload.messages.length - chatsSys.messages.length;
+     
+        chatsSys = payload;
         if(dif != 0){
             
-            for(let i = 0; i<dif;i++){
+            
+
+            let num = payload.messages.length - 1;
+            
+            if(num){
                 
-                let num = document.querySelectorAll(".message")[0].id;
-                if(num){
-                    num = parseInt(num)+1;
-                    const message = document.createElement("div");
-                    message.classList.add("message");
-                    message.setAttribute('data-message-id', num);
-                    message.id = num;
-                    
-                    if(payload.senders[num]!=username){
-                        const avatar = document.createElement("div");
-                        avatar.classList.add("avatar");
-                        message.appendChild(avatar);
-                    }
-                    
-                    const content = document.createElement("div");
-                    content.classList.add("content");
-                    let usernameElement;
-                    usernameElement = document.createElement("div");
-                    usernameElement.classList.add("username");
-                    usernameElement.innerHTML = payload.senders?.[num] || "Unknown User";
-                    if(!payload.groupchat){
-                        usernameElement.style.display = 'none';
-                    }
-                    
-                    const text = document.createElement("div");
-                    text.classList.add("text");
-                    text.innerHTML = payload.messages?.[num] || "No message";
-                    const time = document.createElement("div");
-                    time.classList.add("timestamp");
-                    time.innerHTML = convertToLocalTime(payload.times[num]);
-                    const messId = document.createElement("div");
-                    messId.classList.add("messId");
-                    messId.innerHTML = num;
-                    messId.style.display = 'none';
+                const message = document.createElement("div");
+                message.classList.add("message");
+                message.setAttribute('data-message-id', num);
+                message.id = num;
+                
+                if(payload.senders[num]!=username){
+                    const avatar = document.createElement("div");
+                    avatar.classList.add("avatar");
+                    message.appendChild(avatar);
+                }
+                
+                const content = document.createElement("div");
+                content.classList.add("content");
+                let usernameElement;
+                usernameElement = document.createElement("div");
+                usernameElement.classList.add("username");
+                usernameElement.innerHTML = payload.senders?.[num] || "Unknown User";
+                if(!payload.groupchat){
+                    usernameElement.style.display = 'none';
+                }
+                
+                const text = document.createElement("div");
+                text.classList.add("text");
+                text.innerHTML = payload.messages?.[num] || "No message";
+                const time = document.createElement("div");
+                time.classList.add("timestamp");
+                time.innerHTML = convertToLocalTime(payload.times[num]);
+                const messId = document.createElement("div");
+                messId.classList.add("messId");
+                messId.innerHTML = num;
+                messId.style.display = 'none';
 
-                    if (payload.senders[num] === username) {
-                        message.classList.add("own-message");
-                        if(num == payload.messages.length - 1){
-                            
+                if (payload.senders[num] === username) {
+                    message.classList.add("own-message");
+                    if(num == payload.messages.length - 1){
+                        
 
-                            let readed = false;
-                            if(payload.host == "" + userId){
-                                for(let i = 0; i<payload.members.length;i++){
-                                    if(payload.read[i] == 0 || payload.read[i] == "0"){
-                                        readed = true;
-                                    }
-                                }
-                            }else{
-                                for(let i = 0; i< payload.members.length + 1; i++){
-                                    if(i == payload.members.indexOf(username)){
-                                        continue;
-                                    }
-                                    if(payload.read[i] == 0 || payload.read[i] == "0"){
-                                        readed = true;
-                                    }
+                        let readed = false;
+                        if(payload.host == "" + userId){
+                            for(let i = 0; i<payload.members.length;i++){
+                                if(payload.read[i] == 0 || payload.read[i] == "0"){
+                                    readed = true;
                                 }
                             }
-
-                            if(readed){
-                                document.getElementById("statuss").innerHTML = "Seen";
-
-                            }else{
-                                document.getElementById("statuss").innerHTML = "Sent";
-
+                        }else{
+                            for(let i = 0; i< payload.members.length + 1; i++){
+                                if(i == payload.members.indexOf(username)){
+                                    continue;
+                                }
+                                if(payload.read[i] == 0 || payload.read[i] == "0"){
+                                    readed = true;
+                                }
                             }
                         }
+
+                        if(readed){
+                            document.getElementById("statuss").innerHTML = "Seen";
+
+                        }else{
+                            document.getElementById("statuss").innerHTML = "Sent";
+
+                        }
                     }
+                }
 
-                    if(payload.senders[payload.messages.length - 1] != username){
-                        document.getElementById("statuss").innerHTML = "";
-                    }
+                if(payload.senders[payload.messages.length - 1] != username){
+                    document.getElementById("statuss").innerHTML = "";
+                }
 
-                    message.appendChild(content);
-                    content.appendChild(usernameElement);
-                    content.appendChild(text);
-                    content.appendChild(time);
-                    content.appendChild(messId);
-
+                message.appendChild(content);
+                content.appendChild(usernameElement);
+                content.appendChild(text);
+                content.appendChild(time);
+                content.appendChild(messId);
+                if(payload.messages[num]){
                     if(payload.messages[num].includes('<div class="replyMessage">')){
                         message.style.setProperty('margin-top', '50px', 'important');
                         message.querySelector(".replyMessage").addEventListener('click', ()=> {
@@ -1689,18 +1732,23 @@ function newMessages(payload){
                     }
 
                     chatMess.prepend(message);
-                
-                   
+                    
+
                 }
                 
-                messages = payload.messages;
-                sendlers = payload.senders;
-                memblers = payload.members;
-                timers = payload.times;
-                stacker();
+                
+                
 
+            
                 
             }
+            
+            messages = payload.messages;
+            sendlers = payload.senders;
+            memblers = payload.members;
+            timers = payload.times;
+            stacker();
+            
 
             if(dif < 0){
                 openChat(currentChat);
@@ -1711,7 +1759,19 @@ function newMessages(payload){
                 [...document.querySelectorAll('.your-class-name')].slice(payload.messages.length + 1).forEach(el => el.remove());
             }
         }
+
+        isNewing = false;
+
     }
 }
+window.addEventListener('error', (event) => {
+    if(currentChat){
+        openChat(currentChat);
 
+    }else{
+        showChats();
+    }
+});
+
+setInterval(check, 1000);
 export {openChat};
