@@ -20,20 +20,20 @@ let menur = document.getElementById("mPopup");
 
 
 
-document.addEventListener("DOMContentLoaded", ()=>{
-  let magicBtn = document.getElementById("magicButton");
 
-  magicBtn.addEventListener("click", ()=>{
-    console.log("cooking");
-    menur.innerHTML = "";
-    document.removeEventListener("click", handleClickOutside);
-    chatWithAi(0,1);
-    menur.style.display = "block";
-    menur.style.opacity = "1";
-  });
+let magicBtn = document.getElementById("magicButton");
+
+magicBtn.addEventListener("click", ()=>{
+  console.log("cooking");
+  menur.innerHTML = "";
+  document.removeEventListener("click", handleClickOutside);
+  chatWithAi(0,1);
+  menur.style.display = "block";
+  menur.style.opacity = "1";
+});
 
   
-});
+
 
 
 
