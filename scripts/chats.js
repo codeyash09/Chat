@@ -1674,118 +1674,121 @@ async function newMessages(payload){
 
             let num = payload.messages.length - 1;
             
-            if(num){
+            if (document.getElementById(num)) {
+                isNewing = false;
+                return;
+            }
                 
-                const message = document.createElement("div");
-                message.classList.add("message");
-                message.setAttribute('data-message-id', num);
-                message.id = num;
-                
-                if(payload.senders[num]!=username){
-                    const avatar = document.createElement("div");
-                    avatar.classList.add("avatar");
-                    message.appendChild(avatar);
-                }
-                
-                const content = document.createElement("div");
-                content.classList.add("content");
-                let usernameElement;
-                usernameElement = document.createElement("div");
-                usernameElement.classList.add("username");
-                usernameElement.innerHTML = payload.senders?.[num] || "Unknown User";
-                if(!payload.groupchat){
-                    usernameElement.style.display = 'none';
-                }
-                
-                const text = document.createElement("div");
-                text.classList.add("text");
-                text.innerHTML = payload.messages?.[num] || "No message";
-                const time = document.createElement("div");
-                time.classList.add("timestamp");
-                time.innerHTML = convertToLocalTime(payload.times[num]);
-                const messId = document.createElement("div");
-                messId.classList.add("messId");
-                messId.innerHTML = num;
-                messId.style.display = 'none';
+            const message = document.createElement("div");
+            message.classList.add("message");
+            message.setAttribute('data-message-id', num);
+            message.id = num;
+            
+            if(payload.senders[num]!=username){
+                const avatar = document.createElement("div");
+                avatar.classList.add("avatar");
+                message.appendChild(avatar);
+            }
+            
+            const content = document.createElement("div");
+            content.classList.add("content");
+            let usernameElement;
+            usernameElement = document.createElement("div");
+            usernameElement.classList.add("username");
+            usernameElement.innerHTML = payload.senders?.[num] || "Unknown User";
+            if(!payload.groupchat){
+                usernameElement.style.display = 'none';
+            }
+            
+            const text = document.createElement("div");
+            text.classList.add("text");
+            text.innerHTML = payload.messages?.[num] || "No message";
+            const time = document.createElement("div");
+            time.classList.add("timestamp");
+            time.innerHTML = convertToLocalTime(payload.times[num]);
+            const messId = document.createElement("div");
+            messId.classList.add("messId");
+            messId.innerHTML = num;
+            messId.style.display = 'none';
 
-                if (payload.senders[num] === username) {
-                    message.classList.add("own-message");
-                    if(num == payload.messages.length - 1){
-                        
-
-                        let readed = false;
-                        if(payload.host == "" + userId){
-                            for(let i = 0; i<payload.members.length;i++){
-                                if(payload.read[i] == 0 || payload.read[i] == "0"){
-                                    readed = true;
-                                }
-                            }
-                        }else{
-                            for(let i = 0; i< payload.members.length + 1; i++){
-                                if(i == payload.members.indexOf(username)){
-                                    continue;
-                                }
-                                if(payload.read[i] == 0 || payload.read[i] == "0"){
-                                    readed = true;
-                                }
-                            }
-                        }
-
-                        if(readed){
-                            document.getElementById("statuss").innerHTML = "Seen";
-
-                        }else{
-                            document.getElementById("statuss").innerHTML = "Sent";
-
-                        }
-                    }
-                }
-
-                if(payload.senders[payload.messages.length - 1] != username){
-                    document.getElementById("statuss").innerHTML = "";
-                }
-
-                message.appendChild(content);
-                content.appendChild(usernameElement);
-                content.appendChild(text);
-                content.appendChild(time);
-                content.appendChild(messId);
-                if(payload.messages[num]){
-                    if(payload.messages[num].includes('<div class="replyMessage">')){
-                        message.style.setProperty('margin-top', '50px', 'important');
-                        message.querySelector(".replyMessage").addEventListener('click', ()=> {
-                            window.location.hash = message.querySelector('.ider').innerHTML;
-                        })
-                    }
-
-                    chatMess.prepend(message);
+            if (payload.senders[num] === username) {
+                message.classList.add("own-message");
+                if(num == payload.messages.length - 1){
                     
 
+                    let readed = false;
+                    if(payload.host == "" + userId){
+                        for(let i = 0; i<payload.members.length;i++){
+                            if(payload.read[i] == 0 || payload.read[i] == "0"){
+                                readed = true;
+                            }
+                        }
+                    }else{
+                        for(let i = 0; i< payload.members.length + 1; i++){
+                            if(i == payload.members.indexOf(username)){
+                                continue;
+                            }
+                            if(payload.read[i] == 0 || payload.read[i] == "0"){
+                                readed = true;
+                            }
+                        }
+                    }
+
+                    if(readed){
+                        document.getElementById("statuss").innerHTML = "Seen";
+
+                    }else{
+                        document.getElementById("statuss").innerHTML = "Sent";
+
+                    }
                 }
-                
-                
-                
-
-            
-                
-            }
-            
-            messages = payload.messages;
-            sendlers = payload.senders;
-            memblers = payload.members;
-            timers = payload.times;
-            stacker();
-            
-
-            if(dif < 0){
-                openChat(currentChat);
             }
 
-            
-            if(document.querySelectorAll(".message").length != payload.messages.length){
-                [...document.querySelectorAll('.your-class-name')].slice(payload.messages.length + 1).forEach(el => el.remove());
+            if(payload.senders[payload.messages.length - 1] != username){
+                document.getElementById("statuss").innerHTML = "";
             }
+
+            message.appendChild(content);
+            content.appendChild(usernameElement);
+            content.appendChild(text);
+            content.appendChild(time);
+            content.appendChild(messId);
+            if(payload.messages[num]){
+                if(payload.messages[num].includes('<div class="replyMessage">')){
+                    message.style.setProperty('margin-top', '50px', 'important');
+                    message.querySelector(".replyMessage").addEventListener('click', ()=> {
+                        window.location.hash = message.querySelector('.ider').innerHTML;
+                    })
+                }
+
+                chatMess.prepend(message);
+                
+
+            }
+            
+            
+            
+
+        
+            
         }
+        
+        messages = payload.messages;
+        sendlers = payload.senders;
+        memblers = payload.members;
+        timers = payload.times;
+        stacker();
+        
+
+        if(dif < 0){
+            openChat(currentChat);
+        }
+
+        
+        if(document.querySelectorAll(".message").length != payload.messages.length){
+            [...document.querySelectorAll('.your-class-name')].slice(payload.messages.length + 1).forEach(el => el.remove());
+        }
+        
 
         isNewing = false;
         stacker();
