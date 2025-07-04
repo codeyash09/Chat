@@ -177,7 +177,7 @@ async function displayTyping(payload){
                     mess.classList.add("message");
                     mess.classList.add("typingMessage");
                    
-                    if(memblers.length > 2){
+                    if(memblers.length >= 2){
                         user = await fetchUser(payload.host);
                         user = user[0].username;
                         user = (await fetchName(user))[0].name;
@@ -199,7 +199,7 @@ async function displayTyping(payload){
                     mess.classList.add("typingMessage");
 
 
-                    if(memblers.length > 2){
+                    if(memblers.length >= 2){
                         user = (await fetchName(user))[0].name;
                         mess.innerHTML = '<div class="avatar"></div><div class="content"><div class="username">' + user + '</div><div class="text"><img src="/images/typing.gif"></div></div>';
                     }else{
@@ -220,8 +220,6 @@ async function displayTyping(payload){
 
 
 }
-
-
 
 async function fetchName(username) {
     const { data, error } = await db

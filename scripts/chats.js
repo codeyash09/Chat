@@ -1492,6 +1492,7 @@ const userIds = window.localStorage.getItem('userIdentify');
 
 function stacker(){
     lastSender = null;
+    
     if(sendlers){
         for(let x = sendlers.length - 1; x >= 0; x--){
             if(messages[x].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
@@ -1502,14 +1503,34 @@ function stacker(){
     
     }
   
-    let contents = document.querySelectorAll('.content');
-  
+    let rawContents = [...document.querySelectorAll('.content')];
+    let filteredContents = [];
+    let filteredSendlers = [];
+
+    let msgIndex = 0;
+    for (let i = 0; i < rawContents.length; i++) {
+        let content = rawContents[i];
+        
+        if (!content.closest('.typingMessage')) {
+            // Safeguard: only push sendler if it exists (prevent undefined)
+            if (sendlers[msgIndex] !== undefined) {
+                filteredContents.push(content);
+                filteredSendlers.push(sendlers[msgIndex]);
+            }
+            msgIndex++;
+        }
+    }
+    let contents = filteredContents;
+    sendlers = filteredSendlers;
    
     for(let i = contents.length - 1; i >= 0; i--){
         
-        
         let content = contents[i];
-
+        if (content.parentElement.classList.contains('typingMessage')) {
+            continue;
+        }
+        
+        
         if(lastSender == sendlers[sendlers.length - 1 - i]){
 
             if(sendlers[sendlers.length - i]){
@@ -1531,6 +1552,8 @@ function stacker(){
                     }
                     content.style.borderBottomLeftRadius = "18px";
                     content.style.borderBottomRightRadius = "18px";
+                    content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
+
 
                   
                 }else{
@@ -1563,6 +1586,9 @@ function stacker(){
                 }
                 content.style.borderBottomLeftRadius = "18px";
                 content.style.borderBottomRightRadius = "18px";
+
+
+                
             }
             
             
@@ -1596,7 +1622,8 @@ function stacker(){
                         content.parentElement.children[0].style.opacity = "1";
                         
                     }
-
+                    console.log(content.innerHTML);
+                    content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
                     
                 }
 
@@ -1761,6 +1788,7 @@ async function newMessages(payload){
         }
 
         isNewing = false;
+        stacker();
 
     }
 }
@@ -1773,5 +1801,4 @@ window.addEventListener('error', (event) => {
     }
 });
 
-setInterval(check, 1000);
 export {openChat};
