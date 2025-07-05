@@ -13,7 +13,11 @@ const OPENROUTER_API_KEY = "sk-or-v1-6826dec7dae50dec1bed8fac72af02082809e0c57e2
 let on = false;
 let aing = false;
 let responses = [];
-let prompts = [`Find a message that makes sense for me to send to the others that is close to my speech but isn't gibberish. Be concise if possible. Focus on most recent messages to formulate a grasp of a the current topic. MOST IMPORTANT: ${username} is sending the message`];
+let inputs = document.getElementById("chatInput");
+
+let prompts = [
+  `You are a helpful autocomplete assistant for the user who goes by ${username} and needs to complete this sentence: ${inputs.value}. Use this background context: ${JSON.stringify(messages)} sent by ${JSON.stringify(sendlers)} in a chat with ${JSON.stringify(memblers)}`
+];
 let sortedChats;
 
 let menur = document.getElementById("mPopup");
@@ -58,102 +62,101 @@ let isWaiting = false;
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-async function chatWithAi(retryCount, trials) {
-  
-
+async function chatWithAi(retryCount = 0, trials = 1) {
   await delay(2000);
 
-  let mess = [];
-
-  
-  mess.push({role: "system", content: "You are a helpful assistant named Qubit AI. Please try to use a tone comfortable for the user and try to mimic how they talk to make them more comfortable."});
-  mess.push({role: "system", content: "The user goes by the username: " + username});
-
-  mess.push({role: "system", content: "Use this information to come up with suitable replies: " + JSON.stringify(messages) + " and are sent by " + JSON.stringify(sendlers) + " and " + JSON.stringify(memblers) + " are in the conversation."});
-  
-  for (let i = 0; i < prompts.length; i++) {
-    mess.push({ role: "user", content: prompts[i] });
-    if (responses[i]) {
-      mess.push({ role: "assistant", content: responses[i] });
-    }
+  // ⛔️ Skip if input too short
+  const rawInput = inputs.value.trim();
+  if (!rawInput || rawInput.length < 3) {
+    console.warn("Input too short for completion.");
+    return;
   }
- 
 
-  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer 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`,
-      "Content-Type": "application/json",
+  // 🎯 Clear, focused message setup
+  const mess = [
+    {
+      role: "system",
+      content: `You're Qubit AI, an autocomplete assistant for ${username}. Your job is to finish the user's partial sentence in a casual chat style. No full replies, greetings, or off-topic sentences—just a clean continuation.`
     },
-    body: JSON.stringify({
-      model: "llama3-8b-8192",
-      messages: mess,
-    }),
-  })
+    {
+      role: "system",
+      content: `Chat background context: ${JSON.stringify(messages)} from ${JSON.stringify(sendlers)} with members ${JSON.stringify(memblers)}. Use this only to match tone.`
+    },
+    {
+      role: "user",
+      content: rawInput
+    }
+  ];
 
-  const result = await response.json();
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer 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`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "llama3-8b-8192",
+        messages: mess,
+        temperature: 0.7,
+        max_tokens: 40,
+        stop: ["\n", ".", "!", "?"] // 💡 Force short completion
+      })
+    });
 
-  let text5;
-  if(response.status == 429){
-    if(retryCount >= 3){
-      text5 = "Sorry, an unexpected error has occured please try again later.";
-      
-    }else{
-      const retryAfter = response.headers.get("Retry-After");
-      if (retryAfter) {
-        await delay(parseInt(retryAfter) * 1000);
-      }else{
-        await delay(7000);
+    const result = await response.json();
+    let rawResponse = result.choices?.[0]?.message?.content?.trim() || "";
+
+    // 🧼 Clean and validate output
+    if ((rawResponse.length < 3) || /^[.?!]$/.test(rawResponse)) {
+      rawResponse = "Sorry, couldn’t generate a usable completion.";
+    } else {
+      // Remove wrapping quotes or ticks
+      if ((rawResponse.startsWith('"') && rawResponse.endsWith('"')) ||
+          (rawResponse.startsWith('`') && rawResponse.endsWith('`'))) {
+        rawResponse = rawResponse.slice(1, -1).trim();
       }
 
-      return chatWithAi(retryCount + 1);
-
+      // Trim after first punctuation (optional)
+      rawResponse = rawResponse.split(/[.!?]/)[0].trim();
     }
 
-    
+    // ✅ Display suggestion
+    const message = document.createElement("div");
+    message.classList.add("recc");
+    message.textContent = rawResponse;
 
-  }else{
-    text5 = result.choices?.[0]?.message?.content;
-  }
+    message.addEventListener("click", () => {
+      inputs.value = inputs.value.trim() + " " + rawResponse.trim();
 
-  
-  responses.push(result.choices?.[0]?.message?.content);
+      menur.style.display = "none";
+      menur.style.opacity = "0";
+    });
 
+    menur.appendChild(message);
+    responses.push(rawResponse);
 
-  
-/* <div class="messager"> 
-    <div class="content">
-        
-        <div class="text">Looks cool!</div>
-        
-    </div>
-</div> */
-  let extracted = text5.match(/"([^"]*)"/)?.[1] || text5;
-  if(extracted == text5){
-    extracted = text5.match(/`([^"]*)`/)?.[1] || text5;
+    // 🔁 Optional multiple suggestions
+    if (trials < 3) {
+      chatWithAi(retryCount, trials + 1);
+    } else {
+      document.addEventListener("click", handleClickOutside);
+    }
 
-  }
+    isWaiting = false;
+  } catch (err) {
+    console.error("AI fetch failed:", err);
+    if (retryCount < 3) {
+      await delay(5000);
+      return chatWithAi(retryCount + 1, trials);
+    } else {
+      const fallback = document.createElement("div");
+      fallback.classList.add("recc");
+      fallback.textContent = "Sorry, couldn't generate a suggestion.";
+      menur.appendChild(fallback);
+    }
 
-  
-  let message = document.createElement("div");
-  message.classList.add("recc");
-  message.innerHTML = extracted;
-  message.addEventListener("click", ()=>{
-    document.getElementById("chatInput").value = message.innerHTML;
-    menur.style.display = "none";
-    menur.style.opacity = "0";
-  })
-
-  menur.appendChild(message);
-
-
-  prompts.push("Find another message that makes sense for me to send to the others that is close to my speech but isn't gibberish. Be concise if possible. Focus on most recent messages to formulate a grasp of a the current topic.");
-  isWaiting = false;
-  if(trials < 3){
-    chatWithAi(retryCount, trials + 1);
-  }else{
-    document.addEventListener("click", handleClickOutside);
+    isWaiting = false;
   }
 }
 
