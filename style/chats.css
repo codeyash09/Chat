@@ -2251,17 +2251,17 @@ body,
 
 #gifButton,
 #emojiButton,
-#magicButton {
+#magicButton,#aiButtonChat {
     color: #888 !important;
 }
 
-#magicButton:hover{
+#magicButton:hover,#aiButtonChat:hover{
     background-color: #f3eafd !important;
 }
 
 #gifButton:hover,
 #emojiButton:hover,
-#magicButton:hover {
+#magicButton:hover,#aiButtonChat:hover {
     color: #555 !important;
 }
 
@@ -2749,4 +2749,25 @@ i{
     font-weight: 600;
     padding-right: 2vh;
     color: #888;
+}
+
+.aiInChat{
+    position: fixed;
+    bottom: 10vh;
+    width: 80vw;
+    border-radius: 50px;
+    padding: 1vh;
+    outline: none;
+    border:1.5px solid black;
+}
+#wall2{
+    top: 100vh;
+}
+
+.messagers2{
+    width: 80vw;
+    height: 80vh;
+    overflow-y: scroll;
+    margin-top: 3vh;
+    
 }

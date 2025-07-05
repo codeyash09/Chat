@@ -1988,7 +1988,8 @@
                     <div class="input-actions">
                         <i id="gifButton" class="gif-text-button" title="Open GIFs"><i class="fa-solid fa-note-sticky"></i></i>
                         <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
-                        <i class="fa-solid fa-paintbrush" id="magicButton" title="AI Compose"></i>
+                        <i class="fa-solid fa-paintbrush" id="magicButton" title="Autocomplete"></i>
+                        <i class="fa-solid fa-robot" id="aiButtonChat" title="Qubit AI"></i>
                     </div>
                 </div>
                 <div class="input-actions file1" id="filer">
@@ -2312,8 +2313,8 @@
 
             </div>
             <div class="searchHold" id="wall">
-                <div class="btnHolderr" id="backerBtn">
-                    <div class="backBtn"><i class="fa-solid fa-angle-left"></i></div>
+                <div class="btnHolderr"id="backerBtn">
+                    <div class="backBtn" ><i class="fa-solid fa-angle-left"></i></div>
 
                 </div>
                 <div class="messagers">
@@ -2323,10 +2324,24 @@
                 </div>
             </div>  
             
+
+            
         </div>
     </div>
 
+    <div class="searchHold" id="wall2">
+        <div class="btnHolderr2"id="backerBt2n">
+            <div class="backBtn" ><i class="fa-solid fa-angle-left"></i></div>
 
+        </div>
+        <div class="messagers2">
+            
+            
+            
+        </div>
+
+        <input type="text" class="aiInChat" id="chatInputAi" placeholder="Talk to Qubit AI about your chat">
+    </div>  
 
 
 
@@ -2366,6 +2381,7 @@
     <script type="module" src="/scripts/stack.js"></script>
     <script type="module" src="/scripts/ai.js"></script>
     <script type="module" src="/scripts/magic.js"></script>
+    <script type="module" src="/scripts/chatAi.js"></script>
     
     <script>
         // Show popup when plus button is clicked
