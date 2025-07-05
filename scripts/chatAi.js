@@ -236,7 +236,7 @@ backBtn.addEventListener("click", ()=>{
   document.getElementById("searcher").style.top = "80vh";
   input.value = "";
 
-  wall.style.top = "90vh";
+  wall.style.top = "100vh";
   wall.style.opacity = '0';
   aing = false;
   
