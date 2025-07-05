@@ -5,6 +5,12 @@ import { fetchUserProfile } from '/scripts/createChat.js';
 
 
 import {aing } from "/scripts/ai.js";
+window.onload = function () {
+  if (!window.location.hash.includes('refreshed')) {
+    window.location.hash += '#refreshed';
+    window.location.reload();
+  }
+};
 
 
 
