@@ -1033,12 +1033,18 @@ db
         isUpdating = false;
     })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, async (payload) => {
-        
+        if(isUpdating) return;
+        isUpdating = true;
         if (payload.new.chat_id === currentChat) {
             let updated = payload.new;
-
-            const newMsgs = updated.messages;
+            
+            let newMsgs = updated.messages;
             const oldMsgs = chatsSys?.messages;
+            if(!newMsgs){
+                newMsgs = (await fetchChat(currentChat))[0].messages;
+                updated = (await fetchChat(currentChat))[0];
+            }
+
             
             if ((newMsgs.length !== oldMsgs?.length ||JSON.stringify(updated.read) !== JSON.stringify(chatsSys?.read)) && (payload.new.times && payload.new.times.length >= 1)) {
                 newMessages(updated);
