@@ -14,7 +14,7 @@ var code;
 
 form.addEventListener("submit", (event) => {
     event.preventDefault(); 
-    errorMessage.style.display = "none"; 
+    errorMessage.textContent = "";
     
     
     const emailValue = emailInput.value.trim();
@@ -29,20 +29,17 @@ form.addEventListener("submit", (event) => {
 
     if(!passPromise){
         errorMessage.textContent = "The given username/email does not exist. Please Sign Up.";
-        errorMessage.style.display = "block";
         return;
     }
 
     passPromise.then(result => {
         if(!result || !Array.isArray(result) || result.length === 0 || !result[0]){
             errorMessage.textContent = "The given username/email does not exist. Please Sign Up.";
-            errorMessage.style.display = "block";
             return;
         }
         code = result[0].password;
         if(code != passwordValue){
             errorMessage.textContent = "Incorrect Password Or Username/Email";
-            errorMessage.style.display = "block";
             return;
         }
         window.localStorage.setItem('loggedInStatus', true);
@@ -54,13 +51,11 @@ form.addEventListener("submit", (event) => {
         }
         if(!idPromise){
             errorMessage.textContent = "Could not fetch user ID. Please try again.";
-            errorMessage.style.display = "block";
             return;
         }
         idPromise.then(idResult => {
             if(!idResult || !Array.isArray(idResult) || idResult.length === 0 || !idResult[0]){
                 errorMessage.textContent = "Could not fetch user ID. Please try again.";
-                errorMessage.style.display = "block";
                 return;
             }
             const id = idResult[0].id;
@@ -68,11 +63,17 @@ form.addEventListener("submit", (event) => {
             window.location.replace("/pages/chats.html");
         }).catch(() => {
             errorMessage.textContent = "Could not fetch user ID. Please try again.";
-            errorMessage.style.display = "block";
         });
     }).catch(() => {
         errorMessage.textContent = "An error occurred. Please try again.";
-        errorMessage.style.display = "block";
     });
+});
+
+// Hide error when user starts typing
+emailInput.addEventListener('input', () => {
+    errorMessage.textContent = "";
+});
+passwordInput.addEventListener('input', () => {
+    errorMessage.textContent = "";
 });
 
