@@ -205,7 +205,7 @@ input.addEventListener('keydown', function (event) {
         isWaiting = true;
         prompts.push(input.value);
         bar.style.zIndex = "0";
-        document.getElementById("searcher").style.top = "80vh";
+        document.getElementById("searcher").style.top = "70vh";
 
         let messager2 = document.createElement("div");
         messager2.classList.add('messager');
@@ -246,9 +246,10 @@ let backBtn = document.getElementById("backerBtn");
 
 
 backBtn.addEventListener("click", ()=>{
-  document.getElementById("searcher").style.top = "80vh";
+  document.getElementById("searcher").style.top = "70vh";
+  
   input.value = "";
-  bar.style.zIndex = "100000000000000000000000000000000000000000000000000000000000000000000000000000";
+  bar.style.zIndex = "2147483646";
 
   wall.style.top = "90vh";
   wall.style.opacity = '0';

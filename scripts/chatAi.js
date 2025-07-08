@@ -192,7 +192,7 @@ input.addEventListener('keydown', function (event) {
         isWaiting = true;
         prompts.push(input.value);
 
-        document.getElementById("searcher").style.top = "80vh";
+        document.getElementById("chatInputAi").style.top = "80vh";
 
         let messager2 = document.createElement("div");
         messager2.classList.add('messager');
@@ -229,11 +229,11 @@ input.addEventListener('keydown', function (event) {
 
 
 
-let backBtn = document.getElementById("backerBtn");
+let backBtn = document.getElementById("backerBt2n");
 
 
 backBtn.addEventListener("click", ()=>{
-  document.getElementById("searcher").style.top = "80vh";
+  document.getElementById("chatInputAi").style.top = "80vh";
   input.value = "";
 
   wall.style.top = "100vh";

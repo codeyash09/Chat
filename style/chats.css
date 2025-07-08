@@ -328,7 +328,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 }
 
 .bar {
-    z-index: 400000000000000000000000000000000000000000000000000000000000;
+    z-index: 2147483646;
 }
 .bar .holder i{
     cursor:pointer !important;
@@ -1710,7 +1710,7 @@ form h1{
 
 .searcher{
     position: fixed;
-    top: 80vh;
+    top: 70vh;
     margin-left: 30vw;
    
     display: flex;
