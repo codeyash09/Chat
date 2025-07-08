@@ -261,7 +261,7 @@ async function showChats() {
             replyBar.classList.add("replyBar");
             let input = document.createElement("input");
             input.type='text';
-            input.placeholder = `Send message to ${uselr.innerHTML}`
+            input.placeholder = `Quick Reply`
             input.classList.add("replyInput");
             input.enterKeyHint="send";
             replyBar.appendChild(input);
@@ -1472,7 +1472,7 @@ function formatChatListTimestamp(centralTime) {
 
     return dayDiff === 0 ? `${timeStr}` :
            dayDiff === 1 || (rn.getDay() === 0 && date.getDay() === 6) ? `Yesterday` :
-           `${dayNames[date.getDay()]} at ${timeStr}`;
+           `${dayNames[date.getDay()]}`;
 
 }
 

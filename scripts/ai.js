@@ -13,7 +13,7 @@ let aing = false;
 let responses = [];
 let prompts = [];
 let sortedChats;
-
+let bar = document.querySelector('.bar');
 let aiLogo = document.getElementById("aiLogo");
 
 
@@ -22,6 +22,10 @@ aiLogo.addEventListener("click", ()=>{
   input.focus();
 })
 
+
+export function aiFalse(){
+  aing = false;
+}
 
 let isWaiting = false;
 let messages = document.querySelector('.messagers');
@@ -178,9 +182,11 @@ input.addEventListener("focus", ()=>{
   if(!on){
     on = true;
     document.getElementById("searcher").style.top = "5vh";
+    bar.style.zIndex = "0";
 
   }
     aing = true;
+    bar.style.zIndex = "0";
 
     wall.style.top = "0";
     wall.style.opacity = '1';
@@ -198,7 +204,7 @@ input.addEventListener('keydown', function (event) {
     
         isWaiting = true;
         prompts.push(input.value);
-
+        bar.style.zIndex = "0";
         document.getElementById("searcher").style.top = "80vh";
 
         let messager2 = document.createElement("div");
@@ -242,6 +248,7 @@ let backBtn = document.getElementById("backerBtn");
 backBtn.addEventListener("click", ()=>{
   document.getElementById("searcher").style.top = "80vh";
   input.value = "";
+  bar.style.zIndex = "100000000000000000000000000000000000000000000000000000000000000000000000000000";
 
   wall.style.top = "90vh";
   wall.style.opacity = '0';

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('/fonts/RF Dewi/RFDewi-Bold/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap');
 
 
 * {
@@ -8,7 +9,7 @@
     overflow-x: hidden;
 
     text-decoration: none;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 }
 
 .content{

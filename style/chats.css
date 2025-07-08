@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=RF Dewi:wght@100..900&display=swap');
-@import url('/fonts/RF Dewi/RFDewi-Bold/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('/fonts/Inter/RFDewi-Bold/style.css');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap');
 
 body {
     display: flex;
@@ -318,8 +319,27 @@ body.dnd-active .user-info .user-actions .fa-moon {
     .messager{
         padding: 5px !important;
     }
+
+    .bar .holder{
+        width: 75vw !important;
+    }
+
+
 }
 
+.bar {
+    z-index: 400000000000000000000000000000000000000000000000000000000000;
+}
+.bar .holder i{
+    cursor:pointer !important;
+    transition: all .25s linear;
+    
+}
+
+.bar .holder i:hover{
+    color: black !important;
+
+}
 .chat-input {
     padding: 15px 25px;
     
@@ -385,7 +405,8 @@ body.dnd-active .user-info .user-actions .fa-moon {
     height: fit-content;
    
     align-self: flex-start; /* Default to left alignment */
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
+    font-weight: 600;
     /* flex-direction: column; /* Removed */
     /* position: relative; /* Removed */
     background: transparent;
@@ -406,7 +427,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
     align-self: flex-end; /* Align own messages to the right */
     flex-direction: row-reverse; /* Reverse order for avatar on right */
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     background-color: #fff;
     color: #220952ff;
 }
@@ -423,7 +444,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     width: 40px;
     height: fit-content;
 
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     
 
     height: 40px;
@@ -445,7 +466,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
 
     background-color: #f5f5f5;
     padding: 10px 15px;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     color: #222;
 
    
@@ -459,13 +480,13 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .message.own-message .content {
     background-color: #fff;
     color: #220952ff;
-    border: 2px solid #220952ff;
+    border: 1px solid black;
 }
 
 /* Username styling - applies to both */
 .message .content .username {
     font-weight: bold;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 
 
     color: #220952ff; /* Ensure username is visible */
@@ -494,7 +515,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     line-height: 1.4;
     color: #220952ff; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 
 
  }
@@ -504,7 +525,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     line-height: 1.4;
     color: #222; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 
 
  }
@@ -514,7 +535,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     line-height: 1.4;
     color: #220952ff; /* Ensure text color contrasts with bubble */
     word-wrap: break-word; /* Wrap long words */
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 
 
  }
@@ -525,7 +546,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
      color: #888; /* Lighter grey color */
      margin-top: 5px; /* Space above the timestamp */
      align-self: flex-end; /* Align timestamp to the right within the bubble */
-     font-family: 'RF Dewi';
+     font-family: 'Inter';
 
 
  }
@@ -536,7 +557,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     color: #220952ff; /* Lighter grey color */
     margin-top: 5px; /* Space above the timestamp */
     align-self: flex-end; /* Align timestamp to the right within the bubble */
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 
 
 }
@@ -592,7 +613,7 @@ body.dnd-active .user-info .user-actions .fa-moon {
     color: #222;
     box-sizing: border-box;
     font-size: 16px;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     min-height: 50px;
     max-height: 100px; /* Add maximum height */
 
@@ -919,7 +940,7 @@ form h1{
 
 .input-group input{
     width: 60%;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
 
     padding: 0.25vw;
     height: 1.5vw;
@@ -1075,7 +1096,7 @@ form h1{
     background: transparent !important;
     color: #220952ff;
     border-radius: 8px;
-    font-family: 'RF Dewi', 'Inter', 'Arial', sans-serif;
+    font-family: 'Inter', 'Inter', 'Arial', sans-serif;
     font-weight: bold;
     font-size: 18px;
     letter-spacing: 1px;
@@ -1100,7 +1121,7 @@ form h1{
 }
 
 .gif-search-input {
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     flex: 1;
     padding: 8px;
     border: 1px solid black;
@@ -1368,11 +1389,11 @@ form h1{
 
 }
 .replyMessage .replyUser{
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: bold;
 }
 .replyMessage .replyContent{
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .popup{
@@ -1401,7 +1422,7 @@ form h1{
 }
 
 .popup p{
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     text-align: center;
     margin: 1vh 0;
 }
@@ -1500,7 +1521,7 @@ form h1{
 .avatarBanner{
     width: 4vh;
     height: fit-content;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     height: 4vh;
     background-color: #220952ff;
     border-radius: 50%;
@@ -1533,7 +1554,7 @@ form h1{
     width: 40vw;
     display: flex;
     color: #220952ff;
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     height: 5vh;
     align-items: center;
     justify-content: space-between;
@@ -1566,8 +1587,8 @@ form h1{
 }
 
 .user{
-    font-family: 'RF Dewi', sans-serif;
-    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     font-size: 1.5vh;
     color: #220952ff;
 }
@@ -1580,25 +1601,26 @@ form h1{
 }
 
 .home .title{
-    font-family: 'RF Dewi', sans-serif;
-    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     color: #220952ff;
-    font-size: 3vh;
+    font-size: 3.5vh;
     
     text-align: left;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-left: 12vh;
+    
     height: 10vh;
     position: fixed;
+    left: 10vh;
     z-index: 500;
 }
 
 @media screen and (max-width: 768px){
     .home .title{
-        margin-left: 5vw;
+        left: 4.5vh;
     }
 }
 
@@ -1612,9 +1634,9 @@ form h1{
 }
 
 .messagesBanner .time{
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 20px;
-    padding-left: 50px;
+    
     color: #888;
 }
 
@@ -1622,7 +1644,7 @@ form h1{
 
 
 .messagesBanner .reader{
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1vh;
 
     background-color: #220952ff;
@@ -1709,7 +1731,7 @@ form h1{
     color: #220952ff;
     border: 3px solid #eee;
     
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     
     padding-left: 2vw;
     padding-right: 8vh;
@@ -1774,7 +1796,7 @@ form h1{
 .messager{
     margin-left: 3vw;
     color: #fff;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     background-color: #220952ff;
     padding: 3px;
     width: fit-content;
@@ -1788,7 +1810,7 @@ form h1{
 }
 
 .messager .text{
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     
 }
 
@@ -1868,21 +1890,18 @@ form h1{
 #newChatBtn2{
     background-color: white;
     border: none;
-    border-radius: 50px;
-    font-size: 3vh;
+    
     overflow: visible !important;
-    position: fixed;
+  
     color: white;
     opacity: 1;
-    top: 70vh;
     display: flex;
     justify-content: center;
 
-    width: 4vh;
+   
     overflow: visible !important;
-    height: 4vh;
+
     z-index: 50000 !important;
-    right: 3vw;
     cursor: pointer;
     transition: all .25s cubic-bezier(0.65, 0.03, 1, 1);
 }
@@ -1890,6 +1909,9 @@ form h1{
 #newChatBtn2 i{
     overflow: visible !important;
     border: 5px solid transparent;
+    font-weight: 600 !important;
+    font-size: 2vh;
+
     border-radius: 50px;
     background-color: transparent;
 
@@ -2351,7 +2373,7 @@ body,
 }
 
 .recc{
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     border-radius: 16px;
     padding: 1vh;
     background-color: white;
@@ -2368,12 +2390,13 @@ body,
 }
 
 .messagesBanner:has(.replyBar){
-    padding-bottom: 8vh !important;
+    padding-bottom: 6vh !important;
+    border: none;
 }
 
 .replyBar{
     position: absolute;
-    bottom: 3vh;
+    bottom: 0;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -2382,27 +2405,26 @@ body,
 
 
 .replyInput{
-    width: 75%;
+    width:90%;
     padding: 1vh;
     border-radius: 50px;
     outline: none;
     border: 2px solid rgba(0, 0, 0, 0.137);
-    font-family: 'RF Dewi';
+  
     transition: all .25s linear;
+    font-size: 1.2vh;
 }
 
 
 .replyInput:focus{
     border: 2px solid rgba(0, 0, 0, 1);
+
     
 }
 
 
 
 
-.txt{
-    font-family: 'RF Dewi';
-}
 
 .imges{
     position: absolute;
@@ -2433,17 +2455,20 @@ body,
     width: 3vh;
 }
 
-.imges .avatar{
-    width: 3vh;
+.avatar{
+    width: 3.5vh;
     background-color: #220952ff;
-    height: 3vh;
+    height: 3.5vh;
     border-radius: 50px;
 }
 
 .imges i{
     overflow: visible;
+    font-weight: 600 !important;
+
+
     color: black !important;
-    font-size: 2.5vh;
+    font-size: 2vh;
 }
 
 
@@ -2536,7 +2561,7 @@ i{
 }
 
 .chatTitle{
-    font-family: 'RF Dewi';text-align: left;width: 93%;font-size: 2vh;font-weight: bold;
+    font-family: 'Inter';text-align: left;width: 93%;font-size: 2vh;font-weight: bold;
     padding: 5px;
     border-radius: 8px;
     border: 2px solid transparent;
@@ -2550,11 +2575,11 @@ i{
 }
 
 .membersText{
-    font-family: 'RF Dewi';text-align: left;width: 90%;font-size: 1.25vh;font-weight: bold;margin-top: 3vh;color: #272727;
+    font-family: 'Inter';text-align: left;width: 90%;font-size: 1.25vh;font-weight: bold;margin-top: 3vh;color: #272727;
 }
 
 .members{
-    font-family: 'RF Dewi';text-align: left;width: 80%;font-size: 1.25vh;font-weight: bold;margin-top: 1vh;color: #272727; background-color: transparent;height: fit-content;padding-left: 5%;padding-right: 5%;padding-top: 0;padding-bottom: 2.5%;border-radius: 8px;
+    font-family: 'Inter';text-align: left;width: 80%;font-size: 1.25vh;font-weight: bold;margin-top: 1vh;color: #272727; background-color: transparent;height: fit-content;padding-left: 5%;padding-right: 5%;padding-top: 0;padding-bottom: 2.5%;border-radius: 8px;
     
     max-height: 20vh;
     overflow-y: scroll;
@@ -2738,17 +2763,20 @@ i{
 }
 
 .lastMessage{
-    font-family: 'RF Dewi', sans-serif;
-    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     font-size: 1vh;
     color: #727272 !important;
 }
 .messagesBanner .timer{
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1vh;
-    font-weight: 600;
+    font-weight: 800;
+
+    white-space: no-wrap !important; 
     padding-right: 2vh;
-    color: #888;
+   
+    color: #000000;
 }
 
 .aiInChat{
@@ -2770,4 +2798,471 @@ i{
     overflow-y: scroll;
     margin-top: 3vh;
     
+}
+
+.homepage {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.homepage .div {
+  background-color: #ffffff;
+  overflow: hidden;
+  width: 375px;
+  height: 812px;
+  position: relative;
+}
+
+.homepage .overlap {
+  position: absolute;
+  width: 229px;
+  height: 41px;
+  top: 763px;
+  left: 69px;
+}
+
+.homepage .group {
+  position: absolute;
+  width: 224px;
+  height: 35px;
+  top: 0;
+  left: 0;
+}
+
+.homepage .home {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 0;
+  left: 0;
+}
+
+.homepage .media-icons {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 3px;
+  left: 192px;
+}
+
+.homepage .icon-phone {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 0;
+  left: 105px;
+}
+
+.homepage .image {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  top: 30px;
+  left: 218px;
+  object-fit: cover;
+}
+
+.homepage .overlap-group {
+  position: absolute;
+  width: 439px;
+  height: 692px;
+  top: 56px;
+  left: -30px;
+}
+
+.homepage .group-2 {
+  height: 692px;
+  top: 0;
+  left: 2px;
+  position: absolute;
+  width: 437px;
+}
+
+.homepage .search-bar {
+  max-width: 720px;
+  width: 360px;
+  height: 56px;
+  gap: 4px;
+  top: 636px;
+  left: 36px;
+  background-color: #e9e9e9;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  overflow: hidden;
+}
+
+.homepage .state-layer {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.homepage .content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0px 20px;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.homepage .supporting-text {
+  position: relative;
+  width: fit-content;
+  font-family: var(--m3-body-large-font-family);
+  font-weight: var(--m3-body-large-font-weight);
+  color: #49454f;
+  font-size: var(--m3-body-large-font-size);
+  letter-spacing: var(--m3-body-large-letter-spacing);
+  line-height: var(--m3-body-large-line-height);
+  white-space: nowrap;
+  font-style: var(--m3-body-large-font-style);
+}
+
+.homepage .trailing-elements {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  top: 4px;
+  left: 308px;
+}
+
+.homepage .text-wrapper {
+  position: absolute;
+  width: 117px;
+  height: 29px;
+  top: 1px;
+  left: 86px;
+  font-family: var(--m3-display-small-font-family);
+  font-weight: var(--m3-display-small-font-weight);
+  color: #000000;
+  font-size: var(--m3-display-small-font-size);
+  letter-spacing: var(--m3-display-small-letter-spacing);
+  line-height: var(--m3-display-small-line-height);
+  white-space: nowrap;
+  font-style: var(--m3-display-small-font-style);
+}
+
+.homepage .profile-image {
+  top: 0;
+  left: 40px;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+.homepage .notifications {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 4px;
+  left: 310px;
+}
+
+.homepage .gift {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 2px;
+  left: 344px;
+}
+
+.homepage .header {
+  position: absolute;
+  width: 344px;
+  height: 40px;
+  top: 53px;
+  left: 52px;
+}
+
+.homepage .img {
+  top: 4px;
+  left: 0;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+.homepage .text {
+  top: 0;
+  left: 40px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+}
+
+.homepage .text-wrapper-2 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: "Inter-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #000000;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 22.4px;
+  white-space: nowrap;
+}
+
+.homepage .text-wrapper-3 {
+  position: relative;
+  width: fit-content;
+  font-family: "Inter-Bold", Helvetica;
+  font-weight: 700;
+  color: #00000080;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.homepage .text-wrapper-4 {
+  position: absolute;
+  width: 75px;
+  top: 17px;
+  left: 267px;
+  font-family: "Inter-Bold", Helvetica;
+  font-weight: 700;
+  color: #000000;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+}
+
+.homepage .header-2 {
+  position: absolute;
+  width: 403px;
+  height: 56px;
+  top: 153px;
+  left: 0;
+  background-color: #ffffff;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #e6e6e6;
+}
+
+.homepage .profile-image-2 {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 12px;
+  left: 52px;
+  object-fit: cover;
+}
+
+.homepage .text-2 {
+  top: 8px;
+  left: 92px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+}
+
+.homepage .text-wrapper-5 {
+  position: absolute;
+  width: 75px;
+  top: 24px;
+  left: 319px;
+  font-family: "Inter-Bold", Helvetica;
+  font-weight: 700;
+  color: #000000;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+}
+
+.homepage .header-3 {
+  position: absolute;
+  width: 403px;
+  height: 56px;
+  top: 221px;
+  left: 0;
+  background-color: #ffffff;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #e6e6e6;
+}
+
+.homepage .group-3 {
+  position: absolute;
+  width: 437px;
+  height: 70px;
+  top: 277px;
+  left: 0;
+}
+
+.homepage .header-4 {
+  position: absolute;
+  width: 403px;
+  height: 56px;
+  top: 14px;
+  left: 0;
+  background-color: #ffffff;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #e6e6e6;
+}
+
+.homepage .text-wrapper-6 {
+  position: absolute;
+  width: 103px;
+  top: 0;
+  left: 332px;
+  font-family: "Itim-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.homepage .overlap-group-2 {
+  position: absolute;
+  width: 354px;
+  height: 42px;
+  top: 100px;
+  left: 41px;
+  border-radius: 9999px;
+}
+
+.homepage .search {
+  width: 354px;
+  height: 42px;
+  gap: var(--size-space-200);
+  padding: var(--size-space-300) var(--size-space-400) var(--size-space-300)
+    var(--size-space-400);
+  top: 0;
+  left: 0;
+  background-color: var(--color-background-default-default);
+  border-radius: var(--size-radius-full);
+  border: 1px solid;
+  border-color: var(--color-border-default-default);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  overflow: hidden;
+}
+
+.homepage .value {
+  position: relative;
+  flex: 1;
+  margin-top: -0.50px;
+  font-family: var(--single-line-body-base-font-family);
+  font-weight: var(--single-line-body-base-font-weight);
+  color: var(--color-text-default-default);
+  font-size: var(--single-line-body-base-font-size);
+  letter-spacing: var(--single-line-body-base-letter-spacing);
+  line-height: var(--single-line-body-base-line-height);
+  font-style: var(--single-line-body-base-font-style);
+}
+
+.homepage .x {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.homepage .send {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 11px;
+  left: 316px;
+}
+
+.homepage .group-4 {
+  height: 72px;
+  top: 347px;
+  left: 0;
+  position: absolute;
+  width: 437px;
+}
+
+.homepage .header-5 {
+  position: absolute;
+  width: 403px;
+  height: 68px;
+  top: 4px;
+  left: 0;
+  background-color: #ffffff;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #e6e6e6;
+}
+
+.homepage .profile-image-3 {
+  top: 18px;
+  left: 52px;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+.homepage .text-3 {
+  top: 6px;
+  left: 92px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+}
+
+.homepage .enjoy-a-new-july {
+  position: relative;
+  width: 311px;
+  height: 35px;
+  font-family: "Inter-Bold", Helvetica;
+  font-weight: 700;
+  color: #00000080;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.homepage .dbcefa {
+  position: absolute;
+  width: 60px;
+  height: 46px;
+  top: 646px;
+  left: 331px;
+  object-fit: cover;
+}
+
+.homepage .add {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 4px;
+  left: 283px;
+}
+#aiInput{
+    background-color: #f1f1f1 !important;
 }

@@ -10,7 +10,7 @@ aiButton.addEventListener("click", ()=>{
 
 import {db} from '/scripts/createchat.js';
 import {username, userId, currentChat} from '/scripts/chats.js';
-import {aing} from '/scripts/ai.js';
+import {aing, aiFalse} from '/scripts/ai.js';
 
 
 const OPENROUTER_API_KEY = "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"; // Get this from https://openrouter.ai
@@ -229,7 +229,7 @@ input.addEventListener('keydown', function (event) {
 
 
 
-let backBtn = document.getElementById("backerBt2n");
+let backBtn = document.getElementById("backerBtn");
 
 
 backBtn.addEventListener("click", ()=>{
@@ -238,6 +238,6 @@ backBtn.addEventListener("click", ()=>{
 
   wall.style.top = "100vh";
   wall.style.opacity = '0';
-  aing = false;
+  aiFalse();
   
 })
