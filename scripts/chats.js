@@ -5,6 +5,7 @@ import { fetchUserProfile } from '/scripts/createChat.js';
 
 
 import {aing } from "/scripts/ai.js";
+
 window.onload = function () {
   if (!window.location.hash.includes('refreshed')) {
     window.location.hash += '#refreshed';
@@ -83,6 +84,20 @@ async function fetchName(username) {
     return data;
 }
 
+
+async function fetchId(username) {
+    const { data, error } = await db
+      .from('Users')
+      .select('id')
+      .eq('username', username);
+  
+    if (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  
+    return data;
+}
 async function fetchUsers(id) {
     const { data, error } = await db
       .from('Users')
@@ -765,6 +780,46 @@ async function openChat(id, payload = null) {
             confirmation = true;
         }
     }
+    let image = null;
+    if(!(chat.groupchat)){
+        if("" + userId == "" + chat.host){
+            let profile = await fetchUserProfile((await fetchId(chat.members[0]))[0].id);
+        
+            if(profile && profile.pfp){
+                image = profile.pfp;
+            }
+        }else{
+            let profile = await fetchUserProfile(chat.host);
+        
+            if(profile && profile.pfp){
+                image = profile.pfp;
+            }
+        }
+        
+    }else{
+        image = [];
+        for(let i = 0; i < chat.members.length; i++){
+            let profile = await fetchUserProfile((await fetchId(chat.members[i]))[0].id);
+            
+            if(profile && profile.pfp){
+                image.push(profile.pfp);
+            }else{
+                image.push(null);
+            }
+            
+        }
+        let yprofile = await fetchUserProfile(chat.host);
+            
+        if(yprofile && yprofile.pfp){
+            image.push(profile.pfp);
+        }else{
+            image.push(null);
+        }
+
+    }
+
+    let hostName = (await fetchUsers(chat.host))[0].username;
+    
 
     if(!confirmation){
         for (let i = chat.messages.length - 1; i >= 0; i--) {
@@ -772,6 +827,7 @@ async function openChat(id, payload = null) {
             if(processedMessages.has(i) || chat.messages[i].includes("<deleted for='" + username + "' style='display:none'></deleted>")){
                 continue;
             }
+            
             
             // Mark this message as processed
             processedMessages.add(i);
@@ -784,6 +840,26 @@ async function openChat(id, payload = null) {
             if(chat.senders[i]!=username){
                 const avatar = document.createElement("div");
                 avatar.classList.add("avatar");
+                if(chat.groupchat){
+                    if(hostName == chat.senders[i]){
+                        if(image[image.length - 1] != null){
+                            avatar.innerHTML = `<img src="${image[image.length - 1]}" alt="Profile Picture" class="profilePicture">`;
+                        }
+                    }else{
+                        if(image[chat.members.indexOf(chat.senders[i])] != null){
+                            avatar.innerHTML = `<img src="${image[chat.members.indexOf(chat.senders[i])]}" alt="Profile Picture" class="profilePicture">`;
+
+                        }
+
+                    }
+                }else{
+                    if(image != null){
+                        avatar.innerHTML = `<img src="${image}" alt="Profile Picture" class="profilePicture">`;
+
+
+                    }
+                }
+               
                 message.appendChild(avatar);
             }
             
@@ -793,6 +869,7 @@ async function openChat(id, payload = null) {
             usernameElement = document.createElement("div");
             usernameElement.classList.add("username");
             usernameElement.innerHTML = chat.senders?.[i] || "Unknown User";
+          
             if(!chat.groupchat){
                 usernameElement.style.display = 'none';
             }
@@ -897,7 +974,7 @@ async function openChat(id, payload = null) {
         memblers = chat.members;
         timers = chat.times;
         check();
-
+        
     }else{
         let confirmer = document.createElement("div");
         confirmer.classList.add("confirm");
@@ -978,7 +1055,7 @@ async function openChat(id, payload = null) {
         confirmer.appendChild(btns);
         chatMess.appendChild(confirmer);
 
-
+        
     }
     
     
@@ -1477,6 +1554,7 @@ function formatChatListTimestamp(centralTime) {
 }
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers, fetchChat};
+let pfpHolder = document.querySelector('#profileIcon');
 
 const userIds = window.localStorage.getItem('userIdentify');
     if (userIds && userIds != 'null'){
@@ -1485,6 +1563,21 @@ const userIds = window.localStorage.getItem('userIdentify');
     // Find the settings popup profile section
     // These selectors match the order in the HTML edit
     const container = document.querySelector('#sett .container');
+
+   
+
+    if(profile.pfp == null || profile.pfp == undefined){
+        pfpHolder.innerHTML = '<i class="fa-solid fa-user"></i>';
+
+        
+    }else{
+        pfpHolder.innerHTML = `<img src="${profile.pfp}" alt="Profile Picture" class="profilePicture">`;
+        let avatars = document.querySelectorAll('.avatar');
+
+        for(let i = 0; i < avatars.length; i++){
+            avatars[i].innerHTML = `<img src="${profile.pfp}" alt="Profile Picture" class="profilePicture">`;
+        }
+    }
     if (container) {
         const profileSection = container.querySelector('div[style*="flex-direction: column; align-items: center; margin-top: 32px"]');
         if (profileSection) {
@@ -1501,6 +1594,62 @@ const userIds = window.localStorage.getItem('userIdentify');
     }
     }
 }
+
+pfpHolder.addEventListener('click', () => {
+    document.querySelector('#changeImagePopup').style.display = 'flex';
+});
+
+
+document.querySelector('.closeChangeImage').addEventListener('click', () => {
+    document.querySelector('#changeImagePopup').style.display = 'none';
+
+});
+document.querySelector('#uploadProfileImage').addEventListener('click', () => {
+    document.querySelector('#profileImageInput').click();
+
+
+
+});
+
+document.querySelector('#profileImageInput').addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.querySelector('#imageContainer').innerHTML =`<img id="profileImage" src="${e.target.result}" alt="Profile Image" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"></img>`;
+    };
+    reader.readAsDataURL(file);
+});
+document.querySelector('#saveBtnForPfp').addEventListener('click', async () => {
+    if(document.querySelector('#profileImage')){
+        const image = document.querySelector('#profileImage').src;
+        const { error } = await db
+            .from('Users')
+            .update({ pfp: image })
+            .eq('id', userId);
+
+        if (error) {
+            console.error("Error updating profile picture:", error);
+            return;
+        }
+
+        document.querySelector('#changeImagePopup').style.display = 'none';
+        pfpHolder.innerHTML = `<img src="${image}" alt="Profile Picture" class="profilePicture">`;
+
+        let avatars = document.querySelectorAll('.avatar');
+
+        for(let i = 0; i < avatars.length; i++){
+            if(avatars[i].children[0]){
+                avatars[i].children[0].src = image;
+            }else{
+                avatars[i].innerHTML = `<img src="${image}" alt="Profile Picture" class="profilePicture">`;
+            }
+        }
+    }
+
+    
+});
+
 
 function stacker(){
     lastSender = null;
@@ -1794,6 +1943,7 @@ async function newMessages(payload){
 
         if(dif < 0){
             openChat(currentChat);
+            
         }
 
         

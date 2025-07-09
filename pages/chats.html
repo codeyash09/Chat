@@ -2123,7 +2123,7 @@
                     <div id="clobtn" class="closeBtn" style="position: absolute; right: 0vw;width:4vh; height: 4vh; font-size: 20px;display: flex;justify-content: center;align-items: center;"><i id="cloBtn" class="fa-solid fa-xmark"></i></div>
                     <!-- Profile Section -->
                     <div style="display: flex; flex-direction: column; align-items: center; margin-top: 32px; margin-bottom: 32px;">
-                        <div style="width: 90px; height: 90px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #220952ff; margin-bottom: 12px;">
+                        <div style="width: 90px; height: 90px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #220952ff; margin-bottom: 12px;" id="profileIcon">
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div style="font-size: 20px; font-weight: 600; color: #220952ff;">John Doe</div>
@@ -2141,7 +2141,35 @@
                         <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-database"></i> Data</a>
                         <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-circle-question"></i> Help</a>
                     </div>
+
+
+
+              
+                    <div class="changeImagePopup" id="changeImagePopup" style="position: absolute; top: 25vh; left: 25vw; width: 50vw; height: 50vh; background-color: #f1f1f1;box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-radius: 8px; display: none; justify-content: space-around; align-items: center; z-index: 1000;">
+                        
+                            <div class="closeChangeImage" style="position: absolute;top: 1vh;right: 1vh;"><i class="fa-solid fa-xmark"></i></div>
+                            <div class="holder" style="height: 25vh;display: flex;justify-content: space-around;flex-direction: column;align-items: center;">
+                                <h2>Change Profile Picture</h2>
+                                <div class="btnHolderPfp" style="width: 20vw;display: flex;justify-content: space-around;align-items: center;">
+                                    <button id="uploadProfileImage" style="width: 30%;height: 5vh;border-radius: 8px;background-color: white;color: black;border: black; font-size: 120%;"><i class="fa-solid fa-cloud-arrow-up"></i>   Upload</button>
+                                    <button id="saveBtnForPfp" style="width: 30%;height: 5vh;border-radius: 8px;background-color: rgb(219, 138, 138);color: white !important;border: black; font-size: 120%;"><i style="color: white !important;" class="fa-solid fa-floppy-disk"></i>   Save</button>
+
+                                </div>
+                            </div>
+                            
+                            <div class="imageContainer" id="imageContainer" style="width: 25vh; height:25vh;border-radius: 100%;background-color: white;display: flex;justify-content: center;align-items: center;">
+                                <i class="fa-solid fa-user" style="font-size: 15vh;overflow: hidden !important;"></i>
+                                <!-- <img id="profileImage" src="/images/ai.png" alt="Profile Image" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"> -->
+                            </div>
+
+                            <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                           
+                        
+                    </div>
                 </div>
+
+
+
             </div>
 
             <div id="chatSettings" class="chatSettingsPopup">
@@ -2211,7 +2239,7 @@
             
             <div class="title" style="margin-top: 3vh;">
                 <div class="holder"style="display:flex; align-items:center; justify-content: space-around; width: fit-content;gap: 20px;">
-                    <div id="pfpGen" class="avatar"></div>
+                    <div id="pfpGen" class="avatar" style="overflow: hidden;"></div>
 
                     <div class="txt">QUBIT</div>
                 </div>

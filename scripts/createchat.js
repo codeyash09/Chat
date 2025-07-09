@@ -282,7 +282,7 @@ async function newChat(){
 export async function fetchUserProfile(userId) {
   const { data, error } = await db
     .from('Users')
-    .select('name, username, birthday')
+    .select('name, username, birthday, pfp')
     .eq('id', userId);
 
   if (error) {
