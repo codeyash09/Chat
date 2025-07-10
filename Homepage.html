@@ -566,6 +566,127 @@
     .modal-users-form .modal-save-btn:hover {
       background: #f3f3f3;
     }
+    /* Search Overlay Styles */
+    .search-overlay {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100vw;
+      max-width: 430px;
+      height: calc(100vh - 24px);
+      background: #ededed;
+      z-index: 2000;
+      border-radius: 32px 32px 0 0;
+      box-shadow: 0 0 16px rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.22s cubic-bezier(.4,0,.7,1.2);
+      overflow: hidden;
+      top: 24px;
+    }
+    .search-overlay.active {
+      transform: translateY(0);
+    }
+    .search-overlay-header {
+      display: flex;
+      align-items: center;
+      padding: 24px 0 10px 18px;
+      background: #ededed;
+      border-radius: 32px 32px 0 0;
+      border-bottom: 2px solid #bbb;
+    }
+    .search-overlay-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background 0.13s;
+    }
+    .search-overlay-back:hover {
+      background: #ececec;
+    }
+    .search-overlay-label {
+      flex: 1;
+      font-size: 26px;
+      color: #222;
+      font-family: inherit;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      user-select: none;
+    }
+    .search-overlay-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 19px;
+      color: #444;
+      font-family: inherit;
+      margin-right: 0;
+      padding: 0;
+      font-weight: 400;
+    }
+    .search-overlay-menu {
+      font-size: 28px;
+      color: #444;
+      margin: 0 18px 0 10px;
+      cursor: pointer;
+    }
+    .search-favorites {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 24px 0 0 0;
+      padding: 0 0 0 0;
+    }
+    .search-fav-btn {
+      display: flex;
+      align-items: center;
+      background: #111;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 999px;
+      padding: 0 14px 0 4px;
+      border: none;
+      margin: 0 0 0 8px;
+      cursor: pointer;
+      width: fit-content;
+      box-shadow: none;
+      transition: background 0.13s;
+      justify-content: flex-start;
+      height: 38px;
+      min-height: 38px;
+      max-height: 38px;
+    }
+    .search-fav-btn .star {
+      display: flex;
+      align-items: center;
+      margin-right: 4px;
+    }
+    .search-fav-btn:last-child {
+      margin: 80px auto 0 auto;
+      background: #111;
+      color: #fff;
+      width: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 15px;
+      padding: 0 14px 0 4px;
+      height: 38px;
+      min-height: 38px;
+      max-height: 38px;
+    }
   </style>
 </head>
 <body>
@@ -767,6 +888,33 @@
         </form>
       </div>
     </div>
+    <!-- Search Overlay Popup -->
+    <div class="search-overlay" id="searchOverlay">
+      <div class="search-overlay-header">
+        <span class="search-overlay-back" id="searchOverlayBack">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="14" fill="#f3f3f3"/>
+            <path d="M16.5 9L12.5 14L16.5 19" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="search-overlay-label">Search or Ask Qubit Ai</span>
+        <span class="search-overlay-menu">&#8942;</span>
+      </div>
+      <div style="border-bottom:2px solid #bbb;width:100%;"></div>
+      <div class="search-favorites">
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Summarize What Happen In _______</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Help me reply to the most recent message in ___</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Find a message that has something to do with __</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> What was the first message I sent in __________</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Create Your Own Favorite</button>
+      </div>
+      <div style="flex:1;"></div>
+      <div class="bottom-nav" style="position:static;margin-top:auto;">
+        <img src="Images/Screenshot_2025-07-09_at_6.14.23_PM-removebg-preview.png" class="nav-icon" alt="Home">
+        <img src="Images/Screenshot_2025-07-09_at_6.14.28_PM-removebg-preview.png" class="nav-icon" alt="Call">
+        <img src="Images/Screenshot_2025-07-09_at_6.14.32_PM-removebg-preview.png" class="nav-icon" alt="Calendar">
+      </div>
+    </div>
   </div>
   <script>
     // Modal open/close logic
@@ -849,12 +997,17 @@
       startHeight = modal.offsetHeight;
       document.body.style.userSelect = 'none';
       document.body.style.touchAction = 'none';
+      // Remove transition for immediate follow
+      modal.style.transition = 'none';
     }
     function onDragMove(e) {
       if (!dragging) return;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
       const delta = startY - clientY;
-      // Only visually update during drag (optional: comment out next line to only snap on release)
+      let newHeight = startHeight + delta;
+      const minHeight = 200;
+      const maxHeight = window.innerHeight;
+      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
       modal.style.height = newHeight + 'px';
     }
     function onDragEnd(e) {
@@ -862,25 +1015,38 @@
       dragging = false;
       document.body.style.userSelect = '';
       document.body.style.touchAction = '';
+      // Restore transition for snap
+      modal.style.transition = 'height 0.13s cubic-bezier(.4,0,.7,1.2), opacity 0.13s cubic-bezier(.4,0,.7,1.2)';
       const clientY = (e && (e.changedTouches ? e.changedTouches[0].clientY : e.clientY)) || startY;
       const delta = startY - clientY;
-      // Decide snap position
-      const threshold = window.innerHeight * 0.2; // drag at least 20% of screen to snap
-      const closeThreshold = window.innerHeight * 0.4; // 40% of screen
-      if (delta > threshold / 2) {
-        // Snap to extended
-        modal.style.height = '85vh';
-      } else if (delta < -closeThreshold / 2) {
-        // If swiped down enough, close modal with animation
-        modal.classList.add('closing');
-        setTimeout(() => {
-          document.getElementById('modalOverlay').classList.remove('active');
-          modal.classList.remove('closing');
-          modal.style.height = '60vh';
-        }, 220);
+      const threshold = window.innerHeight * 0.2;
+      const closeThreshold = window.innerHeight * 0.4;
+      if (usersTab.classList.contains('active')) {
+        if (delta > threshold / 2) {
+          modal.style.height = '85vh';
+        } else if (delta < -closeThreshold / 2) {
+          modal.classList.add('closing');
+          setTimeout(() => {
+            document.getElementById('modalOverlay').classList.remove('active');
+            modal.classList.remove('closing');
+            modal.style.height = '85vh';
+          }, 130);
+        } else {
+          modal.style.height = '85vh';
+        }
       } else {
-        // Snap to original
-        modal.style.height = '60vh';
+        if (delta > threshold / 2) {
+          modal.style.height = '85vh';
+        } else if (delta < -closeThreshold / 2) {
+          modal.classList.add('closing');
+          setTimeout(() => {
+            document.getElementById('modalOverlay').classList.remove('active');
+            modal.classList.remove('closing');
+            modal.style.height = '60vh';
+          }, 130);
+        } else {
+          modal.style.height = '60vh';
+        }
       }
     }
     dragbar.addEventListener('mousedown', onDragStart);
@@ -897,6 +1063,25 @@
       } else {
         modal.style.height = '60vh';
       }
+    });
+    // Search Overlay logic
+    const searchBar = document.querySelector('.search-bar');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchOverlayBack = document.getElementById('searchOverlayBack');
+    // Prevent background scroll when search overlay is open
+    function disableBodyScroll() {
+      document.body.style.overflow = 'hidden';
+    }
+    function enableBodyScroll() {
+      document.body.style.overflow = '';
+    }
+    searchBar.addEventListener('click', function() {
+      searchOverlay.classList.add('active');
+      disableBodyScroll();
+    });
+    searchOverlayBack.addEventListener('click', function() {
+      searchOverlay.classList.remove('active');
+      enableBodyScroll();
     });
   </script>
 </body>
