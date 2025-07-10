@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=RF Dewi:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('/fonts/RF Dewi/RFDewi-Bold/style.css');
+
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
 * {
@@ -9,7 +8,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     text-decoration: none;
-    font-family: 'RF Dewi';
+    font-family: 'Inter';
     box-sizing: border-box;
 }
 
@@ -78,7 +77,7 @@ input {
     color: rgb(82, 82, 82);
     margin-left: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
 }
 
@@ -95,7 +94,7 @@ input:focus {
 h3 {
     text-decoration: none;
     font-weight: 400;
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     position: static;
     color: #616161;
 
@@ -119,13 +118,13 @@ h3:has(+ input:focus) {
     position: absolute;
     display: none;
     top: 8vh;
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
 }
 
 /* Make the heading smaller and less prominent */
 h1 {
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 500;
     color: #ffffff;
     font-size: 24px; /* Fixed font size in pixels */
@@ -144,7 +143,7 @@ h1 {
     color: #220952ff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-family: 'RF Dewi', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
 }
 

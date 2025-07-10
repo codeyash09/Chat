@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUBIT Chat</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: #fff;
+      color: #000;
+    }
+    .container {
+      max-width: 430px;
+      margin: 0 auto;
+      border: 1px solid #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 16px 8px 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .profile-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+    }
+    .app-title {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -2px;
+    }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 0px;
+    }
+    .header-icon {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      cursor: pointer;
+    }
+    .chat-list {
+      flex: 1;
+      padding: 0 0 0 0;
+      background: #fff;
+    }
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 18px 16px 10px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      position: relative;
+    }
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 14px;
+      background: #eee;
+    }
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .chat-title, .username {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 2px;
+      color: #444;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-last {
+      color: #888;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-time {
+      font-size: 15px;
+      color: #222;
+      font-weight: 500;
+      margin-left: 10px;
+      white-space: nowrap;
+    }
+    .chat-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      min-width: 70px;
+    }
+    .chat-group {
+      font-size: 13px;
+      color: #888;
+      margin-top: 2px;
+    }
+    .chat-sponsored {
+      font-size: 13px;
+      color: #888;
+      margin-top: 2px;
+      text-align: right;
+    }
+    .quick-reply {
+      display: flex;
+      align-items: center;
+      margin: 0 16px 0 16px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 24px;
+      padding: 0 10px;
+      height: 38px;
+      background: #fafafa;
+      margin-bottom: 2px;
+    }
+    .quick-reply input {
+      border: none;
+      outline: none;
+      background: transparent;
+      flex: 1;
+      font-size: 18px;
+      padding: 0 6px;
+    }
+    .quick-reply-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: #222;
+      margin-left: 8px;
+    }
+    .search-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 70px;
+      transform: translateX(-50%);
+      width: 100vw;
+      max-width: 220px;
+      display: flex;
+      align-items: center;
+      background: #f3f3f3;
+      border-radius: 32px;
+      margin: 0 auto;
+      padding: 0 12px;
+      height: 48px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+    .search-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      flex: 1;
+      font-size: 20px;
+      padding: 0 8px;
+      color: #222;
+    }
+    .search-ai {
+      width: 38px;
+      height: 38px;
+      margin-left: 8px;
+      object-fit: contain;
+    }
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100vw;
+      max-width: 430px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #fff;
+      border-top: 1.5px solid #e0e0e0;
+      height: 60px;
+      z-index: 20;
+    }
+    .nav-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+    @media (max-width: 430px) {
+      .container {
+        border: none;
+      }
+      .search-bar, .bottom-nav {
+        max-width: 100vw;
+      }
+    }
+    .chat-item, .message {
+      position: relative;
+    }
+    .chat-time, .timestamp {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 15px;
+      color: #888;
+      font-weight: 500;
+      white-space: nowrap;
+      margin-bottom: 0;
+    }
+    .notif-bubble {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      background: #3d1766;
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      border: 2px solid #fff;
+      z-index: 2;
+    }
+    .gc-badge {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      background: #3d1766;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 2px 6px;
+      z-index: 2;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .ad-badge {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      background: #3d1766;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 2px 6px;
+      z-index: 2;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+  </style>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.12);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal {
+      width: 100vw;
+      max-width: 430px;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 0 16px rgba(0,0,0,0.10);
+      padding: 0 0 24px 0;
+      position: relative;
+      animation: slideUp 0.2s cubic-bezier(.4,0,.2,1);
+      min-height: 200px;
+      max-height: 100vh;
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      transition: height 0.22s cubic-bezier(.4,0,.2,1), opacity 0.22s cubic-bezier(.4,0,.2,1);
+      touch-action: none;
+      opacity: 1;
+    }
+    .modal.closing {
+      height: 0 !important;
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-dragbar {
+      width: 56px;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      margin: 12px auto 0 auto;
+    }
+    .modal-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 16px 0 18px 0;
+    }
+    .modal-tabs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .modal-tab {
+      font-size: 16px;
+      font-weight: 500;
+      padding: 7px 22px;
+      border-radius: 20px;
+      border: 1.5px solid #e0e0e0;
+      background: #fff;
+      color: #888;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      text-align: center;
+      box-sizing: border-box;
+      min-width: 90px;
+    }
+    .modal-tab:last-child {
+      margin-right: 0;
+    }
+    .modal-tab.active {
+      background: #e9d9fa;
+      color: #3d1766;
+      border: 1.5px solid #cfc6e6;
+    }
+    .modal-search {
+      display: flex;
+      align-items: center;
+      background: #fafafa;
+      border-radius: 16px;
+      border: 1.5px solid #e0e0e0;
+      margin: 0 18px 0 18px;
+      padding: 0 12px;
+      height: 44px;
+    }
+    .modal-search input {
+      border: none;
+      outline: none;
+      background: transparent;
+      flex: 1;
+      font-size: 18px;
+      padding: 0 8px;
+    }
+    .modal-search-x {
+      font-size: 22px;
+      color: #888;
+      cursor: pointer;
+    }
+    .modal-contacts {
+      margin: 18px 0 0 0;
+    }
+    .modal-contact-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .modal-contact-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 14px;
+    }
+    .modal-contact-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-contact-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+    }
+    .modal-contact-phone {
+      font-size: 15px;
+      color: #888;
+    }
+    .modal-users-form {
+      margin: 18px 0 0 0;
+      padding: 0 18px;
+      display: none;
+    }
+    .modal-users-form.active {
+      display: block;
+    }
+    .modal-users-form .modal-input-row {
+      display: flex;
+      align-items: center;
+      background: #fafafa;
+      border-radius: 16px;
+      border: 1.5px solid #e0e0e0;
+      margin-bottom: 18px;
+      padding: 0 12px;
+      height: 44px;
+      font-size: 22px;
+    }
+    .modal-users-form .modal-input-row input {
+      border: none;
+      outline: none;
+      background: transparent;
+      flex: 1;
+      font-size: 22px;
+      padding: 0 8px;
+    }
+    .modal-users-form .modal-input-x {
+      font-size: 22px;
+      color: #888;
+      cursor: pointer;
+    }
+    .modal-users-form .modal-radio-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+    .modal-users-form .modal-radio-row input[type="radio"] {
+      accent-color: #222;
+      width: 22px;
+      height: 22px;
+      margin-right: 8px;
+    }
+    .modal-users-form .modal-members-label {
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .modal-users-form .modal-members-list {
+      margin-bottom: 12px;
+    }
+    .modal-users-form .modal-member {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fafafa;
+      border-radius: 12px;
+      border: 1.5px solid #e0e0e0;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+    .modal-users-form .modal-member.host {
+      font-weight: 500;
+    }
+    .modal-users-form .modal-member .host-badge {
+      background: #e0e0e0;
+      color: #444;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 2px 8px;
+      margin-left: 10px;
+    }
+    .modal-users-form .modal-member .remove-member {
+      color: #c00;
+      font-size: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .modal-users-form .modal-add-member {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f3f3f3;
+      color: #888;
+      font-size: 28px;
+      margin: 0 auto 18px auto;
+      cursor: pointer;
+      border: 1.5px solid #e0e0e0;
+    }
+    .modal-users-form .modal-chatmode-label {
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .modal-users-form .modal-chatmodes-wrapper {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .modal-users-form .modal-chatmodes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      padding-right: 36px;
+      scrollbar-width: none;
+    }
+    .modal-users-form .modal-chatmodes::-webkit-scrollbar {
+      display: none;
+    }
+    .modal-users-form .modal-chatmode {
+      font-size: 15px;
+      color: #444;
+      background: #f7f7f7;
+      border-radius: 10px;
+      padding: 4px 12px;
+      cursor: pointer;
+      border: 1.5px solid #e0e0e0;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .modal-users-form .modal-chatmode.selected {
+      background: #e9d9fa;
+      color: #3d1766;
+      border: 1.5px solid #cfc6e6;
+    }
+    .modal-users-form .chatmode-arrow {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, #fff 60%);
+      padding-left: 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+    .modal-users-form .chatmode-arrow svg {
+      width: 22px;
+      height: 22px;
+      color: #bbb;
+    }
+    .modal-users-form .modal-save-btn {
+      display: block;
+      margin: 0 auto;
+      background: #fff;
+      color: #222;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 6px 24px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .modal-users-form .modal-save-btn:hover {
+      background: #f3f3f3;
+    }
+    /* Search Overlay Styles */
+    .search-overlay {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100vw;
+      max-width: 430px;
+      height: calc(100vh - 24px);
+      background: #ededed;
+      z-index: 2000;
+      border-radius: 32px 32px 0 0;
+      box-shadow: 0 0 16px rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.22s cubic-bezier(.4,0,.7,1.2);
+      overflow: hidden;
+      top: 24px;
+    }
+    .search-overlay.active {
+      transform: translateY(0);
+    }
+    .search-overlay-header {
+      display: flex;
+      align-items: center;
+      padding: 24px 0 10px 18px;
+      background: #ededed;
+      border-radius: 32px 32px 0 0;
+      border-bottom: 2px solid #bbb;
+    }
+    .search-overlay-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background 0.13s;
+    }
+    .search-overlay-back:hover {
+      background: #ececec;
+    }
+    .search-overlay-label {
+      flex: 1;
+      font-size: 26px;
+      color: #222;
+      font-family: inherit;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      user-select: none;
+    }
+    .search-overlay-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 19px;
+      color: #444;
+      font-family: inherit;
+      margin-right: 0;
+      padding: 0;
+      font-weight: 400;
+    }
+    .search-overlay-menu {
+      font-size: 28px;
+      color: #444;
+      margin: 0 18px 0 10px;
+      cursor: pointer;
+    }
+    .search-favorites {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 24px 0 0 0;
+      padding: 0 0 0 0;
+    }
+    .search-fav-btn {
+      display: flex;
+      align-items: center;
+      background: #111;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 999px;
+      padding: 0 14px 0 4px;
+      border: none;
+      margin: 0 0 0 8px;
+      cursor: pointer;
+      width: fit-content;
+      box-shadow: none;
+      transition: background 0.13s;
+      justify-content: flex-start;
+      height: 38px;
+      min-height: 38px;
+      max-height: 38px;
+    }
+    .search-fav-btn .star {
+      display: flex;
+      align-items: center;
+      margin-right: 4px;
+    }
+    .search-fav-btn:last-child {
+      margin: 80px auto 0 auto;
+      background: #111;
+      color: #fff;
+      width: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 15px;
+      padding: 0 14px 0 4px;
+      height: 38px;
+      min-height: 38px;
+      max-height: 38px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <span class="profile-img" style="display:flex;align-items:center;justify-content:center;background:#eee;width:48px;height:48px;border-radius:50%;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="24" fill="#e0e0e0"/>
+            <circle cx="24" cy="18" r="9" fill="#bdbdbd"/>
+            <ellipse cx="24" cy="35" rx="14" ry="9" fill="#bdbdbd"/>
+          </svg>
+        </span>
+        <span class="app-title">QUBIT</span>
+      </div>
+      <div class="header-icons">
+        <img src="/images/bell.png" class="header-icon" alt="Bell">
+        <img src="/images/gift.png" class="header-icon" alt="Add">
+        <span class="header-icon plus-icon" style="display:inline-flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9" y="15" width="14" height="2" rx="1" fill="#000"/>
+            <rect x="15" y="9" width="2" height="14" rx="1" fill="#000"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <!-- Chat List -->
+    <div class="chat-list">
+      <div class="chat-item">
+        <span class="chat-avatar" style="display:flex;align-items:center;justify-content:center;background:#eee;position:relative;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#e0e0e0"/>
+            <circle cx="20" cy="15" r="7" fill="#bdbdbd"/>
+            <ellipse cx="20" cy="29" rx="11" ry="7" fill="#bdbdbd"/>
+          </svg>
+          <span class="notif-bubble">3</span>
+        </span>
+        <div class="chat-info">
+          <div class="chat-title">Mark Zuck</div>
+          <div class="chat-last"><b>You:</b> NO MORE ZUCKS ENOUGH...</div>
+        </div>
+        <span class="chat-time">2:35 PM</span>
+        <div class="chat-meta">
+        </div>
+      </div>
+      <div class="quick-reply">
+        <input type="text" placeholder="Quick Reply">
+        <button class="quick-reply-btn" style="padding:0;background:none;border:none;display:flex;align-items:center;">
+          <img src="/images/send.png" alt="Send" style="width:32px;height:32px;object-fit:contain;" />
+        </button>
+      </div>
+      <div class="chat-item">
+        <span class="chat-avatar" style="display:flex;align-items:center;justify-content:center;background:#eee;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#e0e0e0"/>
+            <circle cx="20" cy="15" r="7" fill="#bdbdbd"/>
+            <ellipse cx="20" cy="29" rx="11" ry="7" fill="#bdbdbd"/>
+          </svg>
+        </span>
+        <div class="chat-info">
+          <div class="chat-title">Sam Altman</div>
+          <div class="chat-last">Sam: STOP WITH ANTHROPIC...</div>
+        </div>
+        <span class="chat-time">Yesterday</span>
+        <div class="chat-meta">
+        </div>
+
+      </div>
+      <div class="chat-item">
+        <span class="chat-avatar" style="display:flex;align-items:center;justify-content:center;background:#eee;position:relative;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#e0e0e0"/>
+            <circle cx="20" cy="15" r="7" fill="#bdbdbd"/>
+            <ellipse cx="20" cy="29" rx="11" ry="7" fill="#bdbdbd"/>
+          </svg>
+          <span class="notif-bubble">1</span>
+        </span>
+        <div class="chat-info">
+          <div class="chat-title">Jeff Bezos</div>
+          <div class="chat-last"><b>You:</b> Sybau...</div>
+        </div>
+        <span class="chat-time">Jun 24</span>
+        <div class="chat-meta">
+        </div>
+
+      </div>
+      <div class="chat-item">
+        <span class="chat-avatar" style="display:flex;align-items:center;justify-content:center;background:#eee;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#e0e0e0"/>
+            <circle cx="20" cy="15" r="7" fill="#bdbdbd"/>
+            <ellipse cx="20" cy="29" rx="11" ry="7" fill="#bdbdbd"/>
+          </svg>
+        </span>
+        <div class="chat-info">
+          <div class="chat-title">The Bois</div>
+          <div class="chat-last">Will: I am gay because...</div>
+        </div>
+        <span class="chat-time">Jun 18</span>
+        <div class="chat-meta">
+          <span class="gc-badge">GC</span>
+        </div>
+
+      </div>
+      <div class="chat-item">
+        <span class="chat-avatar" style="display:flex;align-items:center;justify-content:center;background:#eee;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#e0e0e0"/>
+            <circle cx="20" cy="15" r="7" fill="#bdbdbd"/>
+            <ellipse cx="20" cy="29" rx="11" ry="7" fill="#bdbdbd"/>
+          </svg>
+          <span class="ad-badge">Ad</span>
+        </span>
+        <div class="chat-info">
+          <div class="chat-title">Canva</div>
+          <div class="chat-last">Enjoy a new July 4th DISCOUNT! Invite a friend to get another 25% discount on your new membership!</div>
+        </div>
+        <span class="chat-time">Jun 18</span>
+        <div class="chat-meta">
+        </div>
+      </div>
+    </div>
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="Search or Ask Qubit Ai">
+      <img src="/images/ai.png" class="search-ai" alt="AI Logo">
+    </div>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <img src="/images/house.png" class="nav-icon" alt="Gift">
+      <img src="/images/call.png" class="nav-icon" alt="Folder">
+      <img src="Images/Screenshot_2025-07-09_at_6.14.32_PM-removebg-preview.png" class="nav-icon" alt="Infinity">
+    </div>
+    <!-- Modal Popup for New Messages -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-dragbar"></div>
+        <div class="modal-title">New Messages</div>
+        <span class="modal-search-x" id="modalClose" style="position:absolute;top:18px;right:18px;z-index:10;">&#10005;</span>
+        <div class="modal-tabs">
+          <div class="modal-tab" id="contactsTab">Contacts</div>
+          <div class="modal-tab" id="usersTab">Users</div>
+        </div>
+        <div class="modal-search" id="contactsSearch">
+          <input type="text" placeholder="Search Contacts">
+        </div>
+        <div class="modal-contacts" id="contactsList">
+          <div class="modal-contact-item">
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="modal-contact-avatar" alt="Jane Cooper">
+            <div class="modal-contact-info">
+              <span class="modal-contact-name">Jane Cooper</span>
+              <span class="modal-contact-phone">(270) 555-0117</span>
+            </div>
+          </div>
+          <div class="modal-contact-item">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="modal-contact-avatar" alt="Devon Lane">
+            <div class="modal-contact-info">
+              <span class="modal-contact-name">Devon Lane</span>
+              <span class="modal-contact-phone">(308) 555-0121</span>
+            </div>
+          </div>
+          <div class="modal-contact-item">
+            <img src="https://randomuser.me/api/portraits/men/44.jpg" class="modal-contact-avatar" alt="Darrell Steward">
+            <div class="modal-contact-info">
+              <span class="modal-contact-name">Darrell Steward</span>
+              <span class="modal-contact-phone">(684) 555-0102</span>
+            </div>
+          </div>
+        </div>
+        <form class="modal-users-form" id="usersForm" autocomplete="off">
+          <div class="modal-input-row">
+            <input type="text" placeholder="Chat Name" id="chatNameInput">
+          </div>
+          <div class="modal-radio-row">
+            <input type="radio" id="chooseNameRadio" name="nameOption" checked>
+            <label for="chooseNameRadio">Choose Name From Names</label>
+          </div>
+          <div class="modal-members-label">Members</div>
+          <div class="modal-members-list">
+            <div class="modal-member host">Anwar Kalonov <span class="host-badge">Host</span></div>
+            <div class="modal-member"><b>Yash Patel</b></div>
+          </div>
+          <div class="modal-add-member">+</div>
+          <div class="modal-chatmode-label">Chat Mode</div>
+          <div class="modal-chatmodes-wrapper">
+            <div class="modal-chatmodes" id="chatmodesScroll">
+              <div class="modal-chatmode">Club</div>
+              <div class="modal-chatmode">Workout</div>
+              <div class="modal-chatmode">School</div>
+              <div class="modal-chatmode">Gaming</div>
+              <div class="modal-chatmode">Focus</div>
+            </div>
+            <span class="chatmode-arrow" id="chatmodeArrow">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <button type="button" class="modal-save-btn">Save</button>
+        </form>
+      </div>
+    </div>
+    <!-- Search Overlay Popup -->
+    <div class="search-overlay" id="searchOverlay">
+      <div class="search-overlay-header">
+        <span class="search-overlay-back" id="searchOverlayBack">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="14" fill="#f3f3f3"/>
+            <path d="M16.5 9L12.5 14L16.5 19" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="search-overlay-label">Search or Ask Qubit Ai</span>
+        <span class="search-overlay-menu">&#8942;</span>
+      </div>
+      <div style="border-bottom:2px solid #bbb;width:100%;"></div>
+      <div class="search-favorites">
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Summarize What Happen In _______</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Help me reply to the most recent message in ___</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Find a message that has something to do with __</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> What was the first message I sent in __________</button>
+        <button class="search-fav-btn"><span class="star"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1.5l2.09 4.24 4.68.68-3.39 3.3.8 4.66L8 12.27l-4.18 2.21.8-4.66-3.39-3.3 4.68-.68L8 1.5z" fill="#fff" stroke="#111" stroke-width="1.1"/></svg></span> Create Your Own Favorite</button>
+      </div>
+      <div style="flex:1;"></div>
+      <div class="bottom-nav" style="position:static;margin-top:auto;">
+        <img src="Images/Screenshot_2025-07-09_at_6.14.23_PM-removebg-preview.png" class="nav-icon" alt="Home">
+        <img src="Images/Screenshot_2025-07-09_at_6.14.28_PM-removebg-preview.png" class="nav-icon" alt="Call">
+        <img src="Images/Screenshot_2025-07-09_at_6.14.32_PM-removebg-preview.png" class="nav-icon" alt="Calendar">
+      </div>
+    </div>
+  </div>
+  <script>
+    // Modal open/close logic
+    document.querySelector('.plus-icon').addEventListener('click', function() {
+      document.getElementById('modalOverlay').classList.add('active');
+    });
+    document.getElementById('modalClose').addEventListener('click', function() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    });
+    // Optional: close modal when clicking outside modal
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
+      }
+    });
+    // Tab switching logic
+    const contactsTab = document.getElementById('contactsTab');
+    const usersTab = document.getElementById('usersTab');
+    const contactsSearch = document.getElementById('contactsSearch');
+    const contactsList = document.getElementById('contactsList');
+    const usersForm = document.getElementById('usersForm');
+    function setTab(tab) {
+      if (tab === 'contacts') {
+        contactsTab.classList.add('active');
+        usersTab.classList.remove('active');
+        contactsSearch.style.display = '';
+        contactsList.style.display = '';
+        usersForm.classList.remove('active');
+      } else {
+        contactsTab.classList.remove('active');
+        usersTab.classList.add('active');
+        contactsSearch.style.display = 'none';
+        contactsList.style.display = 'none';
+        usersForm.classList.add('active');
+      }
+    }
+    contactsTab.addEventListener('click', function() {
+      setTab('contacts');
+      // Animate modal down to original height if needed
+      if (parseInt(modal.style.height) >= 80) {
+        modal.style.height = '60vh';
+      }
+    });
+    usersTab.addEventListener('click', function() { setTab('users'); });
+    setTab('contacts');
+    // Chat mode selection
+    document.querySelectorAll('.modal-chatmode').forEach(function(el) {
+      el.addEventListener('click', function() {
+        document.querySelectorAll('.modal-chatmode').forEach(function(e2) { e2.classList.remove('selected'); });
+        el.classList.add('selected');
+      });
+    });
+    // Show/hide right arrow if scrollable
+    function updateChatmodeArrow() {
+      const scroll = document.getElementById('chatmodesScroll');
+      const arrow = document.getElementById('chatmodeArrow');
+      if (scroll.scrollWidth > scroll.clientWidth + 2) {
+        arrow.style.display = 'flex';
+      } else {
+        arrow.style.display = 'none';
+      }
+    }
+    window.addEventListener('resize', updateChatmodeArrow);
+    setTimeout(updateChatmodeArrow, 100);
+    usersTab.addEventListener('click', function() {
+      setTimeout(updateChatmodeArrow, 100);
+      // Expand modal to extended height for full form visibility
+      modal.style.height = '85vh';
+    });
+
+    // Draggable/extendable modal logic
+    const modal = document.querySelector('.modal');
+    const dragbar = document.querySelector('.modal-dragbar');
+    let startY = 0;
+    let startHeight = 0;
+    let dragging = false;
+    function onDragStart(e) {
+      dragging = true;
+      startY = e.touches ? e.touches[0].clientY : e.clientY;
+      startHeight = modal.offsetHeight;
+      document.body.style.userSelect = 'none';
+      document.body.style.touchAction = 'none';
+      // Remove transition for immediate follow
+      modal.style.transition = 'none';
+    }
+    function onDragMove(e) {
+      if (!dragging) return;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const delta = startY - clientY;
+      let newHeight = startHeight + delta;
+      const minHeight = 200;
+      const maxHeight = window.innerHeight;
+      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+      modal.style.height = newHeight + 'px';
+    }
+    function onDragEnd(e) {
+      if (!dragging) return;
+      dragging = false;
+      document.body.style.userSelect = '';
+      document.body.style.touchAction = '';
+      // Restore transition for snap
+      modal.style.transition = 'height 0.13s cubic-bezier(.4,0,.7,1.2), opacity 0.13s cubic-bezier(.4,0,.7,1.2)';
+      const clientY = (e && (e.changedTouches ? e.changedTouches[0].clientY : e.clientY)) || startY;
+      const delta = startY - clientY;
+      const threshold = window.innerHeight * 0.2;
+      const closeThreshold = window.innerHeight * 0.4;
+      if (usersTab.classList.contains('active')) {
+        if (delta > threshold / 2) {
+          modal.style.height = '85vh';
+        } else if (delta < -closeThreshold / 2) {
+          modal.classList.add('closing');
+          setTimeout(() => {
+            document.getElementById('modalOverlay').classList.remove('active');
+            modal.classList.remove('closing');
+            modal.style.height = '85vh';
+          }, 130);
+        } else {
+          modal.style.height = '85vh';
+        }
+      } else {
+        if (delta > threshold / 2) {
+          modal.style.height = '85vh';
+        } else if (delta < -closeThreshold / 2) {
+          modal.classList.add('closing');
+          setTimeout(() => {
+            document.getElementById('modalOverlay').classList.remove('active');
+            modal.classList.remove('closing');
+            modal.style.height = '60vh';
+          }, 130);
+        } else {
+          modal.style.height = '60vh';
+        }
+      }
+    }
+    dragbar.addEventListener('mousedown', onDragStart);
+    dragbar.addEventListener('touchstart', onDragStart);
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('touchmove', onDragMove);
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('touchend', onDragEnd);
+    // Always reset to original on open
+    document.querySelector('.plus-icon').addEventListener('click', function() {
+      // If Users tab is active, open at 85vh, else 60vh
+      if (usersTab.classList.contains('active')) {
+        modal.style.height = '85vh';
+      } else {
+        modal.style.height = '60vh';
+      }
+    });
+    // Search Overlay logic
+    const searchBar = document.querySelector('.search-bar');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchOverlayBack = document.getElementById('searchOverlayBack');
+    // Prevent background scroll when search overlay is open
+    function disableBodyScroll() {
+      document.body.style.overflow = 'hidden';
+    }
+    function enableBodyScroll() {
+      document.body.style.overflow = '';
+    }
+    searchBar.addEventListener('click', function() {
+      searchOverlay.classList.add('active');
+      disableBodyScroll();
+    });
+    searchOverlayBack.addEventListener('click', function() {
+      searchOverlay.classList.remove('active');
+      enableBodyScroll();
+    });
+  </script>
+</body>
+</html>

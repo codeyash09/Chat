@@ -249,9 +249,9 @@ async function showChats() {
                     
                     
                     if(chat.senders[i] == username){
-                        lastMessage.innerHTML = "You: " + finalMessage;
+                        lastMessage.innerHTML = "<b>You:</b> " + finalMessage;
                     }else{
-                        lastMessage.innerHTML = (await fetchName(chat.senders[i]))[0].name + ": " + finalMessage;
+                        lastMessage.innerHTML = "<b>" + (await fetchName(chat.senders[i]))[0].name.split(" ")[0] + "</b>: " + finalMessage;
                     }
 
                     timel.innerHTML = formatChatListTimestamp(chat.times[i]);
@@ -269,8 +269,13 @@ async function showChats() {
         tab.addEventListener("click", () => openChat(chat.chat_id));
         tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
         time.appendChild(timel);
-        tab.appendChild(time);
 
+
+
+
+
+        tab.appendChild(time);
+        
         if(chat == sortedChats[0]){
             let replyBar = document.createElement("div");
             replyBar.classList.add("replyBar");
@@ -279,7 +284,17 @@ async function showChats() {
             input.placeholder = `Quick Reply`
             input.classList.add("replyInput");
             input.enterKeyHint="send";
+
+            let sendBtn = document.createElement("button");
+            sendBtn.classList.add("quickReplyBtn");
+            sendBtn.innerHTML = `<img src="/images/send.png" alt="Send" style="width:32px;height:32px;object-fit:contain;">`;
+            sendBtn.style.padding = "0";
+            sendBtn.style.background = "none";
+            sendBtn.style.border = "none";
+            sendBtn.style.display = "flex";
+            sendBtn.style.alignItems = "center";
             replyBar.appendChild(input);
+            replyBar.appendChild(sendBtn);
             replyBar.addEventListener("click", (e) => {
                 e.stopImmediatePropagation();
                 e.stopPropagation();
@@ -288,6 +303,9 @@ async function showChats() {
             }, true);
             
             replyBar.addEventListener("mousedown", (e) => {
+                if (e.target.closest('.replyBar')) {
+                    return; 
+                }
                 e.stopImmediatePropagation();
                 e.stopPropagation();
                 return false;
@@ -307,6 +325,9 @@ async function showChats() {
             }, true);
             
             input.addEventListener("click", (e) => {
+                if (e.target.closest('.replyBar')) {
+                    return; 
+                }
                 e.stopImmediatePropagation();
                 e.stopPropagation();
                 e.preventDefault();
@@ -338,7 +359,72 @@ async function showChats() {
                     return false;
                 }, true);
             });
-            
+           
+            sendBtn.addEventListener("click", (e) => {
+                console.log("Send button clicked");
+            });
+            sendBtn.addEventListener("click", async function (event) {
+                const messageText = input.value.trim();
+                if (!messageText) return; 
+                console.log("Sending message:", messageText);
+                const chatId = currentChat; 
+                const sender = username; 
+                const timestamp = new Date().toISOString();
+
+                try {  
+                    const { data, error } = await db
+                        .from("Chats")
+                        .select("*")
+                        .eq("chat_id", chat.chat_id)
+                        .single();
+
+                    if (error || !data) {
+                        console.error("Failed to fetch chat:", error ?? "Chat not found");
+                        return;
+                    }
+
+                    const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
+                    const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
+                    const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
+                    
+                    let updatedRead = [];
+                    updatedRead = data.read.map(Number);
+
+                    if(Array.isArray(data.read)){
+                        if("" + userId + "" == data.host){
+                            for(let i = 0; i<data.members.length; i++){
+                                if(data.members[i] != "" + username + ""){  
+                                    updatedRead[i]++;
+                                }   
+                            }
+                        }else{
+                            for(let i = 0; i<data.members.length; i++){
+                                if(data.members[i] != "" + username + ""){  
+                                    updatedRead[i]++;
+                                }   
+                            }
+                            updatedRead[data.members.length]++;
+                        }
+                    }else{
+                        console.log("Errenous read");
+                    }
+
+                    const { error: updateError } = await db
+                        .from("Chats")
+                        .update({ messages: updatedMessages, times: updatedTimes, senders: updatedSenders, read: updatedRead })
+                        .eq("chat_id", chat.chat_id);
+
+                    if (updateError) {
+                        console.error("Error updating chat:", updateError);
+                        return;
+                    }
+
+                    input.value = ""; 
+
+                } catch (err) {
+                    console.error("Unexpected error:", err);
+                }
+            });
             input.addEventListener("keydown", async function(event) {
                 event.stopPropagation;
                 if (event.key === "Enter") {
@@ -406,7 +492,12 @@ async function showChats() {
             });
             tab.appendChild(replyBar);
         }
-            
+        if(chat.groupchat){
+            let gcBadge = document.createElement('span');
+            gcBadge.classList.add('gc-badge');
+            gcBadge.innerHTML = "GC";
+            tab.appendChild(gcBadge);
+        }
         chatList.appendChild(tab);
         const existingBadge = tab.querySelector('.reader');
        
@@ -1849,8 +1940,16 @@ async function newMessages(payload){
                 const avatar = document.createElement("div");
                 avatar.classList.add("avatar");
                 message.appendChild(avatar);
+
+                let yprofile = await fetchUserProfile((await fetchId(payload.senders[num]))[0].id);
+                console.log(yprofile);
+                if(yprofile && yprofile.pfp != null){
+                    avatar.innerHTML = `<img src="${yprofile.pfp}" alt="Profile Picture" class="profilePicture">`;
+                }                
             }
+
             
+
             const content = document.createElement("div");
             content.classList.add("content");
             let usernameElement;

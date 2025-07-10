@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-@import url('/fonts/Inter/RFDewi-Bold/style.css');
+
 @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap');
 
 body {
@@ -1587,10 +1587,13 @@ form h1{
 }
 
 .user{
-    font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 1.5vh;
-    color: #220952ff;
+    font-size: 16px;
+    margin-bottom: 2px;
+    color: #444 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -1602,9 +1605,10 @@ form h1{
 
 .home .title{
     font-family: 'Inter', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     color: #220952ff;
-    font-size: 3.5vh;
+    font-size: 40px;
+    letter-spacing: -1px;
     
     text-align: left;
     display: flex;
@@ -1641,9 +1645,25 @@ form h1{
 }
 
 
-
+.gc-badge{
+    position: absolute;
+    top: 4vh;
+    right: 3vw;
+    background: #3d1766;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 2px 6px;
+    z-index: 2;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 
 .messagesBanner .reader{
+    position: absolute;
+    top: 3.5vh;
+    border: 2px solid white;
+    left: 3.5vh;
     font-family: 'Inter', sans-serif;
     font-size: 1vh;
 
@@ -1710,7 +1730,7 @@ form h1{
 
 .searcher{
     position: fixed;
-    top: 70vh;
+    top: 75vh;
     margin-left: 30vw;
    
     display: flex;
@@ -2019,7 +2039,6 @@ form h1{
     .own-message .content,
     .own-message .text,
     .messagesBanner,
-    .user,
     .lastMessage,
     .home .title,
     .sidebar h2,
@@ -2207,7 +2226,6 @@ body,
 .own-message .content,
 .own-message .text,
 .messagesBanner,
-.user,
 .lastMessage,
 .home .title,
 .sidebar h2,
@@ -2397,24 +2415,37 @@ body,
 .replyBar{
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: calc(100% - 40px);
     display: flex;
     justify-content: center;
     align-items: center;
+    display: flex;
+    align-items: center;
+    margin: 0 16px 0 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 24px;
+    padding: 0 10px;
+    height: 38px;
+
+    background: #fafafa;
+    margin-bottom: 2px;
 }
 
 
 .replyInput{
-    width:90%;
-    padding: 1vh;
-    border-radius: 50px;
+    border: none;
     outline: none;
-    border: 2px solid rgba(0, 0, 0, 0.137);
-  
-    transition: all .25s linear;
-    font-size: 1.2vh;
+    background: transparent;
+    flex: 1;
+    font-size: 18px;
+    padding: 0 6px;
 }
 
+
+.replyInput:focus{
+    border: none !important;
+    outline: none !important;
+}
 
 .replyInput:focus{
     border: 2px solid rgba(0, 0, 0, 1);
@@ -2452,7 +2483,10 @@ body,
 }
 
 .imges img{
-    width: 3vh;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    cursor: pointer;
 }
 
 .avatar{
@@ -2523,13 +2557,41 @@ i{
 }
 
 #chatSettings{
-    overflow: hidden;
-    width: 100vw;height: 100vh;position: absolute;z-index: 500000000000000000000000;display: none;justify-content: center;align-items: center;background-color: #f7f7f7;transition: all .25s linear;top: 0;left: 0;
+        overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 500000000000000000000000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.12);
+    transition: all .25s linear;
+    top: 0;
+    left: 0;
 }
 
 #chatSettings .container{
-    box-shadow: 0 4px 20px rgba(173, 173, 173, 0.08);
-    width: 80vw;height: 50vh;background-color: white;border-radius: 16px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px;
+        width: 100vw;
+    max-width: 430px;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.10);
+    padding: 0 0 24px 0;
+    position: relative;
+    animation: slideUp 0.2s cubic-bezier(.4,0,.2,1);
+    min-height: 200px;
+    max-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  
+    transition: height 0.22s cubic-bezier(.4,0,.2,1), opacity 0.22s cubic-bezier(.4,0,.2,1);
+    touch-action: none;
+    opacity: 1;
+    align-items: center;
+    top: 40vh;
+
 }
 
 #chatSettings .container #closerbtn{
@@ -2537,13 +2599,48 @@ i{
 }
 
 #blurWall{
-    overflow: hidden;
-    width: 100vw;height: 100vh;position: absolute;z-index: 500000000000000000000000;display: none;justify-content: center;align-items: center;background-color: #f7f7f7;transition: all .25s linear;top: 0;left: 0;
+        overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 500000000000000000000000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.12);
+    transition: all .25s linear;
+    top: 0;
+    left: 0;
+}
+
+.modal-dragBar{
+    width: 56px;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    margin: 12px auto 0 auto;
 }
 
 #blurWall .container{
-    box-shadow: 0 4px 20px rgba(173, 173, 173, 0.08);
-    width: 80vw;height: 50vh;background-color: white;border-radius: 16px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 40px;
+        width: 100vw;
+    max-width: 430px;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.10);
+    padding: 0 0 24px 0;
+    position: relative;
+    animation: slideUp 0.2s cubic-bezier(.4,0,.2,1);
+    min-height: 200px;
+    max-height: 100vh;
+    height: 100vh;
+    display: flex
+;
+    flex-direction: column;
+    transition: height 0.22s cubic-bezier(.4,0,.2,1), opacity 0.22s cubic-bezier(.4,0,.2,1);
+    touch-action: none;
+    opacity: 1;
+    align-items: center;
+    top: 40vh;
 }
 
 #blurWall .container #closerbtn{
@@ -2763,20 +2860,22 @@ i{
 }
 
 .lastMessage{
+    color: #888 !important;
+    font-size: 16px;
+    white-space: nowrap;
     font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 1vh;
-    color: #727272 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .messagesBanner .timer{
-    font-family: 'Inter', sans-serif;
-    font-size: 1vh;
-    font-weight: 800;
-
-    white-space: no-wrap !important; 
-    padding-right: 2vh;
-   
-    color: #000000;
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-size: 15px;
+    color: #888;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-bottom: 0;
 }
 
 .aiInChat{
@@ -3270,3 +3369,8 @@ i{
 .profilePicture{
     width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
 }
+
+.modal-dragbar{
+    margin-bottom: 40px !important;
+}
+

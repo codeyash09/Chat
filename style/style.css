@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import url('/fonts/RF Dewi/RFDewi-Bold/style.css');
+
 @import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap');
 
 
@@ -45,7 +45,7 @@ footer:hover {
 footer a {
     color: rgb(29, 29, 29);
     transition: color 0.25s linear;
-    font-family: "RF Dewi", sans-serif;
+    font-family: "Inter", sans-serif;
     text-decoration: none;
     font-size: 2.5vh;
 }
@@ -131,7 +131,7 @@ footer a:hover {
     text-align: left;
     text-decoration: none;
     color: #ffffff;
-    font-family: "RF Dewi", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 14px;
     border-bottom: 1px solid #333;
     background-color: #202020;

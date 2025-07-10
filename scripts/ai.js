@@ -246,7 +246,7 @@ let backBtn = document.getElementById("backerBtn");
 
 
 backBtn.addEventListener("click", ()=>{
-  document.getElementById("searcher").style.top = "70vh";
+  document.getElementById("searcher").style.top = "75vh";
   
   input.value = "";
   bar.style.zIndex = "2147483646";
