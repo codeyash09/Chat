@@ -811,7 +811,7 @@ async function openChat(id, payload = null) {
         let yprofile = await fetchUserProfile(chat.host);
             
         if(yprofile && yprofile.pfp){
-            image.push(profile.pfp);
+            image.push(yprofile.pfp);
         }else{
             image.push(null);
         }
