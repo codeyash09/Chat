@@ -1144,17 +1144,7 @@
 
         }
 
-        .replyMessage::before {
-            content: '';
-            width: 2px;
-            height: 16px;
-            background-color: #220952ff;
-            border-radius: 2px;
-            margin-right: 4px;
-        }
-
-
-
+       
         .replyContent {
             color: #666;
             font-size: 13px;
@@ -1179,21 +1169,27 @@
         /* Make received message reply styling match own messages exactly */
         .message .replyMessage {
             width: fit-content;
-            background-color: #eee;
+            background-color: white;
             color: #666;
-            border-radius: 8px;
+            border-radius: 50px;
             padding: 5px;
-            
+            border: 2px solid #666;
+            text-align: center;
             left: 15px;
             white-space: no-wrap !important;
 
         }
 
+        
+
         .message .replyContent {
             color: #666;
             white-space: nowrap;
             overflow: visible;
+            position: relative;
         }
+
+
 
         .message .replyUser {
             color: #666;
@@ -1201,7 +1197,17 @@
             white-space: nowrap;    
             max-width: 1200px;
             width: fit-content;
+            position: absolute;
+            top: -25px;
+            left: 15px;
             overflow: visible;
+        }
+
+        .own-message .replyUser {
+            right: 15px !important;
+            left: auto !important;
+            text-align: right;
+            
         }
 
         .message .timestamp {

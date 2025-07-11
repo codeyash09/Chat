@@ -518,7 +518,7 @@ async function handleReply(messageElement) {
     
 
     replying = true;
-    reply = `<div class="replyMessage"><div class="replyUser">${sender}</div><div class="replyContent">${messageText}</div><div style="display:none" class="ider">${messageElement.id}</div></div>`;
+    reply = `<div class="replyMessage"><div class="replyUser">${(messageElement.querySelector('.username').textContent)}</div><div class="replyContent">${messageText}</div><div style="display:none" class="ider">${messageElement.id}</div></div>`;
     repUser = sender;
    
     chatInput.focus();

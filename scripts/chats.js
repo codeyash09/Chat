@@ -1742,7 +1742,7 @@ document.querySelector('#saveBtnForPfp').addEventListener('click', async () => {
 });
 
 
-function stacker(){
+async function stacker(){
     lastSender = null;
     
     if(sendlers){
@@ -1806,6 +1806,9 @@ function stacker(){
                     content.style.borderBottomRightRadius = "18px";
                     content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
 
+                    if(content.querySelector('.username')){
+                        content.querySelector('.username').style.display = "none";
+                    }
 
                   
                 }else{
@@ -1825,6 +1828,10 @@ function stacker(){
                         
                     }
 
+                    if(content.querySelector('.username')){
+                        content.querySelector('.username').style.display = "none";
+                    }
+
                 }
             }else{
                 content.style.borderRadius = "5px";
@@ -1839,7 +1846,7 @@ function stacker(){
                 content.style.borderBottomLeftRadius = "18px";
                 content.style.borderBottomRightRadius = "18px";
 
-
+                
                 
             }
             
@@ -1888,6 +1895,27 @@ function stacker(){
 
 
         lastSender = sendlers[sendlers.length - 1 - i];
+
+        if(content.querySelector('.replyMessage')){
+            if(content.querySelector('.replyMessage').querySelector('.replyUser').innerHTML != username){
+                content.querySelector('.replyMessage').style.backgroundColor = "#eee";
+                content.querySelector('.replyMessage').style.border = "none";
+            }
+        }
+
+        if(contents[i-1]){
+            if(contents[i-1].querySelector('.replyMessage')){
+                content.style.borderBottomLeftRadius = "18px";
+                content.style.borderBottomRightRadius = "18px";
+               
+
+                content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
+
+                contents[i-1].classList.add('repHold');
+                
+
+            }
+        }
     }
 
 
