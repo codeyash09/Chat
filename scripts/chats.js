@@ -1845,7 +1845,9 @@ async function stacker(){
                 }
                 content.style.borderBottomLeftRadius = "18px";
                 content.style.borderBottomRightRadius = "18px";
-
+                if(content.querySelector('.username')){
+                    content.querySelector('.username').style.display = "none";
+                }
                 
                 
             }
@@ -1881,9 +1883,11 @@ async function stacker(){
                         content.parentElement.children[0].style.opacity = "1";
                         
                     }
-                    console.log(content.innerHTML);
+                   
                     content.parentElement.style.setProperty('margin-bottom', '40px', 'important');
-                    
+                    if(content.querySelector('.username')){
+                        content.querySelector('.username').style.display = "none";
+                    }
                 }
 
 
