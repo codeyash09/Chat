@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.type = 'text';
             searchInput.placeholder = 'Search GIFs...';
             searchInput.className = 'gif-search-input';
+            searchInput.enterKeyHint = 'send';
             
             // Remove the search button (icon) entirely
             // const searchButton = document.createElement('button');
