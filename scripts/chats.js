@@ -6,6 +6,7 @@ import { fetchUserProfile } from '/scripts/createChat.js';
 
 import {aing } from "/scripts/ai.js";
 
+
 window.onload = function () {
   if (!window.location.hash.includes('refreshed')) {
     window.location.hash += '#refreshed';
@@ -117,12 +118,50 @@ username.then(result =>{
     if(result[0] != undefined){
         username = result[0].username;
         
-        showChats();
+        showChats("open");
         showChatlers();
     }
 });
 
-async function showChats() {
+function load(){
+    document.getElementById("loader").style.display = 'flex';
+
+    document.getElementById("loader").classList.add("fadeIn");
+
+    setTimeout(() => {
+        document.getElementById("loader").classList.remove("fadeIn");
+        document.getElementById("loader").style.opacity = 1;
+    }, 600);
+}
+
+function forceLoad(){
+    document.getElementById("loader").style.display = 'flex';
+    document.getElementById("loader").style.opacity = 1;
+
+
+    
+}
+
+function unload(){
+
+
+    
+
+    document.getElementById("loader").classList.add("fadeAway");
+
+    setTimeout(() => {
+        document.getElementById("loader").style.display = 'none';
+        document.getElementById("loader").classList.remove("fadeAway");
+
+    }, 600);
+
+}
+
+async function showChats(method = "smt") {
+    if(method == "open"){
+        forceLoad();
+
+    }
     // Prevent recursive calls during updates
     if(isDispalying){return};
     isDispalying = true;
@@ -196,6 +235,32 @@ async function showChats() {
         person.classList.add("person");
         let avatar = document.createElement('div');
         avatar.classList.add("avatarBanner");
+
+        if(!chat.groupchat){
+   
+                
+            if("" + userId + "" == chat.host){
+                let profile = await fetchUserProfile((await fetchId(chat.members[0]))[0].id);
+                
+                if(profile && profile.pfp){
+                    avatar.innerHTML = `<img src="${profile.pfp}" alt="Profile Picture" class="profilePicture">`;
+                }else{
+                    avatar.innerHTML = `<img src="/images/default-avatar.png" alt="Default Avatar" class="profilePicture">`;
+                }
+            }else{
+                let profile = await fetchUserProfile(chat.host);
+                
+                if(profile && profile.pfp){
+                    avatar.innerHTML = `<img src="${profile.pfp}" alt="Profile Picture" class="profilePicture">`;
+                }else{
+                    avatar.innerHTML = `<img src="/images/default-avatar.png" alt="Default Avatar" class="profilePicture">`;
+                }
+            }
+            
+
+            
+        }
+    
         let texts = document.createElement('div');
         texts.classList.add("text");
         person.appendChild(avatar);
@@ -255,6 +320,7 @@ async function showChats() {
                     }
 
                     timel.innerHTML = formatChatListTimestamp(chat.times[i]);
+                    console.log(timel);
                     break;
                 }
             }
@@ -266,7 +332,7 @@ async function showChats() {
         texts.appendChild(lastMessage);
         person.appendChild(texts);
         tab.appendChild(person);
-        tab.addEventListener("click", () => openChat(chat.chat_id));
+        tab.addEventListener("click", () => openChat(chat.chat_id, null, "open"));
         tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
         time.appendChild(timel);
 
@@ -287,7 +353,8 @@ async function showChats() {
 
             let sendBtn = document.createElement("button");
             sendBtn.classList.add("quickReplyBtn");
-            sendBtn.innerHTML = `<img src="/images/send.png" alt="Send" style="width:32px;height:32px;object-fit:contain;">`;
+            sendBtn.innerHTML = `<img src="/images/send.png" alt="Send">`;
+            sendBtn.children[0].classList.add("qwikRepBtn");
             sendBtn.style.padding = "0";
             sendBtn.style.background = "none";
             sendBtn.style.border = "none";
@@ -554,6 +621,8 @@ async function showChats() {
     }, 0);
 
     isDispalying = false;
+    
+    unload();
 }
 
 async function fetchChat(id) {
@@ -736,7 +805,12 @@ function convertToLocalTime(centralTime) {
            `${dayNames[date.getDay()]} at ${timeStr}`;
 }
 
-async function openChat(id, payload = null) {
+async function openChat(id, payload = null, method = "smt") {
+    console.log(method);
+    if(method === "open"){
+        console.log(method);
+        forceLoad();
+    }
     if(payload != null && payload.messages != null && payload.messages.length > 0){
 
       
@@ -874,6 +948,7 @@ async function openChat(id, payload = null) {
     let image = null;
     if(!(chat.groupchat)){
         if("" + userId == "" + chat.host){
+            console.log((await fetchId(chat.members[0])));
             let profile = await fetchUserProfile((await fetchId(chat.members[0]))[0].id);
         
             if(profile && profile.pfp){
@@ -1094,7 +1169,7 @@ async function openChat(id, payload = null) {
                 return;
             }
 
-            openChat(currentChat);
+            openChat(currentChat,null, "open");
         });
         yes.innerHTML = "Accept";
         yes.classList.add("yesBtn");
@@ -1129,7 +1204,7 @@ async function openChat(id, payload = null) {
                 return;
             }
 
-            openChat(currentChat);
+            openChat(currentChat,null, "open");
             
 
         });
@@ -1150,7 +1225,7 @@ async function openChat(id, payload = null) {
     }
     
     
-    
+    unload();
 }
 
 async function updateRead(updatedRead){
@@ -1195,7 +1270,7 @@ db
         isUpdating = true;
         
         changeRowler();
-        showChats();
+        showChats("open");
  
         
         isUpdating = false;
@@ -1297,7 +1372,7 @@ async function changeRow() {
                     }
                 }
             }
-            tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("click", () => openChat(chat.chat_id,null, "open"));
             tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatList.appendChild(tab);
         }
@@ -1465,7 +1540,7 @@ async function showChatlers() {
                     }
                 }
             }
-            tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("click", () => openChat(chat.chat_id,null, "open"));
             tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatsList.appendChild(tab);
         }
@@ -1571,7 +1646,7 @@ async function changeRowler() {
                     }
                 }
             }
-            tab.addEventListener("click", () => openChat(chat.chat_id));
+            tab.addEventListener("click", () => openChat(chat.chat_id,null, "open"));
             tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
             chatsList.appendChild(tab);
         }
@@ -1631,17 +1706,24 @@ function formatChatListTimestamp(centralTime) {
     let daysApart = Math.floor((rn - date) / 86400000);
 
     if (daysApart > 6) {
-        return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric'});
     }
 
     let timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
     let dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let dayDiff = rn.getDay() - date.getDay();
 
-    return dayDiff === 0 ? `${timeStr}` :
-           dayDiff === 1 || (rn.getDay() === 0 && date.getDay() === 6) ? `Yesterday` :
-           `${dayNames[date.getDay()]}`;
+    let result;
+    if (dayDiff === 0) {
+        result = `${timeStr}`;
+        
+    } else if (dayDiff === 1 || (rn.getDay() === 0 && date.getDay() === 6)) {
+        result = `Yesterday`;
+    } else {
+        result = `${dayNames[date.getDay()]}`;
+    }
 
+    return result;
 }
 
 export {currentChat, username, userId, displayTypingBool, newpayload, messages, sendlers, memblers, timers, fetchChat};

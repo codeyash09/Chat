@@ -723,6 +723,32 @@ form{
 }
 
 
+.fadeAway{
+    animation: faders 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) !important;
+
+}
+
+.fadeIn{
+    animation: faders 0.6s cubic-bezier(0.43, 0.34, 0.85, 1.52) reverse !important;
+
+}
+
+
+@keyframes faders {
+    0% {
+        opacity: 1;
+        
+    }
+    
+    
+
+    
+    100% {
+        opacity: 0;
+        
+
+    }
+}
 
 @keyframes hide {
     0% {
@@ -2655,7 +2681,7 @@ i{
 }
 
 #cloBtn{
-    background-color: white !important; color: black !important;
+    background-color: white !important; color: #888 !important;
 
 }
 
@@ -3413,4 +3439,18 @@ i{
     border-top-right-radius: 10px;
     transform-origin: top right;
     vertical-align: middle;
+}
+
+.qwikRepBtn{
+    width:32px;height:32px;object-fit:contain;
+}
+
+
+.avatarBanner{
+    overflow: hidden;
+
+}
+
+.avatarBanner:has(img){
+    background-color: transparent;
 }
