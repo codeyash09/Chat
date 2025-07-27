@@ -3454,3 +3454,138 @@ i{
 .avatarBanner:has(img){
     background-color: transparent;
 }
+
+
+
+.incomingCall{
+    position: fixed;
+    z-index: 5000000000000000000000000000000000000000000000000;
+    top: 0;
+    width: 90vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    background: #1b1b1bfb;
+    text-align: center;
+    height: 7.5vh;
+    top:6%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50px;
+
+    padding-left: 3vw;
+    padding-right: 3vw;
+    color: white;
+    box-shadow: 0px 0px 20px 11px rgba(0, 0, 0, 0.08);
+}
+
+.incomingCall .btns{
+    display: flex;
+    flex-direction: row;
+
+    height: fit-content;
+    justify-content: space-between;
+    width: 25vw;
+}
+
+.incomingCall .text{
+    margin-left: 0vw;
+    display: flex;
+    justify-content: space-between;
+    width: 25vw;
+        align-items: center;
+
+}
+
+.incomingCall .avatarLeft{
+    overflow: hidden;
+    border: 2px solid white;
+    
+}
+
+.incomingCall .btns button{
+    border-radius: 50px;
+    height: 5vh;
+    width: 5vh;
+    margin: 0;
+}
+
+#acceptBtn{
+    border: 2px solid rgb(165, 236, 165) !important;
+    background-color: transparent !important;
+    color: rgb(165, 236, 165) !important;
+}
+
+#acceptBtn i{
+    color: rgb(165, 236, 165) !important;
+}
+
+#declineBtn{
+    border: 2px solid rgb(226, 133, 133) !important;
+
+    background-color: transparent !important;
+    color: rgb(226, 133, 133) !important;
+}
+
+#declineBtn i{
+    transform: rotate(135deg);
+}
+
+#declineBtn i{
+    color: rgb(226, 133, 133) !important;
+}
+
+#acceptBtn:hover{
+    color: white !important;
+    background-color: rgb(165, 236, 165) !important;
+    border-color: white !important;
+}
+
+#acceptBtn:hover i{
+    color: white !important;
+}
+
+#declineBtn:hover{
+    color: white !important;
+    background-color: rgb(226, 133, 133) !important;
+    border-color: white !important;
+}
+
+#declineBtn:hover i{
+    color: white !important;
+}
+
+@media screen and (min-width: 768px) {
+    .incomingCall{
+        width: 500px;
+        height: 75px;
+        align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .incomingCall .text{
+        width: 110px;
+        margin-left: 0;
+        align-items: center;
+    }
+
+    .incomingCall .btns{
+        width: 120px;
+       
+    }
+
+    .incomingCall .btns button{
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.avatarLeft{
+    width: 3.5vh;
+    background-color: #220952ff;
+    height: 3.5vh;
+    border-radius: 50px;
+    
+}

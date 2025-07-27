@@ -25,6 +25,7 @@ let totalRead = 0;
 
 let userId = window.localStorage.getItem("userIdentify");
 let lastSender = null;
+let home = document.querySelector('.home');
 
 if(userId == null || userId == "null"){
     window.location.replace('/pages/signup.html');
@@ -51,6 +52,9 @@ let memblers;
 let isDispalying = false;
 let timers;
 let isNewing = false;
+let myChats = [];
+
+
 
 // Add a flag to track if we're currently updating to prevent recursive calls
 let isUpdating = false;
@@ -171,11 +175,20 @@ async function showChats(method = "smt") {
         .select('*')
         .or(`members.cs.{"${username}"},host.eq."${userId}"`);
 
+
+    
+
+
     if (error || !data || data.length === 0) {
         console.error("No chats found or error fetching chats:", error);
+        unload();
         return;
     }
-    
+   
+
+    myChats = data.map(chat => chat.chat_id);
+
+
     const sortedChats = data.sort((a, b) => {
         let lastA;
         let lastB;
@@ -214,6 +227,7 @@ async function showChats(method = "smt") {
         prevOrder = [];
     }
     rowSys = sortedChats;
+  
    
     savedScrollPosition = chatMess.scrollTop;
     let tab = document.querySelector(`#messagesBannerHolder a[data-chat-id='${sortedChats[0].chat_id}']`);
@@ -223,7 +237,7 @@ async function showChats(method = "smt") {
     
     const existingChatIds = new Set(Array.from(chatList.children).map(el => el.getAttribute("data-chat-id")));
     for (const chat of sortedChats) {
-        
+       
         let userNum = ("" + userId === chat.host) ? chat.members.length : chat.members.indexOf(username);
         let readNum = chat.read[userNum];
         
@@ -240,13 +254,24 @@ async function showChats(method = "smt") {
    
                 
             if("" + userId + "" == chat.host){
-                let profile = await fetchUserProfile((await fetchId(chat.members[0]))[0].id);
+                if((await fetchId(chat.members[0]))){
+                    if((await fetchId(chat.members[0]))[0] && (await fetchId(chat.members[0]))[0].id){
+                        let profile = await fetchUserProfile((await fetchId(chat.members[0]))[0].id);
                 
-                if(profile && profile.pfp){
-                    avatar.innerHTML = `<img src="${profile.pfp}" alt="Profile Picture" class="profilePicture">`;
+                        if(profile && profile.pfp){
+                            avatar.innerHTML = `<img src="${profile.pfp}" alt="Profile Picture" class="profilePicture">`;
+                        }else{
+                            avatar.innerHTML = `<img src="/images/default-avatar.png" alt="Default Avatar" class="profilePicture">`;
+                        }
+                    }else{
+                        unload();
+                        return;
+                    }
                 }else{
-                    avatar.innerHTML = `<img src="/images/default-avatar.png" alt="Default Avatar" class="profilePicture">`;
+                    unload();
+                    return
                 }
+                
             }else{
                 let profile = await fetchUserProfile(chat.host);
                 
@@ -805,6 +830,16 @@ function convertToLocalTime(centralTime) {
            `${dayNames[date.getDay()]} at ${timeStr}`;
 }
 
+
+function clear(){
+    home.style.display = "block";
+}
+
+function unclear(){
+    home.style.display = "none";
+
+}
+
 async function openChat(id, payload = null, method = "smt") {
     console.log(method);
     if(method === "open"){
@@ -818,10 +853,10 @@ async function openChat(id, payload = null, method = "smt") {
         return;
     }
     let confirmation = false;
-    let home = document.querySelector('.home');
     let crBtn = document.querySelector('#newChatBtn2');
     if(!home.classList.contains('hide')){
         home.classList.add('hide');
+        setTimeout(unclear, 500);
         crBtn.style.display = 'none';
 
     }
@@ -863,30 +898,35 @@ async function openChat(id, payload = null, method = "smt") {
     read = readNum;
         
     if(chat.groupchat){
-        chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title;
+        chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
         let btn = document.querySelector('.homeBtn');
+
 
         btn.addEventListener('click', ()=>{
             document.getElementById('newChatBtn2').style.display = 'flex';
             changeRow();
             home.classList.remove('hide');
+            setTimeout(clear, 0);
+
         })
         btn.children[0].addEventListener('click', ()=>{
             document.getElementById('newChatBtn2').style.display = 'flex';
 
             changeRow();
             home.classList.remove('hide');
+            setTimeout(clear, 0);
+
         })
         chatInput.placeholder = "Message " + chat.title;
     }else{
         if(chat.host == "" + userId + ""){
             if(chat.members.length != 0){
-                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name;
+                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
                 chatInput.placeholder = "Message " + (await fetchName(chat.members[0]))[0].name;
 
 
             }else{
-                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + username + " (You)";
+                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + username + " (You)" + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
                 chatInput.placeholder = "Message " + username + " (yourself)";
             }
 
@@ -897,12 +937,16 @@ async function openChat(id, payload = null, method = "smt") {
 
                 changeRow();
                 home.classList.remove('hide');
+                setTimeout(clear, 0);
+
             })
             btn.children[0].addEventListener('click', ()=>{
                 document.getElementById('newChatBtn2').style.display = 'flex';
 
                 changeRow();
                 home.classList.remove('hide');
+                setTimeout(clear, 0);
+
             })
         }else{
             let hoster = fetchUsers(chat.host);
@@ -913,7 +957,7 @@ async function openChat(id, payload = null, method = "smt") {
                     chatHeader.innerHTML = hoster;
                     chatInput.placeholder = "Message " + hoster;
 
-                    chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' +hoster;
+                    chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' +hoster + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
                     chatInput.placeholder = "Message " + hoster;
 
                     let btn = document.querySelector('.homeBtn');
@@ -923,12 +967,16 @@ async function openChat(id, payload = null, method = "smt") {
 
                         changeRow();
                         home.classList.remove('hide');
+                        setTimeout(clear, 0);
+
                     })
                     btn.children[0].addEventListener('click', ()=>{
                         document.getElementById('newChatBtn2').style.display = 'flex';
 
                         changeRow();
                         home.classList.remove('hide');
+                        setTimeout(clear, 0);
+
                     })
                 }
             });
@@ -1104,6 +1152,97 @@ async function openChat(id, payload = null, method = "smt") {
             chatMess.appendChild(message);
         }
 
+        document.querySelector("#call").addEventListener('click', async()=>{
+            const { data, error } = await db
+                .from('incoming_calls')
+                .select('*')
+                .eq('id', chat.chat_id)
+                .single();
+
+            if(data && data.members){
+                let num = data.members.indexOf(username);
+                let newAccept = data.accepted;
+                newAccept[num] = 1;
+                let newType = data.type;
+                if(data.type == "Video Call"){
+                    newType = "Multimedia Call";
+                }
+                const { error: updateError } = await db
+                    .from('incoming_calls')
+                    .update({ accepted: newAccept, type: newType })
+                    .eq('id', chat.chat_id)
+                    
+            }else{
+                let newMemb = chat.members;
+                newMemb.push((await fetchUsers(chat.host))[0].username);
+
+                let newAccept = [];
+                for(let i = 0; i< newMemb.length; i++){
+                    newAccept.push(0);
+                    if(username == newMemb[i]){
+                        newAccept[i] = 1;
+                    }
+                }
+               
+
+
+                const { error: insertError } = await db
+                    .from('incoming_calls')
+                    .insert([{ id: chat.chat_id, sender: username, members: newMemb, accepted: newAccept, type: "Phone Call"}])
+            }
+
+            const baseUrl = '/pages/calls.html';
+            const params = new URLSearchParams({ username, id: chat.chat_id, mode: "call" }).toString();
+            const destinationUrl = `${baseUrl}?${params}`;
+
+            window.location.href = destinationUrl;
+        })
+        document.querySelector("#video").addEventListener('click', async ()=>{
+            const { data, error } = await db
+                .from('incoming_calls')
+                .select('*')
+                .eq('id', chat.chat_id)
+                .single();
+
+            if(data && data.members){
+                let num = data.members.indexOf(username);
+                let newAccept = data.accepted;
+                newAccept[num] = 1;
+                let newType = data.type;
+                if(data.type == "Phone Call"){
+                    newType = "Multimedia Call";
+                }
+                const { data, error } = await db
+                    .from('incoming_calls')
+                    .update({ accepted: newAccept, type: newType })
+                    .eq('id', chat.chat_id)
+                    
+            }else{
+                let newMemb = chat.members;
+                newMemb.push((await fetchUsers(chat.host))[0].username);
+
+                let newAccept = [];
+                for(let i = 0; i< newMemb.length; i++){
+                    newAccept.push(0);
+                    if(username == newMemb[i]){
+                        newAccept[i] = 1;
+                    }
+                }
+               
+
+
+                const { data, error } = await db
+                    .from('incoming_calls')
+                    .insert([{ id: chat.chat_id, sender: username, members: newMemb, accepted: newAccept, type: "Video Call"}])
+            }
+
+            const baseUrl = '/pages/calls.html';
+            const params = new URLSearchParams({ username, id: chat.chat_id, mode: "video" }).toString();
+            const destinationUrl = `${baseUrl}?${params}`;
+
+            window.location.href = destinationUrl;
+        })
+
         
         let updatedRead = chat.read;
 
@@ -1223,6 +1362,7 @@ async function openChat(id, payload = null, method = "smt") {
 
         
     }
+
     
     
     unload();
@@ -1275,6 +1415,51 @@ db
         
         isUpdating = false;
     })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'incoming_calls' }, async (payload) => {
+        if(myChats.indexOf(payload.new.id) != -1){
+            let callIndicator = document.querySelector("#inCall");
+            callIndicator.style.display = "flex";
+            callIndicator.querySelector('.username').innerHTML = payload.new.sender;
+            callIndicator.querySelector('h6').innerHTML = payload.new.type;
+
+            callIndicator.querySelector('#acceptBtn').addEventListener('click', async ()=>{
+                
+                let num = payload.new.members.indexOf(username);
+                let newAccept = payload.new.accepted;
+                newAccept[num] = 1;
+                
+                const { data, error } = await db
+                    .from('incoming_calls')
+                    .update({ accepted: newAccept})
+                    .eq('id', payload.new.id)
+
+                callIndicator.style.display = "none";
+
+                const baseUrl = '/pages/calls.html';
+                const params = new URLSearchParams({ username, id: payload.new.id, mode: payload.new.type }).toString();
+                const destinationUrl = `${baseUrl}?${params}`;
+                window.location.href = destinationUrl;
+                
+            })
+
+            callIndicator.querySelector('#declineBtn').addEventListener('click', async ()=>{
+                
+                let num = payload.new.members.indexOf(username);
+                let newAccept = payload.new.accepted;
+                newAccept[num] = -1;
+                
+                const { data, error } = await db
+                    .from('incoming_calls')
+                    .update({ accepted: newAccept})
+                    .eq('id', payload.new.id)
+
+                callIndicator.style.display = "none";
+
+                
+                
+            })
+        }
+    })
     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Chats' }, async (payload) => {
         if(isUpdating) return;
         isUpdating = true;
@@ -1313,7 +1498,9 @@ db
         await showChats();
 
     })
-    .subscribe();
+    .subscribe((status)=>{
+        console.log("Channel Stat: " + status);
+    })
 
 async function changeChats(){
     let chat = await fetchChat(currentChat);
@@ -2178,5 +2365,8 @@ window.addEventListener('error', (event) => {
         showChats();
     }
 });
+
+
+
 
 export {openChat};

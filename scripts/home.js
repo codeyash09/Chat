@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
         console.log("hi");
         home.classList.remove('hide');
+        setTimeout(clear, 0);
+
     })
     btn.children[0].addEventListener('click', ()=>{
         createChatBtn.style.setProperty('display', 'flex', 'important');
@@ -17,7 +19,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
         console.log("hi");
         home.classList.remove('hide');
+        setTimeout(clear, 0);
+
     })
 })
 
 
+function clear(){
+    home.style.display="block";
+}

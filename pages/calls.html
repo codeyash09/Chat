@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ada7aee952.js" crossorigin="anonymous"></script>
+
+    <title>Multi-User Video and Audio Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .video-grid {
+            display: inline-grid;
+            
+            padding: 10px;
+            gap: 10px;
+        }
+
+        
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        
+        
+        .video-wrapper {
+            width: 100%;
+            text-align: center;
+            background: #000000;
+            height: fit-content;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        .video-wrapper.local {
+            border-color: #007bff;
+        }
+        
+        video {
+            width: 100%;
+            transform: scaleX(-1);
+            height: 250px;
+            border-radius: 8px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            background-color: #000;
+        }
+        
+        .video-label {
+            position: absolute;
+            font-weight: 100;
+            color: white;
+            background-color: #000000d9;
+            margin-top: -25px;
+            margin-left: 0px;
+            padding: 5px;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 8px;
+            padding-bottom: 0;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .room-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .inputs{
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+        }
+        .actions{
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+        }
+        
+        input[type="text"] {
+            padding: 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 40%;
+            border-radius: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            border-bottom: 2px solid #000000;
+            transition: all .25s linear;
+
+        }
+
+        input[type="text"]:focus {
+            border-bottom: 2px solid #007bff;
+        }
+        
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .primary-btn {
+            background-color: #007bff00;
+            color: #007bff;
+            border: #0057b300 2px solid;
+            font-size: 1.5vh;
+            border-radius: 50%;
+            padding: 10px;
+            
+        }
+
+        img{
+            width: 3vh;
+            vertical-align: middle;
+        }
+        
+        .primary-btn:hover:not(:disabled) {
+            background-color: #0056b3;
+            color: white !important;
+            border: #0056b3 2px solid;
+        }
+        
+        .success-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .success-btn:hover:not(:disabled) {
+            background-color: #1e7e34;
+        }
+        
+        .danger-btn {
+            background-color: #ffffff00;
+            color: rgb(231, 61, 61);
+            font-size: 1.5vh;
+        }
+
+        .danger-btn:disabled {
+            background-color: #ffffff00;
+            color: rgb(231, 61, 61);
+        }
+        
+        
+        .danger-btn:hover:not(:disabled) {
+            background-color: #c82333;
+        }
+        
+        .warning-btn {
+            background-color: #ffc107;
+            color: #f56565;
+        }
+        
+        .warning-btn:hover:not(:disabled) {
+            color: white !important;
+            border: #f56565 2px solid;
+            background-color: #f56565;
+        }
+        
+        .chat-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f9f9f9;
+        }
+        
+        .chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input-container input {
+            flex: 1;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .status.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .message {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .message.system {
+            background-color: #e9ecef;
+            font-style: italic;
+        }
+        
+        .message.user {
+            background-color: #e3f2fd;
+            text-align: right;
+        }
+        
+        .message.remote {
+            background-color: #f1f8e9;
+        }
+        
+        .participants-list {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .participant-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .participant-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #28a745;
+        }
+        
+        .media-controls {
+            display: flex;
+            gap: 10vw;
+            width: 100vw;
+            position: fixed;
+            bottom: 0;
+            justify-content: center;
+            left: 0;
+            padding-bottom: 5vh;
+            margin-top: 10px;
+        }
+        
+        .media-controls button {
+
+            background-color: white;
+            border: 2px solid rgba(173, 173, 173, 0);
+            border-radius: 10000000px;
+            padding: 1.5vh;
+            
+            font-size: 1.5vh;
+        }
+
+                /* Placeholder stack: initial + aura */
+        .placeholder {
+            display: none;
+            position: relative;
+            
+            top: -130px;
+            
+            background-color: #ffffff00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .initial {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            z-index: 2;
+        }
+
+        /* Aura behind the initial */
+        .aura {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #000000;
+            border: 4px solid #000000;
+            box-shadow: 0 0 40px 20px rgba(0, 140, 255, 0.8);
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <div class="container">
+    
+        
+        <div class="room-controls">
+            <div class="inputs">
+                <input type="text" id="userInput" placeholder="Enter your username" />
+                <input type="text" id="roomInput" placeholder="Enter room ID" />
+            </div>
+           
+            <div class="actions">
+                <button id="joinBtn" class="primary-btn"><i class="fa-solid fa-video"></i></button>
+                <button id="joinBtn2" class="primary-btn"><i class="fa-solid fa-phone"></i></button>
+            </div>
+            
+        </div>
+        
+        
+        
+        <div id="status" class="status info" style="display: none;"></div>
+        
+       
+        
+        <div class="video-grid" id="videoGrid" style="display: none;">
+            <div class="video-wrapper local">
+                <video id="localVideo" autoplay muted playsinline></video>
+                <div class="video-label">You</div>
+
+                <div class="placeholder" id="videoFallback" style="display: none;">
+                    <div class="initial">Y</div>
+                    <div class="aura" id="soundAura"></div>
+                </div>
+            </div>
+        </div>
+        
+      
+        </div>
+    </div>
+    <div class="media-controls" style="display: none;">
+        <button id="toggleVideoBtn" class="warning-btn"><i class="fa-solid fa-video"></i></button>
+        <button id="toggleAudioBtn" class="warning-btn"><i class="fa-solid fa-microphone"></i></button>
+        <button id="shareScreenBtn" class="primary-btn" style="color: #0056b3"><i class="fa-solid fa-display"></i></button>
+        <button id="leaveBtn" class="danger-btn" disabled><i  style="transform: rotate(135deg);" class="fa-solid fa-phone"></i></button>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        
+
+       
+
+        let localStream;
+        let peerConnections = {};
+        let iceCandidateQueue = {}; 
+        let participants = new Set();
+        let userId;
+        let roomId;
+        let supabaseChannel;
+        let isVideoEnabled = true;
+        let isAudioEnabled = true;
+        let isScreenSharing = false;
+        let lastEnabled = null;
+        let auraActive = false;
+        let checkInterval = null;
+        let hangedUp = true;
+
+        const SUPABASE_URL = 'https://pmfrislowxhopnexusxa.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZnJpc2xvd3hob3BuZXh1c3hhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODk4NjExMSwiZXhwIjoyMDY0NTYyMTExfQ.TTYNG0O0nTFqS8QPimAqhC-uqmNs65Aaml1kqAtYeTQ';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const config = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                {
+                    urls: 'turn:openrelay.metered.ca:80',
+                    username: 'f7c09d09a32836b0e1e9391b',
+                    credential: 'CgEinYNo86fiVr10',
+                }
+            ]
+        };
+        let vGrid = document.querySelector("#videoGrid");
+        let observer = null;
+        window.addEventListener('resize', () => {
+            if(window.innerWidth > 769){
+                observer = new MutationObserver((mutationsList) => {
+                    for (let mutation of mutationsList) {
+                        if (mutation.type === 'childList') {
+                            let cols = Math.round(Math.sqrt(vGrid.children.length));
+                            vGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                        }
+                    }
+                });
+
+                observer.observe(vGrid, {
+                    childList: true,
+                    subtree: false 
+                });
+            }else{
+                observer = null;
+            }
+        });
+
+        if(window.innerWidth > 769){
+            observer = new MutationObserver((mutationsList) => {
+                for (let mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        let cols = Math.round(Math.sqrt(vGrid.children.length));
+                        vGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                    }
+                }
+            });
+
+            observer.observe(vGrid, {
+                childList: true,
+                subtree: false 
+            });
+        }else{
+            observer = null;
+        }
+
+
+        
+
+        async function getMedia() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('localVideo').srcObject = localStream;
+            } catch (err) {
+                console.error('Media error:', err);
+            }
+        }
+
+        async function getCallMedia() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('localVideo').srcObject = localStream;
+            } catch (err) {
+                console.error('Media error:', err);
+            }
+          
+
+            document.getElementById(`videoFallback`).style.display = 'flex';
+            document.getElementById(`videoFallback`).children[0].textContent = userId.charAt(0).toUpperCase();
+            document.getElementById('localVideo').parentElement.children[1].style.marginTop = "20px";
+         
+
+            
+            const stream = localStream;
+            const audioCtx = new AudioContext();
+            const analyser = audioCtx.createAnalyser();
+            const source = audioCtx.createMediaStreamSource(stream);
+            source.connect(analyser);
+
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            const aura = document.getElementById("soundAura");
+
+            function animateAura() {
+                analyser.getByteFrequencyData(dataArray);
+                const avg = dataArray.reduce((a, b) => a + b) / dataArray.length;
+
+                // Adjust scale based on volume
+                const scale = Math.min(1 + avg / 100, 2);
+                aura.style.transform = `scale(${scale})`;
+                aura.style.opacity = `${Math.min(avg / 100, 1)}`;
+
+                requestAnimationFrame(animateAura);
+            }
+
+            animateAura();
+        }
+
+        async function sendMessage(type, data, targetUser = null) {
+            await sb.from('webrtc_signals').insert({
+                type: type,
+                payload: data,
+                sender_id: userId,
+                receiver_id: targetUser,
+                room_id: roomId
+            });
+        }
+
+        function createPeerConnection(remoteUserId) {
+            const pc = new RTCPeerConnection(config);
+
+            iceCandidateQueue[remoteUserId] = [];
+
+            localStream.getTracks().forEach(track => {
+                pc.addTrack(track, localStream);
+            });
+            pc.ontrack = (event) => {
+                addRemoteVideo(remoteUserId, event.streams[0]);
+
+            };
+
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    sendMessage('ice', event.candidate, remoteUserId);
+                }
+            };
+
+            peerConnections[remoteUserId] = pc;
+            return pc;
+        }
+        function addRemoteVideo(userId, stream) {
+            let video = document.getElementById(`video-${userId}`);
+            if (!video) {
+                const videoElement = document.createElement('video');
+                videoElement.id = `video-${userId}`;
+                videoElement.autoplay = true;
+
+                const label = document.createElement('div');
+                label.textContent = userId;
+                label.classList.add("video-label");
+
+                let placeholder = document.createElement('div');
+                placeholder.classList.add('placeholder');
+                placeholder.id = `videoFallback${userId}`;
+                placeholder.style.display = 'flex';
+                let initial = document.createElement('div');
+                initial.classList.add('initial');   
+                initial.textContent = userId.charAt(0).toUpperCase();
+                let aura = document.createElement('div'); 
+                aura.classList.add('aura');
+                aura.id = `soundAura${userId}`;
+                placeholder.appendChild(initial);
+                placeholder.appendChild(aura);
+
+                const container = document.createElement('div');
+                container.classList.add('video-wrapper');
+                container.appendChild(videoElement);
+                container.appendChild(label);
+                container.appendChild(placeholder);
+                document.getElementById('videoGrid').appendChild(container);
+                video = videoElement;
+            }
+            video.srcObject = stream;
+
+            let auraActive = false;
+            let audioContext = null;
+
+            function shouldShowVideo() {
+                // Create a small canvas to sample the video for brightness detection
+                const canvas = document.createElement('canvas');
+                canvas.width = 10;
+                canvas.height = 10;
+                const ctx = canvas.getContext('2d');
+                
+                try {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+                    
+                    // Check if all pixels are black (or very dark)
+                    let totalBrightness = 0;
+                    for (let i = 0; i < data.length; i += 4) {
+                        totalBrightness += data[i] + data[i + 1] + data[i + 2]; // RGB values
+                    }
+                    
+                    const avgBrightness = totalBrightness / (data.length / 4 * 3);
+                    return avgBrightness > 15; // Threshold for "not black"
+                    
+                } catch (error) {
+                    console.log('Canvas brightness check failed:', error);
+                    return false; // Show fallback if brightness check fails
+                }
+            }
+
+            function updateVideoDisplay() {
+                if((document.getElementById(`videoFallback${userId}`)) && !hangedUp){
+                    const showVideo = shouldShowVideo();
+                    const placeholder = document.getElementById(`videoFallback${userId}`);
+                    video = document.getElementById(`video-${userId}`);
+
+                    const label = video.parentElement.children[1];
+                    
+                    if (showVideo) {
+                        video.style.display = 'block';
+                        video.style.height = "308.66667px";
+                        placeholder.style.display = 'none';
+                        label.style.marginTop = '';
+                        
+                        auraActive = false;
+                        if (audioContext) {
+                            if(document.getElementById(`videoFallback${userId}`) && !hangedUp && audioContext.state != 'closed'){
+                                audioContext.close();
+                                audioContext = null;
+                            }
+                           
+                        }
+                    } else {
+                        video.style.display = 'block';
+                        video.style.height = "250px";
+
+                        placeholder.style.display = 'flex';
+                        label.style.marginTop = '20px';
+                        
+                        setupAudioVisualization();
+                    }
+                }
+                
+            }
+
+            function setupAudioVisualization() {
+                if (auraActive || !stream.getAudioTracks().length) return;
+                
+                auraActive = true;
+                
+                try {
+                    audioContext = new AudioContext();
+                    const analyser = audioContext.createAnalyser();
+                    const source = audioContext.createMediaStreamSource(stream);
+                    source.connect(analyser);
+
+                    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                    const aura = document.getElementById(`soundAura${userId}`);
+
+                    function animateAura() {
+                        if (!auraActive) return;
+
+                        analyser.getByteFrequencyData(dataArray);
+                        const avg = dataArray.reduce((a, b) => a + b) / dataArray.length;
+
+                        const scale = Math.min(1 + avg / 100, 2);
+                        aura.style.transform = `scale(${scale})`;
+                        aura.style.opacity = `${Math.min(avg / 100, 1)}`;
+
+                        requestAnimationFrame(animateAura);
+                    }
+
+                    animateAura();
+                } catch (error) {
+                    console.error('Audio context error:', error);
+                }
+            }
+
+            // Listen for video events to detect when video starts/stops
+            video.addEventListener('loadedmetadata', updateVideoDisplay);
+            video.addEventListener('canplay', updateVideoDisplay);
+            video.addEventListener('playing', updateVideoDisplay);
+            video.addEventListener('pause', updateVideoDisplay);
+            video.addEventListener('emptied', updateVideoDisplay);
+            video.addEventListener('stalled', updateVideoDisplay);
+
+            // Monitor for video dimension changes (more frequent check)
+            checkInterval = setInterval(() => {
+                updateVideoDisplay();
+                
+                // Clean up if stream is gone
+                if (!stream.active && !hangedUp) {
+                    clearInterval(checkInterval);
+                    if (audioContext) {
+                        if(document.getElementById(`videoFallback${userId}`) && !hangedUp && audioContext.state != 'closed'){
+                            audioContext.close();
+                            audioContext = null;
+                        }
+                        
+                    }
+                }
+            }, 200); // Check every 200ms
+
+            // Initial setup
+            updateVideoDisplay();
+        }
+
+        function removeUser(userId) {
+            const video = document.getElementById(`video-${userId}`);
+            if (video) {
+                video.parentElement.remove();
+            }
+
+            if (peerConnections[userId]) {
+                peerConnections[userId].close();
+                delete peerConnections[userId];
+            }
+
+            delete iceCandidateQueue[userId];
+
+            participants.delete(userId);
+            
+        }
+
+       
+
+        async function handleMessage(msg) {
+            const { type, payload, sender_id, receiver_id } = msg;
+
+            if (sender_id === userId) return; 
+            if (receiver_id && receiver_id !== userId) return; 
+
+            switch (type) {
+                case 'user_joined':
+                    console.log(`${sender_id} joined`);
+                    participants.add(sender_id);
+                    
+                    await makeOffer(sender_id);
+                    break;
+
+                case 'user_left':
+                    console.log(`${sender_id} left`);
+                    removeUser(sender_id);
+                    break;
+
+                case 'offer':
+                    await handleOffer(sender_id, payload);
+                    break;
+
+                case 'answer':
+                    await handleAnswer(sender_id, payload);
+                    break;
+
+                case 'ice':
+                    await handleIce(sender_id, payload);
+                    break;
+            }
+        }
+
+        async function makeOffer(remoteUserId) {
+            const pc = createPeerConnection(remoteUserId);
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            sendMessage('offer', offer, remoteUserId);
+        }
+
+        async function handleOffer(remoteUserId, offer) {
+            const pc = createPeerConnection(remoteUserId);
+            await pc.setRemoteDescription(offer);
+
+            processQueuedCandidates(remoteUserId);
+
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            sendMessage('answer', answer, remoteUserId);
+        }
+
+        async function handleAnswer(remoteUserId, answer) {
+            const pc = peerConnections[remoteUserId];
+            if (pc) {
+                await pc.setRemoteDescription(answer);
+
+                processQueuedCandidates(remoteUserId);
+            }
+        }
+
+        function processQueuedCandidates(remoteUserId) {
+            const pc = peerConnections[remoteUserId];
+            const candidates = iceCandidateQueue[remoteUserId] || [];
+
+            candidates.forEach(candidate => {
+                pc.addIceCandidate(candidate).catch(console.error);
+            });
+
+            iceCandidateQueue[remoteUserId] = [];
+        }
+
+        async function handleIce(remoteUserId, candidate) {
+            const pc = peerConnections[remoteUserId];
+            if (pc && pc.remoteDescription) {
+
+                await pc.addIceCandidate(candidate);
+            } else {
+
+                if (!iceCandidateQueue[remoteUserId]) {
+                    iceCandidateQueue[remoteUserId] = [];
+                }
+                iceCandidateQueue[remoteUserId].push(candidate);
+            }
+        }
+        async function joinRoom2() {
+            hangedUp = false;
+            userId = document.getElementById('userInput').value;
+            roomId = document.getElementById('roomInput').value;
+            await getCallMedia();
+
+            if (!userId || !roomId) {
+                alert('Enter username and room');
+                return;
+            }
+
+            participants.add(userId);
+            
+
+            supabaseChannel = sb
+                .channel(`room_${roomId}`)
+                .on('postgres_changes', {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'webrtc_signals',
+                    filter: `room_id=eq.${roomId}`
+                }, (payload) => {
+                    handleMessage(payload.new);
+                })
+                .subscribe();
+
+            sendMessage('user_joined', { userId });
+
+            document.getElementById('joinBtn').disabled = true;
+            document.getElementById('joinBtn2').disabled = true;
+
+            document.querySelector('.room-controls').style.display = "none";
+            document.querySelector('.media-controls').style.display = "flex";
+            document.querySelector('#videoGrid').style.display = "grid";
+            document.getElementById('leaveBtn').disabled = false;
+
+            isVideoEnabled = false;
+            const videoTrack = localStream.getVideoTracks()[0];
+            if (videoTrack) {
+                videoTrack.enabled = isVideoEnabled;
+            }
+            const btn = document.getElementById('toggleVideoBtn');
+            if (btn) btn.innerHTML = isVideoEnabled ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
+
+        }
+
+        async function joinRoom() {
+            hangedUp = false;
+            userId = document.getElementById('userInput').value;
+            roomId = document.getElementById('roomInput').value;
+            await getMedia();
+
+            if (!userId || !roomId) {
+                alert('Enter username and room');
+                return;
+            }
+
+            participants.add(userId);
+       
+
+            supabaseChannel = sb
+                .channel(`room_${roomId}`)
+                .on('postgres_changes', {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'webrtc_signals',
+                    filter: `room_id=eq.${roomId}`
+                }, (payload) => {
+                    handleMessage(payload.new);
+                })
+                .subscribe();
+
+            sendMessage('user_joined', { userId });
+
+            document.getElementById('joinBtn').disabled = true;
+            document.getElementById('joinBtn2').disabled = true;
+            document.querySelector('.room-controls').style.display = "none";
+            document.querySelector('.media-controls').style.display = "flex";
+            document.querySelector('#videoGrid').style.display = "grid";
+
+
+
+            document.getElementById('leaveBtn').disabled = false;
+        }
+
+
+        sb
+        .channel('realtime-changes')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'incoming_calls' }, async (payload) => {
+            if(payload.new.id == roomId){
+                let worthKeeping = 0;
+                let newAccept = payload.new.accepted;
+                for(let i = 0; i < newAccept.length; i++){
+                    if(newAccept[i] >= 0){
+                        worthKeeping++;
+                    }
+                }
+
+                if(worthKeeping <= 1){
+                    const { data, error } = await sb
+                        .from('incoming_calls')
+                        .delete()
+                        .eq('id', roomId);
+
+                    await leaveRoom();
+                }
+            }
+        })
+        .subscribe((status)=>{
+            console.log("Channel Stat: " + status);
+        })
+
+        async function leaveRoom() {
+            hangedUp = true;
+            clearInterval(checkInterval);
+            let vids = document.querySelectorAll('video');
+            for(let i = 0; i< vids.length; i++){
+                let clone = vids[i].cloneNode(true);
+                vids[i].replaceWith(clone);
+            }
+            sendMessage('user_left', { userId });
+
+            Object.values(peerConnections).forEach(pc => pc.close());
+            peerConnections = {};
+            iceCandidateQueue = {};
+
+            participants.clear();
+           
+
+            const remoteVideos = document.querySelectorAll('[id^="video-"]:not(#localVideo)');
+            remoteVideos.forEach(video => video.parentElement.remove());
+
+            if (supabaseChannel) {
+                sb.removeChannel(supabaseChannel);
+            }
+
+            document.getElementById('joinBtn').disabled = false;
+            document.getElementById('joinBtn2').disabled = false;
+            document.querySelector('.media-controls').style.display = "none";
+            document.querySelector('.room-controls').style.display = "flex";
+            document.querySelector('#videoGrid').style.display = "none";
+
+
+            document.getElementById('leaveBtn').disabled = true;
+
+            const { data, error } = await sb
+                .from('incoming_calls')
+                .select('*')
+                .eq('id', roomId)
+                .single();
+
+            if(data && data.members){
+                let num = data.members.indexOf(userId);
+                let newAccept = data.accepted;
+                newAccept[num] = -1;
+                let worthKeeping = 0;
+                for(let i = 0; i < newAccept.length; i++){
+                    if(newAccept[i] == 1){
+                        worthKeeping++;
+                    }
+                }
+
+                if(worthKeeping > 1){
+                    const { data, error } = await sb
+                        .from('incoming_calls')
+                        .update({ accepted: newAccept, })
+                        .eq('id', roomId)
+                }else{
+                    const { data, error } = await sb
+                        .from('incoming_calls')
+                        .delete()
+                        .eq('id', roomId);
+                }
+
+
+                
+
+
+                
+                    
+            }
+
+            
+
+
+            window.location.replace("/pages/chats.html");
+
+        }
+
+        function toggleVideo() {
+            isVideoEnabled = !isVideoEnabled;
+            const videoTrack = localStream.getVideoTracks()[0];
+            if (videoTrack) {
+                videoTrack.enabled = isVideoEnabled;
+            }
+            const btn = document.getElementById('toggleVideoBtn');
+            if (btn) btn.innerHTML = isVideoEnabled ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
+
+            if(isVideoEnabled){
+                document.getElementById(`videoFallback`).style.display = 'none';
+      
+                document.getElementById('localVideo').style.height = "308.66667px";
+
+                document.getElementById('localVideo').parentElement.children[1].removeAttribute('style');
+            }else{
+                document.getElementById(`videoFallback`).style.display = 'flex';
+                
+                document.getElementById('localVideo').style.height = "250px";
+
+                document.getElementById('localVideo').parentElement.children[1].style.marginTop = "20px";
+            }
+        }
+
+        function toggleAudio() {
+            isAudioEnabled = !isAudioEnabled;
+            const audioTrack = localStream.getAudioTracks()[0];
+            if (audioTrack) {
+                audioTrack.enabled = isAudioEnabled;
+            }
+            const btn = document.getElementById('toggleAudioBtn');
+            if (btn) btn.innerHTML = isAudioEnabled ? '<i class="fa-solid fa-microphone"></i>' : '<i class="fa-solid fa-microphone-slash"></i>';
+        }
+
+        async function shareScreen() {
+            if (!isScreenSharing) {
+                try {
+                    const screenStream = await navigator.mediaDevices.getDisplayMedia({
+                        video: true,
+                        audio: true
+                    });
+
+                    const videoTrack = screenStream.getVideoTracks()[0];
+
+                    Object.values(peerConnections).forEach(async (pc) => {
+                        const sender = pc.getSenders().find(s => s.track && s.track.kind === 'video');
+                        if (sender) {
+                            await sender.replaceTrack(videoTrack);
+                        }
+                    });
+
+                    document.getElementById('localVideo').srcObject = screenStream;
+                    isScreenSharing = true;
+
+                    const btn = document.getElementById('shareScreenBtn');
+                    if (btn) btn.textContent = 'Stop Sharing';
+
+                    videoTrack.addEventListener('ended', () => {
+                        stopScreenShare();
+                    });
+
+                } catch (error) {
+                    console.error('Error sharing screen:', error);
+                }
+            } else {
+                stopScreenShare();
+            }
+        }
+
+        async function stopScreenShare() {
+            const videoTrack = localStream.getVideoTracks()[0];
+
+            Object.values(peerConnections).forEach(async (pc) => {
+                const sender = pc.getSenders().find(s => s.track && s.track.kind === 'video');
+                if (sender) {
+                    await sender.replaceTrack(videoTrack);
+                }
+            });
+
+            document.getElementById('localVideo').srcObject = localStream;
+            isScreenSharing = false;
+
+            const btn = document.getElementById('shareScreenBtn');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-display"></i>';
+        }
+
+        document.getElementById('joinBtn').onclick = joinRoom;
+        document.getElementById('joinBtn2').onclick = joinRoom2;
+        document.getElementById('leaveBtn').addEventListener('click', async()=>{ await leaveRoom(); });
+
+
+        let urlParams = new URLSearchParams(window.location.search);
+        let username = urlParams.get('username');
+        let id = urlParams.get('id');
+        let mode = urlParams.get('mode');
+
+        if (username && id) {
+            document.querySelector('#userInput').value = username;
+            document.querySelector("#roomInput").value = id;
+
+            if(mode == "video"){
+                joinRoom();
+
+            }else{
+                joinRoom2();
+
+            }
+
+
+            
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+        
+            window.location.replace("/pages/chats.html");
+        }
+
+        const toggleVideoBtn = document.getElementById('toggleVideoBtn');
+        const toggleAudioBtn = document.getElementById('toggleAudioBtn');
+        const shareScreenBtn = document.getElementById('shareScreenBtn');
+
+        if (toggleVideoBtn) toggleVideoBtn.onclick = toggleVideo;
+        if (toggleAudioBtn) toggleAudioBtn.onclick = toggleAudio;
+        if (shareScreenBtn) shareScreenBtn.onclick = shareScreen;
+
+    </script>
+</body>
+</html>
