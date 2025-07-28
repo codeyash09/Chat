@@ -1421,6 +1421,10 @@ db
             callIndicator.style.display = "flex";
             callIndicator.querySelector('.username').innerHTML = payload.new.sender;
             callIndicator.querySelector('h6').innerHTML = payload.new.type;
+            if(document.querySelector(`[data-chat-id="${payload.new.id}"]`) && document.querySelector(`[data-chat-id="${payload.new.id}"]`).children[0] && document.querySelector(`[data-chat-id="${payload.new.id}"]`).children[0].children[0] && document.querySelector(`[data-chat-id="${payload.new.id}"]`).children[0].children[0].children[0] && document.querySelector(`[data-chat-id="${payload.new.id}"]`).children[0].children[0].children[0].src){
+                callIndicator.querySelector('#avatarThingCall').src = document.querySelector(`[data-chat-id="${payload.new.id}"]`).children[0].children[0].children[0].src;
+
+            }
 
             callIndicator.querySelector('#acceptBtn').addEventListener('click', async ()=>{
                 
