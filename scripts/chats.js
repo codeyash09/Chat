@@ -359,7 +359,8 @@ async function showChats(method = "smt") {
         tab.appendChild(person);
         tab.addEventListener("click", () => openChat(chat.chat_id, null, "open"));
         tab.addEventListener("contextmenu", (event) => showContextMenu(event, chat.chat_id));
-        time.appendChild(timel);
+        timel.innerHTML += '<i class="fa-solid fa-angle-right"></i>';
+        uselr.appendChild(timel);
 
 
 
@@ -840,6 +841,14 @@ function unclear(){
 
 }
 
+function activeLink(text) {
+    return text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    }); 
+
+
+}
+
 async function openChat(id, payload = null, method = "smt") {
     console.log(method);
     if(method === "open"){
@@ -1091,6 +1100,9 @@ async function openChat(id, payload = null, method = "smt") {
             const text = document.createElement("div");
             text.classList.add("text");
             text.innerHTML = chat.messages?.[i] || "No message";
+            text.innerHTML = activeLink(text.innerHTML);
+        
+            
             const time = document.createElement("div");
             time.classList.add("timestamp");
             time.innerHTML = convertToLocalTime(chat.times[i]);
@@ -1896,10 +1908,13 @@ function formatChatListTimestamp(centralTime) {
     let rn = new Date();
     let daysApart = Math.floor((rn - date) / 86400000);
 
-    if (daysApart > 6) {
-        return date.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric'});
-    }
+    if (daysApart > 6 && daysApart < 365) {
+        return date.toLocaleString(undefined, { month: 'short', day: 'numeric'});
+    }else if(daysApart >= 365){
+        return date.toLocaleString(undefined, { year:'numeric', month: 'numeric', day: 'numeric'});
 
+    }
+        
     let timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
     let dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let dayDiff = rn.getDay() - date.getDay();
@@ -2268,6 +2283,9 @@ async function newMessages(payload){
             const text = document.createElement("div");
             text.classList.add("text");
             text.innerHTML = payload.messages?.[num] || "No message";
+            text.innerHTML = activeLink(text.innerHTML);
+          
+
             const time = document.createElement("div");
             time.classList.add("timestamp");
             time.innerHTML = convertToLocalTime(payload.times[num]);
