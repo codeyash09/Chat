@@ -284,6 +284,9 @@ async function showChats(method = "smt") {
             
 
             
+        }else{
+            avatar.innerHTML = `<img src="/images/default-group.png" alt="Default Avatar" class="profilePicture">`;
+
         }
     
         let texts = document.createElement('div');

@@ -629,8 +629,8 @@ body.dnd-active .user-info .user-actions .fa-moon {
 .chat-input input:focus {
     outline: none;
     color: black;
-    background-color: #fff; /* Slightly lighter background when focused */
-    box-shadow: 0 0 0 2px black; /* Add a subtle focus ring */
+    background-color: rgb(250, 250, 250) !important;
+    border: 2px solid rgb(167, 167, 167) !important;
 }
 
 .chat-input input::placeholder {
@@ -2923,6 +2923,48 @@ i{
     padding: 1vh;
     outline: none;
     border:1.5px solid black;
+    width: 30vw;
+    height: 3vh;
+    border-radius: 500px;
+    outline: none;
+    border: none;
+    background-color: #fff;
+    color: black;
+    border: 3px solid #eee;
+    font-family: 'Inter';
+    padding-left: 2vw;
+    padding-right: 8vh;
+    padding-top: 1.5vh;
+    padding-bottom: 1.5vh;
+    max-width: 30vw;
+    font-size: 1.5vh;
+    padding-left: 40px;
+    height: 36px;
+    font-size: 16px;
+    color: black;
+    background-color: white !important;
+    transition: all .25s linear;
+}
+
+.search-iconss{
+    position: absolute;
+    width: 5vh;
+    bottom: calc(10vh + 18px - 1vh);
+    z-index: 5000000000000000000000000000000000;
+    transform: translateX(calc(15vw + 4vh - 2.5vh));
+    
+}
+
+@media screen and (max-width: 768px) {
+    .aiInChat{
+        width: 60vw;
+        max-width: 60vw;
+    }
+
+    .search-iconss{
+        transform: translateX(calc(30vw + 4vh - 2.5vh));
+
+    }
 }
 #wall2{
     top: 100vh;
@@ -3634,4 +3676,49 @@ i{
 .replyBar {
     max-width: 100%;
     overflow: hidden;
+}
+
+#rec{
+    width: calc(30vw + 8vh + 40px - 3vw);
+
+}
+
+#rec i{
+    margin-right: 5px;
+}
+
+
+@media screen and (max-width: 768px) {
+    #rec{
+        width: calc(60vw + 8vh + 40px - 3vw);
+        
+    }
+
+
+}
+
+#rec .element{
+    cursor: pointer;
+    color: rgb(107, 107, 107) !important;
+    transition: all 0.5s ease-in-out;
+
+}
+
+#rec .element i{
+    transition: all 0.5s ease-in-out;
+    
+    color: rgb(107, 107, 107) !important;
+}
+
+#rec .element:hover i{
+    margin-right: 10px;
+    transform: rotate(360deg);
+    color: black !important;
+
+}
+
+#rec .element:hover{
+    
+    color: black !important;
+   
 }

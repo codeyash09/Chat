@@ -182,14 +182,29 @@ input.addEventListener("focus", ()=>{
   if(!on){
     on = true;
     document.getElementById("searcher").style.top = "5vh";
+    document.getElementById("searcher").style.overflow = "visible";
+    document.getElementById("rec").style.top = "18px";
+
+    document.getElementById("rec").querySelectorAll(".element").forEach((el)=>{
+      el.addEventListener("click", (e)=>{
+        document.getElementById("aiInput").value = el.innerText.trimStart();
+      });
+
+    });
+
     bar.style.zIndex = "0";
 
-  }
-    aing = true;
+  }else if(document.getElementById("searcher").style.top != "5vh"){
+    document.getElementById("searcher").style.overflow = "hidden";
+    document.getElementById("rec").style.top = "-60vh";
+    
+  } 
+  aing = true;
     bar.style.zIndex = "0";
-
+    
     wall.style.top = "0";
     wall.style.opacity = '1';
+    
 
 })
 
@@ -206,7 +221,8 @@ input.addEventListener('keydown', function (event) {
         prompts.push(input.value);
         bar.style.zIndex = "0";
         document.getElementById("searcher").style.top = "70vh";
-
+        document.getElementById("searcher").style.overflow = "hidden";
+        document.getElementById("rec").style.top = "-60vh";
         let messager2 = document.createElement("div");
         messager2.classList.add('messager');
         messager2.classList.add('own-messager');
@@ -250,7 +266,8 @@ backBtn.addEventListener("click", ()=>{
   
   input.value = "";
   bar.style.zIndex = "2147483646";
-
+  document.getElementById("searcher").style.overflow = "hidden";
+  document.getElementById("rec").style.top = "-60vh";
   wall.style.top = "90vh";
   wall.style.opacity = '0';
   aing = false;
