@@ -1,6 +1,6 @@
 let db = supabase.createClient(
     'https://pmfrislowxhopnexusxa.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZnJpc2xvd3hob3BuZXh1c3hhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODk4NjExMSwiZXhwIjoyMDY0NTYyMTExfQ.TTYNG0O0nTFqS8QPimAqhC-uqmNs65Aaml1kqAtYeTQ'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZnJpc2xvd3hob3BuZXh1c3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5ODYxMTEsImV4cCI6MjA2NDU2MjExMX0.3o8Jv7WrXmLycT70Z5oYy4Bis8c9Iy_pRLwmxsMPRDo'
 );
 
 

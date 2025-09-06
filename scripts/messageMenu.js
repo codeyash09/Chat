@@ -809,6 +809,8 @@ chatMessages.addEventListener('contextmenu', (e) => {
     }
 });
 
+
+
 // MOBILE: Tap handler for push-up effect
 chatMessages.addEventListener('click', (e) => {
     if (window.innerWidth > 768) return; // Only on mobile
@@ -820,6 +822,7 @@ chatMessages.addEventListener('click', (e) => {
     if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate(8);
     }
+    
 
     // Always remove previous push-up classes before applying new ones
     document.querySelectorAll('.message.push-up-above').forEach(m => m.classList.remove('push-up-above'));
