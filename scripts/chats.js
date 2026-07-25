@@ -31,6 +31,54 @@ if(userId == null || userId == "null"){
     window.location.replace('/pages/signup.html');
 }
 
+async function fetchTeacher() {
+  const { data, error } = await db
+    .from('Users')
+    .select('teacher')
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error fetching teacher flag:', error);
+    return false;
+  }
+
+  return data && data[0] ? data[0].teacher : false;
+}
+
+async function setUserStatus(status) {
+  const { data, error } = await db
+    .from('Users')
+    .update({ status })
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error updating user status:', error);
+  }
+
+  return data;
+}
+
+async function initTeacherStatus() {
+  const isTeacher = await fetchTeacher();
+//   if (!isTeacher) return;
+
+  await setUserStatus('online');
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      setUserStatus('online');
+    } else {
+      setUserStatus('offline');
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    setUserStatus('offline');
+  });
+}
+
+initTeacherStatus();
+
 let chatMess = document.getElementById("chat-messages");
 let chatList = document.getElementById("messagesBannerHolder");
 let chatsList = document.getElementById("pageList");
@@ -115,6 +163,35 @@ async function fetchUsers(id) {
     }
   
     return data;
+}
+
+async function fetchUsersByUsernames(usernames) {
+    if (!Array.isArray(usernames) || usernames.length === 0) return [];
+    const { data, error } = await db
+      .from('Users')
+      .select('id,username,teacher,status')
+      .in('username', usernames);
+  
+    if (error) {
+      console.error('Error fetching users by usernames:', error);
+      return [];
+    }
+  
+    return data || [];
+}
+
+async function fetchUserById(id) {
+    const { data, error } = await db
+      .from('Users')
+      .select('id,username,teacher,status')
+      .eq('id', id);
+  
+    if (error) {
+      console.error('Error fetching user by id:', error);
+      return null;
+    }
+  
+    return data && data[0] ? data[0] : null;
 }
 
 username = fetchUser();
@@ -910,19 +987,37 @@ async function openChat(id, payload = null, method = "smt") {
     read = readNum;
         
     if(chat.groupchat){
-        chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
+        const memberUsers = await fetchUsersByUsernames(chat.members || []);
+        const hostUser = await fetchUserById(chat.host);
+        const allUsers = [...memberUsers];
+        if (hostUser && !allUsers.some(u => u.id === hostUser.id)) {
+            allUsers.push(hostUser);
+        }
+
+        const onlineCount = allUsers.filter(u => u.status === 'online').length;
+        const teacherOnline = hostUser && hostUser.teacher && hostUser.status === 'online';
+        let statusBadge = '<span style="color: gray; font-style: italic; margin-left: 0.6rem; font-size: 0.9rem;">';
+        if (teacherOnline) {
+            statusBadge += 'Teacher Online ';
+        }else{
+            statusBadge += 'Teacher Offline ';
+
+        }
+        statusBadge += '(<i>' + onlineCount + ' online</i>)</span>';
+
+        chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title + statusBadge + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call"  class="phoneBtn" style="display: none; border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none; display: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
         let btn = document.querySelector('.homeBtn');
 
 
         btn.addEventListener('click', ()=>{
-            document.getElementById('newChatBtn2').style.display = 'flex';
+            // document.getElementById('newChatBtn2').style.display = 'flex';
             changeRow();
             home.classList.remove('hide');
             setTimeout(clear, 0);
 
         })
         btn.children[0].addEventListener('click', ()=>{
-            document.getElementById('newChatBtn2').style.display = 'flex';
+            // document.getElementById('newChatBtn2').style.display = 'flex';
 
             changeRow();
             home.classList.remove('hide');
@@ -933,19 +1028,19 @@ async function openChat(id, payload = null, method = "smt") {
     }else{
         if(chat.host == "" + userId + ""){
             if(chat.members.length != 0){
-                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
+                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + (await fetchName(chat.members[0]))[0].name + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="display: none;border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="display: none;border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
                 chatInput.placeholder = "Message " + (await fetchName(chat.members[0]))[0].name;
 
 
             }else{
-                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + username + " (You)" + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
+                chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + username + " (You)" + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="display: none;border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="display: none;border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
                 chatInput.placeholder = "Message " + username + " (yourself)";
             }
 
             let btn = document.querySelector('.homeBtn');
 
             btn.addEventListener('click', ()=>{
-                document.getElementById('newChatBtn2').style.display = 'flex';
+                // document.getElementById('newChatBtn2').style.display = 'flex';
 
                 changeRow();
                 home.classList.remove('hide');
@@ -953,7 +1048,7 @@ async function openChat(id, payload = null, method = "smt") {
 
             })
             btn.children[0].addEventListener('click', ()=>{
-                document.getElementById('newChatBtn2').style.display = 'flex';
+                // document.getElementById('newChatBtn2').style.display = 'flex';
 
                 changeRow();
                 home.classList.remove('hide');
@@ -969,13 +1064,13 @@ async function openChat(id, payload = null, method = "smt") {
                     chatHeader.innerHTML = hoster;
                     chatInput.placeholder = "Message " + hoster;
 
-                    chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' +hoster + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
+                    chatHeader.innerHTML ='<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' +hoster + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call" class="phoneBtn" style="border: none;display: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none;display: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
                     chatInput.placeholder = "Message " + hoster;
 
                     let btn = document.querySelector('.homeBtn');
 
                     btn.addEventListener('click', ()=>{
-                        document.getElementById('newChatBtn2').style.display = 'flex';
+                        // document.getElementById('newChatBtn2').style.display = 'flex';
 
                         changeRow();
                         home.classList.remove('hide');
@@ -983,7 +1078,7 @@ async function openChat(id, payload = null, method = "smt") {
 
                     })
                     btn.children[0].addEventListener('click', ()=>{
-                        document.getElementById('newChatBtn2').style.display = 'flex';
+                        // document.getElementById('newChatBtn2').style.display = 'flex';
 
                         changeRow();
                         home.classList.remove('hide');

@@ -32,6 +32,20 @@ async function fetchUser() {
 
   return data;
 }
+
+async function fetchTeach() {
+  const { data, error } = await db
+    .from('Users')
+    .select('teacher')
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+
+  return data;
+}
 let username = (await fetchUser())[0].username;
 
 async function fetchName(myUsername) {
@@ -77,6 +91,17 @@ async function fetchUsers(iden) {
 let createBtn = document.getElementById('newChatBtn');
 createBtn.addEventListener("click", await newChat);
 let createBtn2 = document.getElementById('newChatBtn2');
+
+let teachq = (await fetchTeach())[0].teacher;
+if(!teachq){
+  createBtn2.style = "border: none; display:none;";
+
+}else{
+    createBtn2.style = "border: none; ";
+
+}
+
+
 createBtn2.addEventListener("click", await newChat);
 
 async function newChat(){
@@ -228,6 +253,9 @@ async function newChat(){
                 updatedAccepted.push(0);
             }
             
+            let messages = ["Welcome to class"];
+            let sender = [username]
+            let timestamps = [new Date().toISOString()];
             updatedRead.push(0);
             updatedTyping.push(false);
 
@@ -241,23 +269,25 @@ async function newChat(){
                     'host': window.localStorage.getItem("userIdentify"),
                     'accepted': updatedAccepted,
                     'read': updatedRead,
+                    'messages': messages,
+                    'senders': sender,
+                    'times': timestamps,
                     'typing': updatedTyping,
                     'chatType': current,
                 }
                 ]);
-
-                
-
-                
             }else{
-            const { data, error } = await db.from('Chats').insert([
+              const { data, error } = await db.from('Chats').insert([
                 {
                     'members': finalMembers,
                     'groupchat': false,
-                
+                    'title': document.getElementById("chatTile").value,
                     'host': window.localStorage.getItem("userIdentify"),
                     'accepted': updatedAccepted,
                     'read': updatedRead,
+                    'messages': messages,
+                    'senders': sender,
+                    'times': timestamps,
                     'typing': updatedTyping,
                     'chatType': current,
                 }

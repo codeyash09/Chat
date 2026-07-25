@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chats | Qubit</title>
+    <title>Chats | Pigeon</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="stylesheet" href="/style/chats.css">
     <script src="/scripts/longorshort.js"></script>
@@ -1952,7 +1952,7 @@
             </div>
         </div>
         
-        <button id="newChatBtn">
+        <button id="newChatBtn" style="display: none;">
             <i class="fa-solid fa-plus"></i>
         </button>
         
@@ -2016,7 +2016,7 @@
                         <i id="gifButton" class="gif-text-button" title="Open GIFs"><i class="fa-solid fa-note-sticky"></i></i>
                         <i class="fa-solid fa-face-smile" id="emojiButton" title="Open Emojis"></i>
                         <i class="fa-solid fa-paintbrush" id="magicButton" title="Autocomplete"></i>
-                        <i class="fa-solid fa-robot" id="aiButtonChat" title="Qubit AI"></i>
+                        <i class="fa-solid fa-robot" id="aiButtonChat" title="Pigeon AI"></i>
                     </div>
                 </div>
                 <div class="input-actions file1" id="filer">
@@ -2042,7 +2042,7 @@
     </div>
 
 
-    <div id="meny">
+    <div id="meny" style="display: none;">
         <div class="sidebarmenu">
             <a class="collapser" id="collapser">
                 <i class="fa-solid fa-chevron-right"></i>
@@ -2070,7 +2070,7 @@
                         
 
                         <a href="/pages/chats.html"><i class="fa-solid fa-search"> <h1>Search</h1></i> </a>
-                        <a><i class="fa-solid fa-robot"> <h1>Qubit AI</h1></i></a>
+                        <a><i class="fa-solid fa-robot"> <h1>Pigeon AI</h1></i></a>
                         <a href="/pages/index.html"><i class="fa-solid fa-home"> <h1>Home</h1></i></a>
 
                         <a href="/pages/chats.html"><i class="fa-solid fa-inbox"> <h1>Inbox</h1></i></a>
@@ -2176,7 +2176,7 @@
                         <div style="font-size: 14px; color: #999; margin-top: 2px;">DOB: 2000-01-01</div>
                     </div>
                     <!-- Settings List -->
-                    <div style="width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 12px;">
+                    <div style="width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; display: none;" >
                         <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-user-gear"></i> Account</a>
                         <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #fff5f2; color: #fd5a23; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-heart"></i> Donate</a>
                         <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 12px; background: #f7f7fa; color: #220952ff; font-size: 17px; text-decoration: none;"><i class="fa-solid fa-palette"></i> Theme</a>
@@ -2293,7 +2293,7 @@
                 <div class="holder"style="display:flex; align-items:center; justify-content: space-around; width: fit-content;gap: 20px;">
                     <div id="pfpGen" class="avatar" style="overflow: hidden;"></div>
 
-                    <div class="txt">QUBIT</div>
+                    <div class="txt">PIGEON</div>
                 </div>
                 
           
@@ -2304,8 +2304,8 @@
 
                     <img id="bell" src="/images/bell.png">
 
-                    <img id="bits" src="/images/gift.png">
-                    <div class="btnHolder" id="newChatBtn2"><i class="fa-solid fa-plus"></i></div>
+                    <!-- <img id="bits" src="/images/gift.png"> -->
+                    <div class="btnHolder" id="newChatBtn2" style="display: none;"><i class="fa-solid fa-plus"></i></div>
 
                 </div>
                
@@ -2395,10 +2395,10 @@
                 
             </div>
             
-            <div class="searcher" id="searcher">
+            <div class="searcher" id="searcher" style="display: none;">
                 <div class="search-wrapper">
                     <img src="/images/ai2.png" id="aiLogo" alt="AI icon" class="search-icon">
-                    <input id="aiInput" type="text" placeholder="Search or ask Qubit AI" enterkeyhint="send">
+                    <input id="aiInput" type="text" placeholder="Search or ask Pigeon AI" enterkeyhint="send">
                 </div>
                 <div class="recommendations" id="rec" style="
                     border: 3px solid #eee;
@@ -2435,7 +2435,7 @@
                     
                 </div>
             </div>  
-            
+<!--             
             <div class="bar" style="position: fixed; bottom: 0vh; display: flex; height: 10vh; align-items: center; justify-content: center;color: black;width: 100%;">
                 <div class="holder" style="width: 20vw;display: flex; justify-content: space-around;align-items: center;overflow: visible;">
                     <i class="fa-solid fa-house"style="font-size: 2.5vh;width: 4vh;height: 4vh;cursor: pointer;color:black !important;" id="homeBtn"></i>
@@ -2445,7 +2445,7 @@
                   
                 </div>
                 
-            </div>
+            </div> -->
             
         </div>
     </div>
@@ -2461,7 +2461,7 @@
             
         </div>
         <img src="/images/ai2.png" alt="AI icon" class="search-iconss">
-        <input type="text" class="aiInChat" id="chatInputAi" placeholder="Talk to Qubit AI about your chat" enterkeyhint="send">
+        <input type="text" class="aiInChat" id="chatInputAi" placeholder="Talk to Pigeon AI about your chat" enterkeyhint="send">
     </div>  
 
 
@@ -2595,7 +2595,7 @@
     <script type="module" src="/scripts/chatContextMenu.js"></script>
     <script type="module" src="/scripts/home.js"></script>
     <script type="module" src="/scripts/stack.js"></script>
-    <script type="module" src="/scripts/ai.js"></script>
+    <!-- <script type="module" src="/scripts/ai.js"></script> -->
     <script type="module" src="/scripts/magic.js"></script>
     <script type="module" src="/scripts/chatAi.js"></script>
     
