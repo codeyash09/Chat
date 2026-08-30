@@ -1677,7 +1677,8 @@ form h1{
     position: absolute;
     top: 4vh;
     right: 3vw;
-    background: #3d1766;
+    background: #01eb68
+;
     color: #fff;
     font-size: 11px;
     font-weight: 600;
@@ -2817,7 +2818,7 @@ i{
 
 
 .current{
-    background-color: rgba(20, 45, 155, 0.692) !important;
+    background-color:  rgba(1, 235, 102, 0.651) !important;
     color: white !important;
     
 }

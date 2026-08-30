@@ -194,6 +194,37 @@ async function fetchUserById(id) {
     return data && data[0] ? data[0] : null;
 }
 
+// Returns true if a question should be blocked: host is a teacher and
+// there have been >= 20 messages since the host's last message.
+async function isQuestionBlocked(chat) {
+    try {
+        if (!chat || !chat.groupchat) return false;
+        const hostUser = await fetchUserById(chat.host);
+        if (!hostUser || !hostUser.teacher) return false;
+
+        const hostUsername = hostUser.username;
+        if (!Array.isArray(chat.senders) || chat.senders.length === 0) return false;
+
+        // Find last index of a message sent by the host
+        let lastHostIndex = -1;
+        for (let i = chat.senders.length - 1; i >= 0; i--) {
+            if (chat.senders[i] === hostUsername) { lastHostIndex = i; break; }
+        }
+
+        if (lastHostIndex === -1) return false; // host hasn't sent yet
+
+        const messagesAfter = chat.messages.length - 1 - lastHostIndex;
+        return messagesAfter >= 5; //threshold for how many before a response is needed
+    } catch (e) {
+        console.error('isQuestionBlocked error', e);
+        return false;
+    }
+}
+
+function containsQuestion(text){
+    return /\?/.test(text);
+}
+
 username = fetchUser();
 username.then(result =>{
     if(result[0] != undefined){
@@ -556,6 +587,15 @@ async function showChats(method = "smt") {
                         return;
                     }
 
+                    // Block questions if instructor hasn't replied after 20 messages
+                    if (await isQuestionBlocked(data)) {
+                        const hostUser = await fetchUserById(data.host);
+                        if (hostUser && hostUser.username !== username) {
+                            alert('Please wait for the instructor to respond before asking questions.');
+                            return;
+                        }
+                    }
+
                     const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
                     const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
                     const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
@@ -618,6 +658,15 @@ async function showChats(method = "smt") {
                         if (error || !data) {
                             console.error("Failed to fetch chat:", error ?? "Chat not found");
                             return;
+                        }
+
+                        // Block questions if instructor hasn't replied after 20 messages
+                        if (await isQuestionBlocked(data)) {
+                            const hostUser = await fetchUserById(data.host);
+                            if (hostUser && hostUser.username !== username) {
+                                alert('Please wait for the instructor to respond before asking questions.');
+                                return;
+                            }
                         }
 
                         const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
@@ -773,6 +822,15 @@ messageInput.addEventListener("keydown", async function(event) {
                 return;
             }
 
+            // Block questions if instructor hasn't replied after 20 messages
+            if (await isQuestionBlocked(data)) {
+                const hostUser = await fetchUserById(data.host);
+                if (hostUser && hostUser.username !== username) {
+                    alert('Please wait for the instructor to respond before asking questions.');
+                    return;
+                }
+            }
+
             const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
             const updatedTimes = Array.isArray(data.times) ? [...data.times, timestamp] : [timestamp];
             const updatedSenders = Array.isArray(data.senders) ? [...data.senders, sender] : [sender];
@@ -845,6 +903,15 @@ sendButton.addEventListener("click", async () => {
         if (error || !data) {
             console.error("Failed to fetch chat:", error ?? "Chat not found");
             return;
+        }
+
+        // Block questions if instructor hasn't replied after 20 messages
+        if (await isQuestionBlocked(data)) {
+            const hostUser = await fetchUserById(data.host);
+            if (hostUser && hostUser.username !== username) {
+                alert('Please wait for the instructor to respond before asking questions.');
+                return;
+            }
         }
 
         const updatedMessages = Array.isArray(data.messages) ? [...data.messages, messageText] : [messageText];
@@ -996,14 +1063,14 @@ async function openChat(id, payload = null, method = "smt") {
 
         const onlineCount = allUsers.filter(u => u.status === 'online').length;
         const teacherOnline = hostUser && hostUser.teacher && hostUser.status === 'online';
-        let statusBadge = '<span style="color: gray; font-style: italic; margin-left: 0.6rem; font-size: 0.9rem;">';
+        let statusBadge = '<span style="border: 2px solid gray; border-radius: 50px;padding: 3px; color: gray; font-style: italic; margin-left: 0.6rem; font-size: 0.9rem;">';
         if (teacherOnline) {
             statusBadge += 'Teacher Online ';
         }else{
             statusBadge += 'Teacher Offline ';
 
         }
-        statusBadge += '(<i>' + onlineCount + ' online</i>)</span>';
+        statusBadge += '- <i>' + onlineCount + ' online</i></span>';
 
         chatHeader.innerHTML = '<button class="homeBtn"><i class="fa-solid fa-angle-left"></i></button>' + chat.title + statusBadge + '<div class="calls" style="position: absolute;right: 0;display: flex;justify-content: space-around;font-size: 3vh;width: 20vw;margin-right: 3vw;"><button id="call"  class="phoneBtn" style="display: none; border: none;"><i class="fa-solid fa-phone" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button><button id="video" class="phoneBtn" style="border: none; display: none;"><i class="fa-solid fa-video" aria-hidden="true" style="font-size: 1.5vh;color: black !important;border: none;"></i></button></div>';
         let btn = document.querySelector('.homeBtn');
